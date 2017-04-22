@@ -1,0 +1,153 @@
+Main story line:
+----------------
+1
+- crash land near a farm
+- only 1 item in inventory: Alteran Disruptor a learning computer (that might be alive)
+- the disruptor only functions at its most basic level: as a close-proximity tissue disruptor (1d3 1 attack per second (aps))
+- game objective is to get off planet
+- ask Sharya about how to get home
+- she gives directions to Median
+- journey to west, defeat monsters, arrive at Median
+
+2
+- in Median, mistaken for a detective who's come to investigate Bro. Pazu's murder
+- monks can't help getting home until murder is solved (the archive is closed)
+- after talking to everyone you realize Pazu was murdered by a large black feathered shape
+- Monks ask you to travel to Eldun to verify identity of monster
+- travel to Eldun
+
+3
+- in Eldun, sage asks you to retreive a book from his library
+- tells about: the Raighd (closed primival forest to north), the circuit (how to enter the Raighd) and the Gramnor (demon from the Raighd)
+- you take the news back to Median
+
+4
+- in Median the archives are reopened
+- one of the monks directs you to enter pazu's chamber 
+- there you find the green sky stone and pazu's notes of "urhaw"
+- Marisan of Eldun can conform that Urhaw is a ruin, now inside the Raighd
+- to enter the Raighd, you must complete the circuit (5 towns around the Raighd) - start in Voln to north
+- one of the monks teaches the disruptor the spell "carta" (see map)
+
+5-9 (applies to all five cities around the Raighd)
+- the local artificer/sage/mystic can teach the Disruptor a new spell, if you bring him the raw ingredients (from Ravenous, etc)
+- the mayor offers that to prove yourself, you must complete a nearby quest: eg.: defeat the ogres who sacked the nearby castle of Greenloft
+- If you complete this quest, you gain one of five (rings/sygils/levels?) that eventually allow entrance to Raighd
+- in Greenloft, the ogre leader (before dying) suggests that the human towns are lying and won't allow access to the Raighd - they're only using you to clean up their problems. (<-- recurring theme that eventually proves to be true. The way into the Raighd is thru Lexxonu the ancient, a green dragon living in the island to the east. To get there the disruptor needs to learn the "portal" and "carta" (view map) spells.)
+- If this is the fifth quest completed:
+  - mayor declares you to be an enemy of the people, looking to unleash the Raighd. You are to be imprisoned in Vertinux.
+- otherwise:
+  - mayor of Voln denies these rumors and bids you to proceed to next town
+
+10 
+- you are falsely accused and imprisoned in Vertinux, the prison island (NW of the mainland)
+- a secret door in your cell leads you to an underground complex
+- traversing it, fight off monsters and emerge near the hut of the hermit Endimus
+- Endimus talks about enlightenment through isolation, spiritual devotion and meditation
+- he teaches the disruptor the spell "Ignus" (4d10, 0.5 aps, range 8)
+- he suggests you look up his "brother" Lexxonu who lives on the SE island. To get there you must find the spell "portal" in the dungeon of "pillory" (on mainland). Lexxonu will help you enter the Raighd.
+- Endimus gives you the key to pillory - without this you cannot enter
+- if you help him harvest his corn, he clears the path to Regund, the town of the island where you can take a ship back to the mainland.
+
+11 
+- back on the mainland, find the dungeon of "pillory". Fight your way to its lowest level and in the innermost sanctum the Disruptor learns the spell "portal".
+- you can now teleport to any location on your map (spell "carta")
+- teleport to the SE island where Lexxonu lives
+
+12
+- Lexxonu turns out to be an ancient green dragon
+- he fills in any missing story plots about the humans' fight against the spreading Raighd
+- the Raight arose from the collective callous evil neglect of nature by humanity. The wars, hatred, etc. over-saturated the "kill" emotion of the natural world, making it finally strong enough to erupt into a life-force of its own. Like some malignant tumor it infests the world, always growing, it never stops. Ironically humanity's fight against this perceived "evil" only makes it stronger - completing a viscious feedback system.
+- The dragon is concerned for the fate of the world - so it doesn't become covered by the Raighd. The only way to really stop it, is to establish a peaceful movement that over time reins back humanity's capacity and desire for evil. To do that he proposes the resurrection of the Ergesdal, the last prophet of peace and tolerance.
+- he teaches the disruptor the "exmortus" spell (resurrection)
+- the portal to the heart of the Raighd is on the bottom level of the ruined cathedral of Dawnstar here on the island
+- you fight your way there, activate the portal and teleport into the Raighd
+
+13 
+- most of the Raighd is vast jungle with some important locations:
+1 - the ruined temple of Urhaw is where Pazu's stone came from (and the Gramnor to retrieve it). The green sky stone is a fuel cell to the spacecraft at the center of the ruins. If you reach the craft, you can take off - game over, tho Arkona is lost to the Raighd after you leave
+2 - another location is the temple of Ergesdal. The prophet's tomb is at the lowest level of the dungeon.
+- fight your way to this level, open the sarcafogus, only to find it empty, except for a note saying:
+- the prophet transcended death and has returned to live as an enourmous oak tree at the heart of the Raighd. He's truly at peace not caring for the fate of humanity, basking in the soothing music of eternal enlightenment.
+3 - the oak of Ergesdal is at the center of a clearing. While Ergesdal is a neutral figure of contentment, the Raighd uses the tree's spiritual energy for its nefarious purposes. Defeat the demons of the Raighd AND the tree of Ergesdal. Only through a second death can he be resurrected (cast "exmortus") as a human once again.
+- When Ergesdal returns as a mortal to live and suffer again, he remembers why he became a prophet to start with. He feels the collective agony of the human condition and seeing humanity's hatred's manifestation (the Raighd) thru human eyes again, he vows to put a stop to it. - you saved Arkona from the Raighd. You can now take the ship and leave (see Raighd location #1)
+
+
+Alternate endings:
+-------
+- at the start of the game, human towns, the raighd and monster locations all hold equal power
+- helping the humans is the assumed story arc, as described above
+- helping monsters would cause the Ogre King (and other intelligent monster leaders) to tell you about the dungeon of pillory (and tell you about getting its key from Endimus on the island of Vertinux. (todo: how to get there? boat? how to befriend ogres? player should be able to talk to intelligent monsters, instead of only attacking) 
+- Helping monsters will cause intelligent monsters to ignore you, but human soldiers to attack you (as well as non-intelligent monsters)
+- helping either humans or monsters will cause battles to break out in the "fields" maps (which creates more evil in the world, strengthening the raighd: all raighd-borne creates get a 15% power boost) If you participate in the battles, you change sides depending on who you attack.
+- you can also help the Raighd by dismantling the barriers (magic attack on the barrier). This would mean, you could enter the Raighd and its intelligent creatures would ignore you (gramnors, eyes, ogres, humans) except if you attack Ergesdal's tree. You could at this point take the ship at Urhaw and leave the planet at the Raighd's mercy.
+- if you leave the planet without resurrecting Endimus, the disruptor will leave you and seek another "more worthy"
+
+
+Disruptor functionality:
+----------
+close-proximity attack: 1d3, 1 aps, range 1
+acts as the narrator (onload and other events)
+
+Spells:
+----------
+carta - show map
+portal - teleport to location on map (land at map's start position)
+clavis - unlock (chests, doors)
+ignus - attack: 4d10, 0.5 aps, range 8
+fulmen - attack: 4d10, 0.25 aps, range: all in a line
+tremor - earthquake: 8d10, 2/day, range: all (including player)
+spectar - invisibility
+tenere - hold/possess
+exmortus - resurrection
+tempus - stop time (freeze monsters, traps, etc.) 2/day, range: all, lasts 1 min
+iunctus - join/bridge over
+reveal - open/clear away, find secret doors, secret caves, etc
+
+Creatures (grouped by model):
+----------
+
+Arkona:
+-------
+snake
+
+wolf
+
+aligator
+
+goblin
+goblin commander
+
+orc (1d2, 0.33 aps, range 1)
+orc archer (1d2, 0.2 aps, range 8)
+
+ogre (1d8, 0.4 aps, range 1)
+ogre mage (same + ignus, fulmen)
+ogre king
+
+skeleton
+skeleton commander
+
+minotaur
+minotaur mage (same + tenere, fulmen)
+
+ghost
+
+dragon
+
+Raighd:
+-------
+raighd wolf
+
+raighd cultist
+raighd mage
+
+gramnor
+gramnor elite
+
+skeleton executor
+
+raighd ogre
+
+eye of the raighd (beholder)
+tyrant eye

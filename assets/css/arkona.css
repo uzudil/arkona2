@@ -1,0 +1,242 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    cursor: url('/assets/cursor.ico'), default;
+}
+
+.clearfix {
+    overflow: auto;
+    zoom: 1;
+}
+
+#content {
+    float: left;
+}
+
+#menu {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 2px;
+}
+
+#right-menu {
+    float: left;
+    display: none;
+}
+
+#palette {
+    width: 300px;
+    background: #888;
+    padding: 10px;
+    border: 1px solid #444;
+    overflow: scroll;
+}
+
+#palette .block {
+    float: left;
+    border: #888 3px solid;
+    cursor: pointer;
+}
+
+#palette .block:hover {
+    border: #ccc 3px solid;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    left: 50%; top: 50%;
+    width: 500px;
+    height: 500px;
+    margin-left: -250px;
+    margin-top: -250px;
+    z-index: 100;
+}
+
+.overlay .text {
+    position: absolute;
+    top: 50%;
+    margin-top: -120px;
+    text-align: center;
+    font-size: 45px;
+    white-space: nowrap;
+    color: rgba(160,160,80,0.5);
+    width: 100%;
+    margin-left: 40px;
+    font-family: "Old Standard TT";
+    text-shadow: 1px 1px 0px rgba(255,255,255,0.5), -1px -1px 0px rgba(0,0,0,1);
+}
+
+#overlay-shadow {
+    display: none;
+    position: fixed;
+    top:0; left:0; width: 100%; height: 100%;
+    z-index: 50;
+    background: #000;
+    opacity: 0.75;
+}
+
+.dialog {
+    display: none;
+    position: fixed;
+    left: 50%; top: 50%;
+    width: 350px;
+    height: 250px;
+    margin-left: -175px;
+    margin-top: -100px;
+    z-index: 100;
+    border: 5px solid #202;
+    border-radius: 10px;
+    background: #435;
+    color: #ccc;
+    font-family: "Trade Winds";
+}
+
+.dialog.big {
+    width: 500px;
+    height: 400px;
+    margin-left: -300px;
+    margin-top: -200px;
+}
+
+.dialog .title {
+    font-weight: bold;
+    font-size: 24px;
+    background: transparent;
+    padding: 15px;
+    height: 30px;
+    color: #888;
+}
+
+.dialog .body {
+    padding: 15px;
+    height: 108px;
+    color: #888;
+    background: #352545;
+}
+
+.dialog .footer {
+    padding: 10px;
+    background: transparent;
+    height: 32px;
+}
+
+.dialog button {
+    border: 4px outset #646;
+    background: #435;
+    color: #101;
+    font-family: "Trade Winds";
+    font-size: 16px;
+}
+
+.dialog button:hover {
+    border: 4px outset #757;
+    background: #546;
+    color: #303;
+}
+
+.dialog label {
+    display: block;
+    padding: 2px;
+}
+
+.dialog .button-row {
+    padding-bottom: 3px;
+    text-align: center;
+}
+
+.dialog .button-row button {
+    width: 80%;
+}
+
+#death {
+    text-align: center;
+}
+
+#convo-editor {
+    color: black;
+    z-index: 100;
+    position: absolute;
+    display: none;
+    background: lightslategray;
+    width: 100%;
+    height: 100%;
+    top:0; left:0;
+}
+
+#convo-editor-left {
+    width: 30%;
+    height: 100%;
+    float: left;
+}
+
+#levels {
+    border: 5px inset darkslateblue;
+    padding: 5px;
+    height: 50%;
+    overflow: auto;
+}
+
+#npcs {
+    border: 5px inset darkslateblue;
+    padding: 5px;
+    height: 50%;
+    overflow: auto;
+}
+
+#convo-editor-right {
+    width: 70%;
+    height: 100%;
+    float: left;
+}
+
+#convo-tree {
+    border: 5px inset darkslateblue;
+    padding: 5px;
+    height: 50%;
+    overflow: auto;
+    font-family: Courier, monospace;
+}
+
+#convo-details {
+    border: 5px inset darkslateblue;
+    padding: 5px;
+    height: 50%;
+    overflow: auto;
+}
+
+.convo-line {
+    cursor: pointer;
+    padding: 2px;
+}
+
+.convo-line:hover {
+    color: #ffffcc;
+    background: darkslateblue;
+    font-weight: bold;
+}
+
+.convo-title {
+    color: white;
+    text-shadow: 1px 1px black;
+    background: darkslateblue;
+    padding: 3px;
+}
+
+.convo-indent {
+    margin-left: 15px;
+    margin-top: 15px;
+}
+
+.convo-toggle {
+    margin-right: 5px;
+    color: #ffffcc;
+    cursor: pointer;
+}
+
+.convo-answer {
+    font-style: italic;
+    color: darkslateblue;
+}

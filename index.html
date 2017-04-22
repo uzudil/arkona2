@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>arkona II</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta http-equiv="cleartype" content="on">
+    <link rel="stylesheet" href="assets/css/arkona.css" type="text/css" media="all" />
+</head>
+
+<body>
+    <div id="new-map-dialog" class="dialog">
+        <div class="title">New map</div>
+        <div class="body">
+            <label>Type: <select id="new-map-type">
+                <option value="empty">Empty</option>
+                <option value="grass">Grass</option>
+                <option value="dungeon">Dungeon</option>
+            </select></label>
+        </div>
+        <div class="footer">
+            <button id="new-map-ok">Ok</button>
+            <button id="new-map-cancel">Cancel</button>
+        </div>
+    </div>
+
+    <div id="main" class="clearfix">
+        <div id="content"></div>
+        <div id="right-menu">
+            <div id="menu">
+                <a href="#" id="new-map">New</a>
+                <a href="#" id="save-map">Save</a>
+                <a href="#" id="load-map">Load</a>
+                <a href="#" class="toggle-roof" data-height="6">Lvl-1</a>
+                <a href="#" class="toggle-roof" data-height="13">Lvl-2</a>
+                <a href="#" id="fix-edges">Fix Edges</a>
+            </div>
+            <div id="palette" class="clearfix"></div>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay"><img src=""><span class="text"></span></div>
+    <div id="death" class="dialog big">
+        <br>
+        <img src="/assets/images/death.png" width="380">
+        <div>
+            You have died.
+            <button onclick="location.reload()">Play again</button>
+        </div>
+    </div>
+    <div id="overlay-shadow"></div>
+
+    <div id="options" class="dialog">
+        <div class="title">Options</div>
+        <div class="body">
+            <label><input type="checkbox" id="use-webgl"> Use WebGL renderer</label>
+        </div>
+        <div class="footer">
+            <button id="close-options">Close</button>
+        </div>
+    </div>
+
+    <div id="in-game-menu" class="dialog">
+        <div class="title">Arkona: options</div>
+        <div class="body">
+            <div class="button-row"><button id="save-game">Save game</button></div>
+            <div class="button-row"><button id="load-game">Reload level</button></div>
+            <div class="button-row"><button id="quit-game">Exit game</button></div>
+        </div>
+        <div class="footer">
+            <button id="resume-game">Resume</button>
+        </div>
+    </div>
+
+    <div id="convo-editor" class="clearfix">
+        <div id="convo-editor-left">
+            <div id="levels"></div>
+            <div id="npcs"></div>
+        </div>
+        <div id="convo-editor-right">
+            <div id="convo-tree"></div>
+            <div id="convo-details"></div>
+        </div>
+    </div>
+
+    <script src="dist/vendor.bundle.js"></script>
+    <script src="dist/bundle.js"></script>
+
+</body>
+
+</html>
