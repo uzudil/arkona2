@@ -5,3 +5,6 @@ dist/
 arkona.iml
 *.blend1
 npm-debug.log
+assets/world
+out.png
+
