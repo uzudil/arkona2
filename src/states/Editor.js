@@ -30,7 +30,7 @@ export default class extends Phaser.State {
             let pos = prompt("Map name:").split(",").map(s => parseInt(s, 10))
             this.x = pos[0]
             this.y = pos[1]
-            this.blocks.loadXY(this.x, this.y, null, null, true)
+            this.blocks.loadXY(this.x, this.y, null, null)
         }
         $(".toggle-roof").click((event) => this.blocks.toggleRoof($(event.currentTarget).data("height")))
         document.getElementById("fix-edges").onclick = () => {
@@ -44,7 +44,7 @@ export default class extends Phaser.State {
         this.blocks = new Block(this, true)
         this.blocks.loadXY(this.x, this.y, null,
             // eslint-disable-next-line no-unused-vars
-            (_) => this.blocks.newMap(this.x, this.y, Config.MAP_SIZE, Config.MAP_SIZE, "grass"), true)
+            (_) => this.blocks.newMap(this.x, this.y, Config.MAP_SIZE, Config.MAP_SIZE, "grass"))
 
         this.activeBlock = null
         this.lastBlock = null
@@ -57,6 +57,7 @@ export default class extends Phaser.State {
         this.posLabel.setShadow(1, 1, "rgba(0,0,0,1)", 2);
         this.posLabel.setTextBounds(0, 0, 800, 20);
 
+        // keyboard
         this.cursors = this.game.input.keyboard.createCursorKeys()
         this.ground1 = this.game.input.keyboard.addKey(Phaser.Keyboard.ONE)
         this.ground2 = this.game.input.keyboard.addKey(Phaser.Keyboard.TWO)
@@ -77,6 +78,7 @@ export default class extends Phaser.State {
         this.esc = this.game.input.keyboard.addKey(Phaser.Keyboard.ESC)
         this.dungeon = this.game.input.keyboard.addKey(Phaser.Keyboard.N)
         this.undo = this.game.input.keyboard.addKey(Phaser.Keyboard.Z)
+        this.flood = this.game.input.keyboard.addKey(Phaser.Keyboard.F)
     }
 
     render() {
@@ -124,8 +126,8 @@ export default class extends Phaser.State {
             console.warn("Saving map: " + this.x + "," + this.y)
             this.blocks.fixEdges()
             this.blocks.save(this.x, this.y)
-            this.blocks.prepareToDestroy()
-            this.blocks.completeDestroy()
+            this.blocks.destroy()
+            this.blocks.checkWorld()
             this.x = x
             this.y = y
             console.warn("Loading map: " + x + "," + y)
@@ -134,7 +136,7 @@ export default class extends Phaser.State {
                 (_) => {
                     console.warn("Error: making new file")
                     this.blocks.newMap(x, y, Config.MAP_SIZE, Config.MAP_SIZE, "grass")
-                }, true)
+                })
         }
     }
 
@@ -264,6 +266,32 @@ export default class extends Phaser.State {
         }
     }
 
+    drawFlood(x, y) {
+        if(this.flood.justDown) {
+            let gx = ((x / Config.GROUND_TILE_W) | 0) * Config.GROUND_TILE_W
+            let gy = ((y / Config.GROUND_TILE_H) | 0) * Config.GROUND_TILE_H
+            let check = this.blocks.getFloor(gx, gy)
+            this._drawFlood(gx, gy, check, {})
+        }
+    }
+
+    _drawFlood(x, y, check, seen) {
+        let key = "" + x + "." + y
+        if(seen[key] != null || !this.blocks.isInBounds(x, y)) return
+
+        seen[key] = true
+        let ground = this.blocks.getFloor(x, y)
+        if(ground == check) {
+            this.blocks.clear("grass", x, y, 0)
+            this.blocks.set("water", x, y, 0)
+
+            this._drawFlood(x - Config.GROUND_TILE_W, y, check, seen)
+            this._drawFlood(x + Config.GROUND_TILE_W, y, check, seen)
+            this._drawFlood(x, y - Config.GROUND_TILE_W, check, seen)
+            this._drawFlood(x, y + Config.GROUND_TILE_W, check, seen)
+        }
+    }
+
     drawGround(x, y) {
         let gx = ((x / Config.GROUND_TILE_W) | 0) * Config.GROUND_TILE_W
         let gy = ((y / Config.GROUND_TILE_H) | 0) * Config.GROUND_TILE_H
@@ -355,6 +383,7 @@ export default class extends Phaser.State {
         z = this.blocks.getTopAt(x, y, this.activeBlock)
 
         if (this.blocks.isInBounds(x, y)) {
+            this.drawFlood(x, y)
             this.drawGround(x, y)
             this.drawObject(x, y)
             this.drawDungeon()

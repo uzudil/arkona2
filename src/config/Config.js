@@ -8,10 +8,10 @@ export const GROUND_TILE_W = BLOCKS["grass"].size[0]
 export const GROUND_TILE_H = BLOCKS["grass"].size[1]
 export const GRID_SIZE = 8
 export const MAP_SIZE = 96
-export const MAX_MAP_X = 3
-export const MAX_MAP_Y = 3
+export const MAX_MAP_X = 16
+export const MAX_MAP_Y = 16
 export const MAX_MAP_CACHE_SIZE = 4
-export const BORDER_SIZE = 40 // how much of the next map to show?
+export const BORDER_SIZE = 16 // how much of the next map to show in the editor?
 export const MAP_VERSION = 1
 export const PLAYER_SPEED = 1.33
 export const DOORS = Object.keys(BLOCKS).filter(name => name.indexOf(".door.") >= 0)
@@ -44,8 +44,8 @@ export const FONT_FAMILY_NAME = "Trade Winds"
 export const ARKONA_FONT_FAMILY = "Old Standard TT"
 export const ARKONA_FONT_FAMILY_NAME = "Old Standard TT"
 export const MAX_Z = 15
-export const START_MAP_X = 0
-export const START_MAP_Y = 0
+export const START_X = 52
+export const START_Y = 60
 export const PLAYER_CREATURE_NAME = "man"
 export const GODMODE = document.location.hostname == "localhost"
 

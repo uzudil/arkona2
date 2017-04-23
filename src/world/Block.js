@@ -127,32 +127,14 @@ class Layer {
     destroy() {
         this.infos = {} // 3d space
         this.world = {} // origin space
+        let toDestroy = []
         for(let c of this.filterGroup.children) {
-            c.destroy()
+            toDestroy.push(c)
         }
         for(let c of this.group.children) {
-            c.destroy()
+            toDestroy.push(c)
         }
-    }
-
-    prepareToDestroy() {
-        this.infos = {} // 3d space
-        this.world = {} // origin space
-        for(let c of this.filterGroup.children) {
-            c.readyToDestroy = true
-        }
-        for(let c of this.group.children) {
-            c.readyToDestroy = true
-        }
-    }
-
-    completeDestroy() {
-        for(let c of this.filterGroup.children) {
-            if(c.readyToDestroy) c.pendingDestroy = true
-        }
-        for(let c of this.group.children) {
-            if(c.readyToDestroy) c.pendingDestroy = true
-        }
+        for(let c of toDestroy) c.destroy()
     }
 
     reset() {
@@ -459,10 +441,18 @@ class Layer {
     loadPerimeter(layerInfo, blocks, mapDx, mapDy) {
         for(let info of layerInfo.world) {
             for (let image of info.images) {
-                if((mapDx == 1 && info.x < Config.BORDER_SIZE) ||
-                    (mapDx == -1 && info.x >= Config.MAP_SIZE - Config.BORDER_SIZE) ||
-                    (mapDy == 1 && info.y < Config.BORDER_SIZE) ||
-                    (mapDy == -1 && info.y >= Config.MAP_SIZE - Config.BORDER_SIZE)) {
+                let xsm = info.x < Config.BORDER_SIZE
+                let xbg = info.x >= Config.MAP_SIZE - Config.BORDER_SIZE
+                let ysm = info.y < Config.BORDER_SIZE
+                let ybg = info.y >= Config.MAP_SIZE - Config.BORDER_SIZE
+                if(
+                    (mapDx == 1  && mapDy == 1  && xsm && ysm) ||
+                    (mapDx == -1 && mapDy == 1  && xbg && ysm) ||
+                    (mapDx == -1 && mapDy == -1 && xbg && ybg) ||
+                    (mapDx == 1  && mapDy == -1 && xsm && ybg) ||
+                    (mapDy == 0 && ((mapDx == 1 && xsm) || (mapDx == -1 && xbg))) ||
+                    (mapDx == 0 && ((mapDy == 1 && ysm) || (mapDy == -1 && ybg)))
+                ) {
                     blocks.set(image, info.x + mapDx * Config.MAP_SIZE, info.y + mapDy * Config.MAP_SIZE, info.z)
                 }
             }
@@ -516,6 +506,17 @@ export default class {
             this.groundDebug.lineStyle(1, 0xFFFF33, 1);
             this.groundDebug.drawRect(0, 0, Config.GRID_SIZE * 6, Config.GRID_SIZE * 6)
             this.groundDebug.angle = 45
+
+            // editor border
+            this.border = this.game.add.graphics(0, 0, this.group)
+            this.border.anchor.setTo(0, 0)
+            this.border.lineStyle(1, 0xFF0000, 1);
+            this.border.moveTo(...this.toScreenCoords(-4, -4, 0))
+            this.border.lineTo(...this.toScreenCoords(Config.MAP_SIZE-4, -4, 0))
+            this.border.lineTo(...this.toScreenCoords(Config.MAP_SIZE-4, Config.MAP_SIZE-4, 0))
+            this.border.lineTo(...this.toScreenCoords(-4, Config.MAP_SIZE-4, 0))
+            this.border.lineTo(...this.toScreenCoords(-4, -4, 0))
+
         }
 
         this.highlightedSprite = null
@@ -538,7 +539,7 @@ export default class {
             }
         }
 
-        for(let layer of this.layers) layer.moveTo(0, 0)
+        this.moveToPos(0, 0)
 
         this.save(x, y)
     }
@@ -651,7 +652,7 @@ export default class {
     }
 
     centerOnScreenPos(screenX, screenY) {
-        for(let layer of this.layers) layer.moveTo(screenX, screenY)
+        this.moveToPos(screenX, screenY)
     }
 
     _getSprites(name) {
@@ -942,6 +943,18 @@ export default class {
 
     move(dx, dy) {
         for(let layer of this.layers) layer.move(dx, dy)
+        if(this.editorMode) {
+            this.border.x += dx
+            this.border.y += dy
+        }
+    }
+
+    moveToPos(x, y) {
+        for(let layer of this.layers) layer.moveTo(x, y)
+        if(this.editorMode) {
+            this.border.x = x
+            this.border.y = y
+        }
     }
 
     findClosestObject(image, range, fx) {
@@ -981,43 +994,49 @@ export default class {
         return ("00" + x.toString(16)).slice(-2) + ("00" + y.toString(16)).slice(-2)
     }
 
-    loadXY(x, y, onLoad, onError, force) {
+    loadXY(x, y, onLoad, onError) {
         if(x < 0 || y < 0 || x >= Config.MAX_MAP_X || y >= Config.MAX_MAP_Y) return
 
         let name = this._name(x, y)
-        if(this.cache[name] == null || force) {
-
-            // delete oldest maps
-            if(!this.editorMode) {
-                while (this.cacheOrder.length >= Config.MAX_MAP_CACHE_SIZE) {
-                    let oldestName = this.cacheOrder.splice(0, 1)
-                    console.warn("Freeing map: " + oldestName)
-                    let pos = this.cache[oldestName]
-                    delete this.cache[oldestName]
-                    this.layers.forEach(layer => layer.deleteMapImages(...pos))
-                }
-            }
-
-            // keep this map
-            let n = this.cacheOrder.indexOf(name)
-            if(n > -1) this.cacheOrder.splice(n, 1)
-            this.cacheOrder.push(name)
-            this.cache[name] = [x, y]
-
-            console.warn("MAP LOAD: name=" + name + " cacheOrder=", this.cacheOrder)
-
+        if(this.editorMode) {
             this._load(name, x, y, () => {
                 if(onLoad) onLoad()
             }, onError)
         } else {
-            // move to back of cache
-            let n = this.cacheOrder.indexOf(name)
-            this.cacheOrder.splice(n, 1)
-            this.cacheOrder.push(name)
+            if (this.cache[name] == null) {
 
-            console.warn("MAP TOUCH: name=" + name + " cacheOrder=", this.cacheOrder)
+                // delete oldest maps
+                if (!this.editorMode) {
+                    while (this.cacheOrder.length >= Config.MAX_MAP_CACHE_SIZE) {
+                        let oldestName = this.cacheOrder.splice(0, 1)
+                        console.warn("Freeing map: " + oldestName)
+                        let pos = this.cache[oldestName]
+                        delete this.cache[oldestName]
+                        this.layers.forEach(layer => layer.deleteMapImages(...pos))
+                    }
+                }
 
-            if (onLoad) onLoad()
+                // keep this map
+                let n = this.cacheOrder.indexOf(name)
+                if (n > -1) this.cacheOrder.splice(n, 1)
+                this.cacheOrder.push(name)
+                this.cache[name] = [x, y]
+
+                console.warn("MAP LOAD: name=" + name + " cacheOrder=", this.cacheOrder)
+
+                this._load(name, x, y, () => {
+                    if (onLoad) onLoad()
+                }, onError)
+            } else {
+                // move to back of cache
+                let n = this.cacheOrder.indexOf(name)
+                this.cacheOrder.splice(n, 1)
+                this.cacheOrder.push(name)
+
+                console.warn("MAP TOUCH: name=" + name + " cacheOrder=", this.cacheOrder)
+
+                if (onLoad) onLoad()
+            }
         }
     }
 
