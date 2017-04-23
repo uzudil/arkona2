@@ -1,9 +1,7 @@
 import Phaser from "phaser"
 import * as Config from "../config/Config"
-import {LEVELS} from "../config/Levels"
 import Transition from "../ui/Transition"
 import Block from "../world/Block"
-import Level from "../models/Level"
 import $ from "jquery"
 
 const ZOOM = 0.25
@@ -15,16 +13,14 @@ export default class extends Phaser.State {
     }
 
     create() {
-        this.level = null
-        this.blocks = new Block(this, false, ZOOM)
+        this.blocks = new Block(this, true, ZOOM, true)
         this.transition = new Transition()
         this.ready = false
-
+        this.x = 0
+        this.y = 0
         this.seen = {}
-        this.maps = []
-        this.mapsIndex = 0
-        this.listMaps(Config.START_MAP)
-        console.warn(this.maps)
+        this.game.world.rotation = Math.PI/-4
+        window.game = this.game
 
         this.transition.fadeOut(() => {
             this.loadLevel()
@@ -42,25 +38,18 @@ export default class extends Phaser.State {
     }
 
     loadLevel() {
-        let mapName = this.maps[this.mapsIndex]
-        console.warn("LOADING: " + mapName)
-        this.level = new Level(mapName)
-        this.level.start(this, () => {
-            // this.blocks.centerOnPos((this.blocks.w/2)|0, (this.blocks.h/2)|0, 0)
-            // this.blocks.centerOnPos((this.blocks.w*(1-ZOOM))|0, (this.blocks.h*(1-ZOOM))|0, 0)
-            this.game.world.rotation = 0
-            this.blocks.centerOnScreenPos(
-                (this.blocks.h * Config.GRID_SIZE * ZOOM - Config.WIDTH/2)/2,
-                (this.blocks.w * Config.GRID_SIZE * ZOOM + Config.HEIGHT)/2
-            )
-            this.game.world.rotation = Math.PI/-4
+        console.warn("LOADING: " + this.x + "," + this.y)
+        this.blocks.loadXY(this.x, this.y, () => this.mapLoaded(), () => this.mapLoaded)
+    }
 
-            this.ready = true
-        })
+    mapLoaded() {
+        this.blocks.moveToPos(Config.GRID_SIZE * Config.MAP_SIZE * ZOOM * -2, Config.GRID_SIZE * Config.MAP_SIZE * ZOOM / 2)
+        this.blocks.group.position.set(-30, -20)
+        this.ready = true
     }
 
     savePicture() {
-        let mapName = this.maps[this.mapsIndex]
+        let mapName = this.blocks._name(this.x, this.y)
 
         // take picture
         let canvas = $("canvas").get(0)
@@ -68,9 +57,8 @@ export default class extends Phaser.State {
 
         // clear picture
         this.blocks.destroy()
-        this.level.destroy()
 
-        $("body").append("<img src='" + dataUrl + "'>")
+        // $("body").append("<img src='" + dataUrl + "'>")
 
         // console.warn(dataUrl)
         $.ajax({
@@ -94,22 +82,15 @@ export default class extends Phaser.State {
     }
 
     nextMap() {
-        if(this.mapsIndex < this.maps.length - 1) {
-            this.mapsIndex++
+        this.x++
+        if(this.x >= 14) {
+            this.y++
+            this.x = 0
+        }
+        if(this.y < 14) {
             this.loadLevel()
         } else {
             this.game.world.removeAll()
-        }
-    }
-
-    listMaps(mapName) {
-        if(mapName && !this.seen[mapName]) {
-            this.seen[mapName] = true
-            this.maps.push(mapName)
-            let lvl = LEVELS[mapName]
-            if(lvl.connect) lvl.connect.forEach(c => {
-                if(c && c.dst) this.listMaps(c.dst.map)
-            })
         }
     }
 }

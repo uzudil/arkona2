@@ -473,10 +473,11 @@ const EDGE_OFFSET = {
  */
 export default class {
 
-    constructor(game, editorMode, zoom) {
+    constructor(game, editorMode, zoom, mapperMode) {
         this.game = game
         this.group = game.add.group()
         this.editorMode = editorMode
+        this.mapperMode = mapperMode
         this.zoom = zoom || (editorMode ? 1 : Config.GAME_ZOOM)
         this.group.scale.set(this.zoom)
         this.floorLayer = new Layer(game, this.group, "floor")
@@ -492,11 +493,12 @@ export default class {
         this.visibleHeight = 0
         this.cache = {}
         this.cacheOrder = []
+        this.loadPerimeter = editorMode && !mapperMode
 
         Filters.create(game)
 
         // cursor
-        if(editorMode) {
+        if(editorMode && !mapperMode) {
             this.anchorDebug = this.game.add.graphics(0, 0)
             this.anchorDebug.anchor.setTo(0.5, 0.5)
             this.anchorDebug.beginFill(0xFF33ff)
@@ -943,7 +945,7 @@ export default class {
 
     move(dx, dy) {
         for(let layer of this.layers) layer.move(dx, dy)
-        if(this.editorMode) {
+        if(this.editorMode && !this.mapperMode) {
             this.border.x += dx
             this.border.y += dy
         }
@@ -951,7 +953,7 @@ export default class {
 
     moveToPos(x, y) {
         for(let layer of this.layers) layer.moveTo(x, y)
-        if(this.editorMode) {
+        if(this.editorMode && !this.mapperMode) {
             this.border.x = x
             this.border.y = y
         }
@@ -1063,18 +1065,20 @@ export default class {
                 if(this.editorMode) {
                     data.layers.forEach(layerInfo => this.layersByName[layerInfo.name].load(layerInfo, this, 0, 0))
                     // load perimeter data
-                    for(let xx = -1; xx <= 1; xx++) {
-                        for(let yy = -1; yy <= 1; yy++) {
-                            if(xx == 0 && yy == 0) continue;
+                    if(this.loadPerimeter) {
+                        for (let xx = -1; xx <= 1; xx++) {
+                            for (let yy = -1; yy <= 1; yy++) {
+                                if (xx == 0 && yy == 0) continue;
 
-                            $.ajax({
-                                url: "/assets/maps/" + this._name(x + xx, y + yy) + ".json",
-                                dataType: "json",
-                                success: (data) => {
-                                    data.layers.forEach(layerInfo =>
-                                        this.layersByName[layerInfo.name].loadPerimeter(layerInfo, this, xx, yy))
-                                }
-                            })
+                                $.ajax({
+                                    url: "/assets/maps/" + this._name(x + xx, y + yy) + ".json",
+                                    dataType: "json",
+                                    success: (data) => {
+                                        data.layers.forEach(layerInfo =>
+                                            this.layersByName[layerInfo.name].loadPerimeter(layerInfo, this, xx, yy))
+                                    }
+                                })
+                            }
                         }
                     }
                     this.sort()

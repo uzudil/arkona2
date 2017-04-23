@@ -72,10 +72,8 @@ export default class extends Phaser.State {
         this.loading = true
         let mx = (Config.START_X / Config.MAP_SIZE)|0
         let my = (Config.START_Y / Config.MAP_SIZE)|0
-        let px = Config.START_Y % Config.MAP_SIZE
-        let py = Config.START_Y % Config.MAP_SIZE
         this.blocks.loadXY(mx, my, () => {
-            this.player.onLevelStart(px, py, Config.DIR_W)
+            this.player.onLevelStart(Config.START_X, Config.START_Y, Config.DIR_E)
             // this.lamp.setVisible(this.level.info["lamplight"]);
             this.transition.fadeOut(() => {
                 this.loading = false

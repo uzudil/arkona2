@@ -44,8 +44,8 @@ export const FONT_FAMILY_NAME = "Trade Winds"
 export const ARKONA_FONT_FAMILY = "Old Standard TT"
 export const ARKONA_FONT_FAMILY_NAME = "Old Standard TT"
 export const MAX_Z = 15
-export const START_X = 52
-export const START_Y = 60
+export const START_X = 347
+export const START_Y = 1176
 export const PLAYER_CREATURE_NAME = "man"
 export const GODMODE = document.location.hostname == "localhost"
 
