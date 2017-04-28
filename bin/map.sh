@@ -7,9 +7,19 @@ size=272
 ox=7
 oy=4
 
-convert -size 3808x3808 canvas:black map.png
-for ((x=0; x < 14; x++)); do
-    for ((y=0; y < 14; y++)); do
+minx=14
+miny=0
+maxx=21
+maxy=9
+
+w=`echo "$maxx*$size" | bc`
+h=`echo "$maxy*$size" | bc`
+
+#echo "image size=$w x $h"
+#convert -size ${w}x${h} canvas:black map.png
+
+for ((x=$minx; x < $maxx; x++)); do
+    for ((y=$miny; y < $maxy; y++)); do
         name=`printf "%02x%02x" $x $y`
         px=`echo "$x*$size" | bc`
         py=`echo "$y*$size" | bc`

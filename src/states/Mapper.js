@@ -4,7 +4,13 @@ import Transition from "../ui/Transition"
 import Block from "../world/Block"
 import $ from "jquery"
 
+const MINX=14
+const MINY=0
+const MAXX=Config.MAX_MAP_X
+const MAXY=9
+
 const ZOOM = 0.25
+
 export default class extends Phaser.State {
     init() {
     }
@@ -16,8 +22,8 @@ export default class extends Phaser.State {
         this.blocks = new Block(this, true, ZOOM, true)
         this.transition = new Transition()
         this.ready = false
-        this.x = 0
-        this.y = 0
+        this.x = MINX
+        this.y = MINY
         this.seen = {}
         this.game.world.rotation = Math.PI/-4
         window.game = this.game
@@ -83,11 +89,11 @@ export default class extends Phaser.State {
 
     nextMap() {
         this.x++
-        if(this.x >= 14) {
+        if(this.x >= MAXX) {
             this.y++
-            this.x = 0
+            this.x = MINX
         }
-        if(this.y < 14) {
+        if(this.y < MAXY) {
             this.loadLevel()
         } else {
             this.game.world.removeAll()

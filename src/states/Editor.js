@@ -1,5 +1,6 @@
 import Phaser from "phaser"
 import Block, { isFlat } from "../world/Block"
+import {BLOCKS} from "../config/Blocks"
 import {getRandom} from "../utils"
 import * as Config from "../config/Config"
 import Palette from "../editor/Palette"
@@ -79,6 +80,7 @@ export default class extends Phaser.State {
         this.dungeon = this.game.input.keyboard.addKey(Phaser.Keyboard.N)
         this.undo = this.game.input.keyboard.addKey(Phaser.Keyboard.Z)
         this.flood = this.game.input.keyboard.addKey(Phaser.Keyboard.F)
+        this.forrest = this.game.input.keyboard.addKey(Phaser.Keyboard.R)
     }
 
     render() {
@@ -122,7 +124,7 @@ export default class extends Phaser.State {
             x++
         }
 
-        if((x >= 0 && x != this.x) || (y >= 0 && y != this.y)) {
+        if((x >= 0 && x != this.x && x < Config.MAX_MAP_X) || (y >= 0 && y != this.y && y < Config.MAX_MAP_Y)) {
             console.warn("Saving map: " + this.x + "," + this.y)
             this.blocks.fixEdges()
             this.blocks.save(this.x, this.y)
@@ -135,7 +137,7 @@ export default class extends Phaser.State {
                 // eslint-disable-next-line no-unused-vars
                 (_) => {
                     console.warn("Error: making new file")
-                    this.blocks.newMap(x, y, Config.MAP_SIZE, Config.MAP_SIZE, "grass")
+                    this.blocks.newMap(x, y, Config.MAP_SIZE, Config.MAP_SIZE, "water")
                 })
         }
     }
@@ -266,16 +268,37 @@ export default class extends Phaser.State {
         }
     }
 
+    drawForrest() {
+        if(this.forrest.justDown) {
+            for(let x = 0; x < Config.MAP_SIZE; x++) {
+                for(let y = 0; y < Config.MAP_SIZE; y++) {
+                    if(Math.random() > 0.95) {
+                        if(Math.random() < 0.75) {
+                            this._drawTree(x, y);
+                        } else {
+                            let name = getRandom([...Array(3).fill("bush"), ...Array(3).fill("dead"), ...Array(3).fill("rock.1"), ...Array(3).fill("rock.2"), "trunk.broken"])
+                            let block = BLOCKS[name]
+                            if(this.blocks.isFree(x, y, 0, ...block.size) && this.blocks.isFloorSafeForShape(x, y, name)) {
+                                this.blocks.clear(name, x, y, 0)
+                                this.blocks.set(name, x, y, 0)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     drawFlood(x, y) {
         if(this.flood.justDown) {
             let gx = ((x / Config.GROUND_TILE_W) | 0) * Config.GROUND_TILE_W
             let gy = ((y / Config.GROUND_TILE_H) | 0) * Config.GROUND_TILE_H
             let check = this.blocks.getFloor(gx, gy)
-            this._drawFlood(gx, gy, check, {})
+            this._drawFlood(gx, gy, check, {}, this.flood.ctrlKey ? "grass" : "water")
         }
     }
 
-    _drawFlood(x, y, check, seen) {
+    _drawFlood(x, y, check, seen, floodName) {
         let key = "" + x + "." + y
         if(seen[key] != null || !this.blocks.isInBounds(x, y)) return
 
@@ -283,12 +306,12 @@ export default class extends Phaser.State {
         let ground = this.blocks.getFloor(x, y)
         if(ground == check) {
             this.blocks.clear("grass", x, y, 0)
-            this.blocks.set("water", x, y, 0)
+            this.blocks.set(floodName, x, y, 0)
 
-            this._drawFlood(x - Config.GROUND_TILE_W, y, check, seen)
-            this._drawFlood(x + Config.GROUND_TILE_W, y, check, seen)
-            this._drawFlood(x, y - Config.GROUND_TILE_W, check, seen)
-            this._drawFlood(x, y + Config.GROUND_TILE_W, check, seen)
+            this._drawFlood(x - Config.GROUND_TILE_W, y, check, seen, floodName)
+            this._drawFlood(x + Config.GROUND_TILE_W, y, check, seen, floodName)
+            this._drawFlood(x, y - Config.GROUND_TILE_W, check, seen, floodName)
+            this._drawFlood(x, y + Config.GROUND_TILE_W, check, seen, floodName)
         }
     }
 
@@ -328,8 +351,23 @@ export default class extends Phaser.State {
     }
 
     drawObject(x, y) {
-        if ((this.tree.isDown || this.tree2.isDown) && this.blocks.isFree(x, y, 0, 4, 4, 8)) {
-            if(this.tree2.isDown) {
+        if ((this.tree.isDown || this.tree2.isDown)) {
+            this._drawTree(x, y, this.tree2.isDown);
+        } else if (this.mountain.isDown) {
+            let mx = ((x/8)|0)*8+4
+            let my = ((y/8)|0)*8+4
+            if(this.blocks.isFree(mx, my, 0, 8, 8, 8)) {
+                let name = getRandom([...Array(3).fill("mtn.ctr"), ...Array(3).fill("mtn.ctr.2"), "mtn.ctr.2.snow"])
+                this.blocks.clear(name, mx, my, 0)
+                this.blocks.set(name, mx, my, 0)
+                this.blocks.sort()
+            }
+        }
+    }
+
+    _drawTree(x, y, unpassable) {
+        if(this.blocks.isFree(x, y, 0, 4, 4, 8) && this.blocks.isFloorSafeForShape(x, y, "trunk")) {
+            if(unpassable) {
                 this.blocks.clear("trunk.wide", x, y, 0)
                 this.blocks.set("trunk.wide", x, y, 0)
             } else {
@@ -341,15 +379,6 @@ export default class extends Phaser.State {
             this.blocks.clear(name, x, y, 4)
             this.blocks.set(name, x, y, 4)
             this.blocks.sort()
-        } else if (this.mountain.isDown) {
-            let mx = ((x/8)|0)*8+4
-            let my = ((y/8)|0)*8+4
-            if(this.blocks.isFree(mx, my, 0, 8, 8, 8)) {
-                let name = getRandom([...Array(3).fill("mtn.ctr"), ...Array(3).fill("mtn.ctr.2"), "mtn.ctr.2.snow"])
-                this.blocks.clear(name, mx, my, 0)
-                this.blocks.set(name, mx, my, 0)
-                this.blocks.sort()
-            }
         }
     }
 
@@ -382,6 +411,7 @@ export default class extends Phaser.State {
         let [x, y, z] = this.blocks.toWorldCoords(this.game.input.x, this.game.input.y)
         z = this.blocks.getTopAt(x, y, this.activeBlock)
 
+        this.drawForrest()
         if (this.blocks.isInBounds(x, y)) {
             this.drawFlood(x, y)
             this.drawGround(x, y)

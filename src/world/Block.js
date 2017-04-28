@@ -533,6 +533,12 @@ export default class {
                     this.set("grass", x, y, 0)
                 }
             }
+        } else if(type == "water") {
+            for (let x = 0; x < w; x += 4) {
+                for (let y = 0; y < h; y += 4) {
+                    this.set("water", x, y, 0)
+                }
+            }
         } else if(type == "dungeon") {
             for (let x = 0; x < w; x += 4) {
                 for (let y = 0; y < h; y += 4) {
@@ -802,6 +808,14 @@ export default class {
 
         layer.set(sprite.name, x, y, z, sprite, skipInfo)
         if(!skipInfo) this.drawEdges(layer, sprite.name, x, y)
+    }
+
+    isFloorSafeForShape(worldX, worldY, name) {
+        let safe = true
+        _visit(name, worldX, worldY, (xx, yy) => {
+            if(safe && !this.isFloorSafe(xx, yy)) safe = false
+        })
+        return safe
     }
 
     isFloorSafe(x, y) {
