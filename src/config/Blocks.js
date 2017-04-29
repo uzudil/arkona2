@@ -153,7 +153,7 @@ export const BLOCKS = {
 	"roof.ns": { size: [10, 10, 6], pos: [496, 0], dim: [164, 172] },
 	"roof.ew": { size: [10, 10, 6], pos: [688, 0], dim: [164, 172] },
 	"roof.ns.brown": { size: [10, 10, 3], pos: [448, 192], dim: [164, 164] },
-	"roof.ew.brown": { size: [10, 10, 3], pos: [640, 192], dim: [176, 180] },
+	"roof.ew.brown": { size: [10, 10, 3], pos: [640, 192], dim: [160, 164] },
 
 	// dungeon
 	"dungeon.s.4": { size: [4, 1, 6], pos: [0, 0], dim: [40, 88], options: { sprites: 3 } },

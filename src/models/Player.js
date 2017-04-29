@@ -114,7 +114,7 @@ export default class {
 	 */
 	_moved(dir) {
 		let [px, py, pz] = this.animatedSprite.sprite.gamePos
-		this.arkona.blocks.checkRoof(px - 1, py - 1, pz)
+		this.arkona.blocks.checkRoof(px, py, pz, this.animatedSprite.sprite.name)
 		if (dir != null) {
 			this.setDir(dir)
 			this.setAnimation("walk")

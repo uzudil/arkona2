@@ -162,9 +162,12 @@ class Layer {
         }
     }
 
-    hasShapeAbove(worldX, worldY, worldZ) {
+    hasRoofAbove(worldX, worldY, worldZ) {
         for(let z = worldZ; z < Config.MAX_Z; z++) {
-            if(this.infos[_key(worldX, worldY, z)] != null) return true
+            let info = this.infos[_key(worldX, worldY, z)]
+            if(info && info.imageInfos.find(ii => ii.name.indexOf("roof.") == 0)) {
+                return true
+            }
         }
         return false
     }
@@ -586,9 +589,12 @@ export default class {
         return this.isInBounds(x, y) ? this.floorLayer.getFloorAt(x, y) : null
     }
 
-    checkRoof(worldX, worldY, worldZ) {
+    checkRoof(worldX, worldY, worldZ, shapeName) {
         let roofHeight = worldZ < 6 ? 6 : (worldZ < 13 ? 13 : 19)
-        let under = this.objectLayer.hasShapeAbove(worldX, worldY, roofHeight)
+        let block = BLOCKS[shapeName]
+        let xx = (worldX - block.size[0]/2)|0
+        let yy = (worldY - block.size[1]/2)|0
+        let under = this.objectLayer.hasRoofAbove(xx, yy, roofHeight)
         if(under == this.roofVisible || roofHeight != this.visibleHeight) {
             this.visibleHeight = roofHeight
             this.roofVisible = !under

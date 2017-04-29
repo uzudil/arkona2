@@ -80,7 +80,7 @@ export default class extends Phaser.State {
         this.dungeon = this.game.input.keyboard.addKey(Phaser.Keyboard.N)
         this.undo = this.game.input.keyboard.addKey(Phaser.Keyboard.Z)
         this.flood = this.game.input.keyboard.addKey(Phaser.Keyboard.F)
-        this.forrest = this.game.input.keyboard.addKey(Phaser.Keyboard.R)
+        this.forest = this.game.input.keyboard.addKey(Phaser.Keyboard.R)
     }
 
     render() {
@@ -268,8 +268,8 @@ export default class extends Phaser.State {
         }
     }
 
-    drawForrest() {
-        if(this.forrest.justDown) {
+    drawForest() {
+        if(this.forest.justDown) {
             for(let x = 0; x < Config.MAP_SIZE; x++) {
                 for(let y = 0; y < Config.MAP_SIZE; y++) {
                     if(Math.random() > 0.95) {
@@ -411,7 +411,7 @@ export default class extends Phaser.State {
         let [x, y, z] = this.blocks.toWorldCoords(this.game.input.x, this.game.input.y)
         z = this.blocks.getTopAt(x, y, this.activeBlock)
 
-        this.drawForrest()
+        this.drawForest()
         if (this.blocks.isInBounds(x, y)) {
             this.drawFlood(x, y)
             this.drawGround(x, y)
