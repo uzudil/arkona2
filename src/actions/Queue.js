@@ -45,7 +45,7 @@ export class Queue {
 			this.log(action, "Trying")
 			if(action.check(this.arkona)) {
 				this.log(action, "Running")
-				if(this.arkona.level.isAllowed(action)) {
+				if(this.arkona.isAllowed(action)) {
 					let b = action.run(this.arkona)
 					if (b) updated = b
 				} else {

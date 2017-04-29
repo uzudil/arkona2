@@ -124,7 +124,7 @@ export default class extends Phaser.State {
             x++
         }
 
-        if((x >= 0 && x != this.x && x < Config.MAX_MAP_X) || (y >= 0 && y != this.y && y < Config.MAX_MAP_Y)) {
+        if((x >= 0 && x != this.x && x < Config.MAX_MAP_X + 4) || (y >= 0 && y != this.y && y < Config.MAX_MAP_Y + 4)) {
             console.warn("Saving map: " + this.x + "," + this.y)
             this.blocks.fixEdges()
             this.blocks.save(this.x, this.y)
@@ -137,7 +137,7 @@ export default class extends Phaser.State {
                 // eslint-disable-next-line no-unused-vars
                 (_) => {
                     console.warn("Error: making new file")
-                    this.blocks.newMap(x, y, Config.MAP_SIZE, Config.MAP_SIZE, "water")
+                    this.blocks.newMap(x, y, Config.MAP_SIZE, Config.MAP_SIZE, x < Config.MAX_MAP_X && y < Config.MAX_MAP_Y ? "water" : "dungeon")
                 })
         }
     }
@@ -444,7 +444,12 @@ export default class extends Phaser.State {
 
             this.blocks.sort()
         }
-        this.posLabel.text = "Map:" + this.x + "-" + this.y + " Pos: " + x + "," + y + "," + z + (this.blocks.highlightedSprite ? " Shape:" + this.blocks.highlightedSprite.gamePos[0] + "," + this.blocks.highlightedSprite.gamePos[1] + "," + this.blocks.highlightedSprite.gamePos[2] : "")
+        this.posLabel.text = "Map:" +
+            this.x + "-" + this.y +
+            " Pos: " + (this.x * Config.MAP_SIZE + x) + "," + (this.y * Config.MAP_SIZE + y) + "," + z +
+            (this.blocks.highlightedSprite ?
+                " Shape:" + (this.x * Config.MAP_SIZE + this.blocks.highlightedSprite.gamePos[0]) + "," + (this.y * Config.MAP_SIZE + this.blocks.highlightedSprite.gamePos[1]) + "," + this.blocks.highlightedSprite.gamePos[2] :
+                "")
     }
 
     deleteShape(x, y) {

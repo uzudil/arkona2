@@ -260,12 +260,12 @@ class Layer {
                     info = new BlockInfo(x, y, z, new ImageInfo(name, image))
                     this.infos[key] = info
                 } else {
-                    // sanity checking - maybe remove this when multiple items can be in the same location?
-                    for(let imageInfo of info.imageInfos) {
-                        if(imageInfo.name == name) {
-                            throw "Duplicate image: " + name + " at " + key + " - use arkona.blocks.checkWorld()"
-                        }
-                    }
+                    // // sanity checking - maybe remove this when multiple items can be in the same location?
+                    // for(let imageInfo of info.imageInfos) {
+                    //     if(imageInfo.name == name) {
+                    //         throw "Duplicate image: " + name + " at " + key + " - use arkona.blocks.checkWorld()"
+                    //     }
+                    // }
                     info.imageInfos.push(new ImageInfo(name, image))
                 }
             })
@@ -1011,7 +1011,7 @@ export default class {
     }
 
     loadXY(x, y, onLoad, onError) {
-        if(x < 0 || y < 0 || x >= Config.MAX_MAP_X || y >= Config.MAX_MAP_Y) return
+        if(x < 0 || y < 0 || x >= Config.MAX_MAP_X + 4 || y >= Config.MAX_MAP_Y + 4) return
 
         let name = this._name(x, y)
         if(this.editorMode) {
@@ -1026,6 +1026,7 @@ export default class {
                     while (this.cacheOrder.length >= Config.MAX_MAP_CACHE_SIZE) {
                         let oldestName = this.cacheOrder.splice(0, 1)
                         console.warn("Freeing map: " + oldestName)
+                        this.game.mapUnloaded(...this.cache[oldestName])
                         let pos = this.cache[oldestName]
                         delete this.cache[oldestName]
                         this.layers.forEach(layer => layer.deleteMapImages(...pos))

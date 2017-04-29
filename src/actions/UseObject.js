@@ -21,7 +21,7 @@ export default class {
 	}
 
 	isValid(arkona, sprite) {
-		return Config.DOORS.indexOf(sprite.name) >= 0 || arkona.level.getAction(sprite.gamePos, this) != null
+		return Config.DOORS.indexOf(sprite.name) >= 0 || arkona.getAction(sprite.gamePos, this) != null
 	}
 
 	setSprite(sprite) {
@@ -35,7 +35,7 @@ export default class {
 			arkona.blocks.replace(this.sprite, Config.getOppositeDoor(this.sprite.name))
 			updated = true
 		}
-		let action = arkona.level.getAction(this.sprite.gamePos, this);
+		let action = arkona.getAction(this.sprite.gamePos, this);
 		if(action) {
 			action.action(arkona)
 			updated = true

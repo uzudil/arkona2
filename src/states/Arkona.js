@@ -3,7 +3,6 @@ import $ from "jquery"
 import Block from "../world/Block"
 import * as Config from "../config/Config"
 import Player from "../models/Player"
-import Level from "../models/Level"
 import Messages from "../ui/Messages"
 import ConvoUI from "../ui/ConvoUI"
 import Transition from "../ui/Transition"
@@ -15,6 +14,7 @@ import Stats from "stats.js"
 import Damages from "../ui/Damages"
 import Device from "../ui/Device"
 import { dist3d } from "../utils"
+import Section from "../models/Section"
 
 export default class extends Phaser.State {
     constructor() {
@@ -31,13 +31,13 @@ export default class extends Phaser.State {
     create() {
         this.game.stage.backgroundColor = "#000000"
         this.gameState = {}
-        this.level = null
         this.overlayShowing = false
         this.actionQueue = new Queue.Queue(this)
         this.mouseClickAction = new MouseClickAction()
         this.player = new Player(this)
         this.paused = false
         this.lastPos = null
+        this.sections = {}
 
         // controls
         this.cursors = this.game.input.keyboard.createCursorKeys()
@@ -48,7 +48,6 @@ export default class extends Phaser.State {
 
         // ui (order matters)
         this.blocks = new Block(this)
-        this.level = new Level(this)
         this.damages = new Damages(this)
         this.lamp = new Lamp(this)
         this.device = new Device(this)
@@ -75,6 +74,7 @@ export default class extends Phaser.State {
         this.blocks.loadXY(mx, my, () => {
             this.player.onLevelStart(Config.START_X, Config.START_Y, Config.DIR_E)
             // this.lamp.setVisible(this.level.info["lamplight"]);
+            this.mapLoaded(mx, my)
             this.transition.fadeOut(() => {
                 this.loading = false
             })
@@ -99,8 +99,11 @@ export default class extends Phaser.State {
             this.damages.update()
 
             // assemble the actions
-            if(this.level.npcs) this.actionQueue.add(Queue.MOVE_NPC, this.level.npcs)
-            if(this.level.generators) this.actionQueue.add(Queue.GENERATORS, this.level.generators)
+            for(let key in this.sections) {
+                let section = this.sections[key]
+                if(section.npcs) this.actionQueue.add(Queue.MOVE_NPC, section.npcs)
+                if(section.generators) this.actionQueue.add(Queue.GENERATORS, section.generators)
+            }
 
             let moving = this.isCursorKeyDown()
             if (moving) {
@@ -122,10 +125,15 @@ export default class extends Phaser.State {
                 this.blocks.sort()
             }
 
+            let section = this._sectionAt(
+                this.player.animatedSprite.sprite.gamePos[0],
+                this.player.animatedSprite.sprite.gamePos[1])
+            if(section) {
+                section.onLoad()
+            }
+
             this.player.update(moving)
         }
-
-        this.level.onLoad()
 
         if(this.stats) {
             this.stats.end()
@@ -234,6 +242,7 @@ export default class extends Phaser.State {
             maps.forEach(pos => {
                 // console.warn("Loading map: " + pos[0] + "," + pos[1])
                 this.blocks.loadXY(pos[0], pos[1], () => {
+                    this.mapLoaded(mx, my)
                     c++
                     if (c == maps.length) {
                         this.blocks.sort()
@@ -249,14 +258,10 @@ export default class extends Phaser.State {
         // }
     }
 
-    // eslint-disable-next-line no-unused-vars
     checkMapPosition(x, y, z) {
-        // let dst = this.level.checkPos(this, x, y, z)
-        // if(dst) {
-        // 	this.transitionToLevel(dst.map, dst.x, dst.y, dst.dir)
-        // 	return true
-        // }
-        // return false
+        let section = this._sectionAt(x, y)
+        if(section) section.checkPosition(x, y, z)
+        return false
     }
 
     static doesSaveGameExist() {
@@ -334,5 +339,51 @@ export default class extends Phaser.State {
 
     unpause() {
         this.paused = false
+    }
+
+    _sectionKey(mapX, mapY) {
+        return "" + mapX + "," + mapY
+    }
+
+    _sectionAt(worldX, worldY) {
+        let mapX = (worldX / Config.MAP_SIZE) | 0
+        let mapY = (worldY / Config.MAP_SIZE) | 0
+        let key = this._sectionKey(mapX, mapY)
+        return this.sections[key]
+    }
+
+    mapLoaded(mapX, mapY) {
+        let key = this._sectionKey(mapX, mapY)
+        if(this.sections[key] == null) {
+            this.sections[key] = new Section(mapX, mapY, this)
+        }
+    }
+
+    mapUnloaded(mapX, mapY) {
+        let key = this._sectionKey(mapX, mapY)
+        if(this.sections[key] != null) {
+            this.sections[key].unload()
+            delete this.sections[key]
+        }
+    }
+
+    isAllowed(action) {
+        if(action && action.getPos()) {
+            let section = this._sectionAt(...action.getPos())
+            if (section) return section.isAllowed(action)
+        }
+        return true
+    }
+
+    getAction(pos, action) {
+        let section = this._sectionAt(...pos)
+        if (section) return section.getAction(pos, action)
+    }
+
+    allCreaturesStop() {
+        for(let key in this.sections) {
+            this.sections[key].npcs.forEach(npc => npc.animatedSprite.setAnimation("stand", npc.dir))
+        }
+        if(this.player.animatedSprite) this.player.animatedSprite.setAnimation("stand", this.player.lastDir)
     }
 }
