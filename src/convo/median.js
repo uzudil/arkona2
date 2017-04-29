@@ -17,7 +17,6 @@ export const ARADUN = Convo.condition((arkona) => arkona.gameState["archives_ope
 							(arkona)=> {
 								if(!arkona.gameState["archives_open"]) {
 									arkona.gameState["archives_open"] = true
-									arkona.level.info.onLoad()
 								}
 							})
 							.answer("Thank you I will be on my way.")

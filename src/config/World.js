@@ -1,6 +1,7 @@
 import {MOVE_ANCHOR} from "./Config"
 import * as FARM_CONVO from "../convo/farm"
 import * as MEDIAN_CONVO from "../convo/median"
+import {MONSTERS} from "./Monsters"
 
 export const WORLD = {
     "2,12": {
@@ -18,7 +19,8 @@ export const WORLD = {
         ]
     },
     "3,12": {
-        onLoad: function(arkona) {
+        // eslint-disable-next-line no-unused-vars
+        onLoad: function(arkona, section) {
             if(!arkona.gameState["intro_seen"]) {
                 arkona.gameState["intro_seen"] = true
                 arkona.narrate("You have crash landed on a strange planet and your ship is damaged. " +
@@ -27,23 +29,37 @@ export const WORLD = {
             }
         }
     },
+    "1,12": {
+        generators: [
+            { x: 153, y: 1205, z: 0, type: MONSTERS.goblin, count: 3 }
+        ],
+    },
+    "1,11": {
+        generators: [
+            { x: 180, y: 1096, z: 0, type: MONSTERS.goblin, count: 3 }
+        ],
+    },
     "0,12": {
         npcs: [
             { creature: "monk", x: 72, y: 1177, options: { movement: MOVE_ANCHOR, name: "Brother Aradun", convo: MEDIAN_CONVO.ARADUN } },
         ],
-        onLoad: function(arkona) {
+        // eslint-disable-next-line no-unused-vars
+        onLoad: function(arkona, section) {
             if(!arkona.gameState["median_visited"]) {
                 arkona.gameState["median_visited"] = true
                 arkona.narrate("In the distance you see crumbling stone huts surrounded by a few fruit trees and a small vegetable garden. " +
                     "A robed figure in black paces back and forth in the court yard, his face lined with worry.")
-            } else if(arkona.gameState["archives_open"]) {
-                // arkona.level.removeNpcByName("Brother Xan")
-                // arkona.level.removeNpcByName("Brother Fran")
-                // arkona.level.removeNpcByName("Brother Smen")
             }
         }
     },
     "0,11": {
+        onLoad: function(arkona, section) {
+            if(arkona.gameState["archives_open"]) {
+                section.removeNpcByName("Brother Xan")
+                section.removeNpcByName("Brother Fran")
+                section.removeNpcByName("Brother Smen")
+            }
+        },
         npcs: [
             { creature: "monk", x: 46, y: 1100, options: { movement: MOVE_ANCHOR, name: "Brother Xan", convo: MEDIAN_CONVO.XAN } },
             { creature: "monk", x: 64, y: 1096, options: { movement: MOVE_ANCHOR, name: "Brother Fran", convo: MEDIAN_CONVO.FRAN } },

@@ -125,7 +125,7 @@ export default class extends Phaser.State {
                 this.blocks.sort()
             }
 
-            let section = this._sectionAt(
+            let section = this.sectionAt(
                 this.player.animatedSprite.sprite.gamePos[0],
                 this.player.animatedSprite.sprite.gamePos[1])
             if(section) {
@@ -259,7 +259,7 @@ export default class extends Phaser.State {
     }
 
     checkMapPosition(x, y, z) {
-        let section = this._sectionAt(x, y)
+        let section = this.sectionAt(x, y)
         if(section) section.checkPosition(x, y, z)
         return false
     }
@@ -301,6 +301,7 @@ export default class extends Phaser.State {
     // }
 
     narrate(message) {
+        this.allCreaturesStop()
         this.messages.showFirstLine(message)
     }
 
@@ -345,7 +346,7 @@ export default class extends Phaser.State {
         return "" + mapX + "," + mapY
     }
 
-    _sectionAt(worldX, worldY) {
+    sectionAt(worldX, worldY) {
         let mapX = (worldX / Config.MAP_SIZE) | 0
         let mapY = (worldY / Config.MAP_SIZE) | 0
         let key = this._sectionKey(mapX, mapY)
@@ -369,14 +370,14 @@ export default class extends Phaser.State {
 
     isAllowed(action) {
         if(action && action.getPos()) {
-            let section = this._sectionAt(...action.getPos())
+            let section = this.sectionAt(...action.getPos())
             if (section) return section.isAllowed(action)
         }
         return true
     }
 
     getAction(pos, action) {
-        let section = this._sectionAt(...pos)
+        let section = this.sectionAt(...pos)
         if (section) return section.getAction(pos, action)
     }
 

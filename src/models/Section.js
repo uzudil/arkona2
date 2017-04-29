@@ -1,7 +1,7 @@
 import Npc from "./Npc"
 // import * as Levels from "./../config/Levels"
 // import * as Config from "./../config/Config"
-// import Generator from "./Generator"
+import Generator from "./Generator"
 import {WORLD} from "../config/World"
 
 /**
@@ -47,15 +47,14 @@ export default class {
         // }
     }
 
-    // eslint-disable-next-line no-unused-vars
     addGenerator(generatorInfo) {
-        //this.generators.push(new Generator(this.arkona, generatorInfo))
+        this.generators.push(new Generator(this.arkona, generatorInfo))
     }
 
     removeNpcByName(name) {
         for(let npc of this.npcs) {
             if(npc.getName() == name) {
-                this.removeNpc(this.arkona, npc)
+                this.removeNpc(npc)
                 return
             }
         }
@@ -103,12 +102,7 @@ export default class {
 
     onLoad() {
         if (this.info["onLoad"]) {
-            let key = "on_load_" + this.mapX + "," + this.mapY
-            if(this.arkona.gameState[key] == null) {
-                this.arkona.gameState[key] = true
-                this.arkona.allCreaturesStop()
-                this.info.onLoad(this.arkona)
-            }
+            this.info.onLoad(this.arkona, this)
         }
     }
 
