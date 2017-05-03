@@ -173,6 +173,7 @@ export default class {
         console.warn("Entering ship")
         this.ship = sprite
         this.animatedSprite.sprite.visible = false
+        this.ship.vehicle.animatedSprite.centerOn()
     }
 
     canExitShipHere(sprite) {
@@ -182,12 +183,11 @@ export default class {
 
     exitShip() {
         console.warn("Exiting ship")
-        // let blockTestFx = (blocker) => this._blockedBy(blocker)
-        let [x, y, z] = [...this.ship.gamePos];
-        if(this.arkona.blocks.moveNear(this.animatedSprite.sprite, x, y, z, 16)) {
+        if(this.arkona.blocks.moveNextToSprite(this.ship, this.animatedSprite.sprite)) {
             this._moved(Config.DIR_E)
             this.ship = null
             this.animatedSprite.sprite.visible = true
+            this.animatedSprite.centerOn()
             return true
         } else {
             return false

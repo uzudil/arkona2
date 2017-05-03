@@ -1185,6 +1185,53 @@ export default class {
         }
     }
 
+    /**
+     * Place spriteB next to spriteA
+     * @param spriteA
+     * @param spriteB
+     */
+    moveNextToSprite(spriteA, spriteB) {
+        let [ax, ay, az] = spriteA.gamePos
+        let blockA = BLOCKS[spriteA.name]
+        let aw = blockA.size[0]
+        let ah = blockA.size[1]
+        let blockB = BLOCKS[spriteB.name]
+        let bw = blockB.size[0]
+        let bh = blockB.size[1]
+
+        for(let xx = ax - aw - bw; xx < ax + bw; xx++) {
+            for(let yy = 1; yy <= bh; yy++) {
+                // above
+                if(this.moveTo(spriteB, xx, ay - ah - yy, az)) {
+                    return true
+                }
+                // below
+                if(this.moveTo(spriteB, xx, ay + bh - 1 + yy, az)) {
+                    return true
+                }
+            }
+        }
+        for(let yy = ay - ah - bh; yy < ay + bh; yy++) {
+            for(let xx = 1; xx <= bw; xx++) {
+                // left
+                if(this.moveTo(spriteB, ax - aw - xx, yy, az)) {
+                    return true
+                }
+                // right
+                if(this.moveTo(spriteB, ax + bw - 1 + xx, yy, az)) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    moveNearSprite(nearSprite, sprite, range) {
+        let [x, y, z] = nearSprite.gamePos
+        let block = BLOCKS[nearSprite.name]
+        return this.moveNear(sprite, (x - block.size[0]/2)|0, (y - block.size[1]/2)|0, z, range)
+    }
+
     moveNear(sprite, x, y, z, range) {
         return !_visit3d(x + (range/2)|0, y + (range/2)|0, z, range, range, 1, (xx, yy, zz) => {
             if(this.moveTo(sprite, xx, yy, zz)) {
