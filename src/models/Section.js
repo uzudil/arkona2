@@ -2,6 +2,7 @@ import Npc from "./Npc"
 // import * as Levels from "./../config/Levels"
 // import * as Config from "./../config/Config"
 import Generator from "./Generator"
+import Vehicle from "./Vehicle"
 import {WORLD} from "../config/World"
 
 /**
@@ -17,12 +18,14 @@ export default class {
 
         this.npcs = []
         this.generators = []
+        this.vehicles = []
 
         // todo: load from savegame folder if exists, otherwise fallback to WORLD
         this.info = WORLD[key] || {};
         (this.info["npcs"] || []).forEach(npcInfo => this.addNpc(npcInfo));
         (this.info["monsters"] || []).forEach(monsterInfo => this.addMonster(monsterInfo));
         (this.info["generators"] || []).forEach(generatorInfo => this.addGenerator(generatorInfo));
+        (this.info["vehicles"] || []).forEach(info => this.addVehicle(info));
     }
 
     unload() {
@@ -49,6 +52,10 @@ export default class {
 
     addGenerator(generatorInfo) {
         this.generators.push(new Generator(this.arkona, generatorInfo))
+    }
+
+    addVehicle(info) {
+        this.vehicles.push(new Vehicle(this.arkona, info))
     }
 
     removeNpcByName(name) {

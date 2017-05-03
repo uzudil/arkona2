@@ -317,15 +317,19 @@ class Layer {
         return maxZ
     }
 
-    canMoveTo(sprite, x, y, z, skipSupportCheck, blockers) {
-        let fits = _visit3SS(sprite.name, x, y, z, (xx, yy, zz) => {
+    canFit(sprite, x, y, z, blockers) {
+        return _visit3SS(sprite.name, x, y, z, (xx, yy, zz) => {
             let info = this.infos[_key(xx, yy, zz)]
             if(!info) return true
-            let blocker = info.imageInfos.find((ii) => ii.image != sprite)
+            let blocker = info.imageInfos.find((ii) => ii.image != sprite && ii.image.visible)
             if(!blocker) return true
             if(blockers != null) blockers.push(blocker.image)
             return false
         })
+    }
+
+    canMoveTo(sprite, x, y, z, skipSupportCheck, blockers) {
+        let fits = this.canFit(sprite, x, y, z, blockers)
         // if it fits, make sure we're standing on something
         if(fits && z > 0 && !skipSupportCheck) {
             // tricky: we want to test that at least one shape below the player can be stood on
@@ -345,6 +349,13 @@ class Layer {
     isFree(worldX, worldY, worldZ, w, h, d) {
         return _visit3d(worldX, worldY, worldZ, w, h, d, (xx, yy, zz) => {
             return !(this.infos[_key(xx, yy, zz)])
+        })
+    }
+
+    isOnWater(sprite, worldX, worldY) {
+        return _visitSS(sprite.name, worldX, worldY, (xx, yy) => {
+            let name = this.getFloorAt(xx, yy)
+            return name == null || name == "water"
         })
     }
 
@@ -737,6 +748,29 @@ export default class {
         return false
     }
 
+    canMoveTo(sprite, fx, fy, fz) {
+        return this.floorLayer.canMoveTo(sprite, fx, fy, fz, true) ||
+            this.objectLayer.canMoveTo(sprite, fx, fy, fz, true)
+    }
+
+    moveShipTo(sprite, fx, fy, centerOnSuccess) {
+        let [rx, ry, rz] = [Math.round(fx), Math.round(fy), 0]
+        let [layer, x, y, z, offsX, offsY] = this._getLayerAndXYZ(sprite.name, rx, ry, rz)
+
+        if(this.floorLayer.isOnWater(sprite, x + Config.GRID_SIZE / 2, y + Config.GRID_SIZE / 2) &&
+            this.objectLayer.canFit(sprite, x, y, z)) {
+            this._moveSpriteTo(sprite, layer, offsX, offsY, x, y, z, false, fx, fy)
+
+            if(centerOnSuccess) {
+                this.centerOn(sprite)
+            }
+
+            return true
+        } else {
+            return false
+        }
+    }
+
     moveTo(sprite, fx, fy, fz, skipInfo, centerOnSuccess, onBlock) {
         let [rx, ry, rz] = [Math.round(fx), Math.round(fy), Math.round(fz)]
         let [layer, x, y, z, offsX, offsY] = this._getLayerAndXYZ(sprite.name, rx, ry, rz)
@@ -788,6 +822,12 @@ export default class {
         } else {
             return false
         }
+    }
+
+    forceMoveTo(sprite, fx, fy, fz, skipInfo) {
+        let [rx, ry, rz] = [Math.round(fx), Math.round(fy), Math.round(fz)]
+        let [layer, x, y, z, offsX, offsY] = this._getLayerAndXYZ(sprite.name, rx, ry, rz)
+        this._moveSpriteTo(sprite, layer, offsX, offsY, x, y, z, skipInfo, fx, fy)
     }
 
     _moveSpriteTo(sprite, layer, offsX, offsY, x, y, z, skipInfo, fx, fy) {

@@ -31,6 +31,7 @@ export const DIRS = [DIR_E, DIR_NE, DIR_N, DIR_NW, DIR_W, DIR_SW, DIR_S, DIR_SE]
 export const MOVE_RANDOM = "random"
 export const MOVE_ANCHOR = "anchor"
 export const MOVE_ATTACK = "attack"
+export const MOVE_DONT = "dont"
 export const MOVE_NEAR_PLAYER = "near_player"
 export const STOP_TIME = 3000
 export const NEAR_DIST = 4
@@ -44,8 +45,10 @@ export const FONT_FAMILY_NAME = "Trade Winds"
 export const ARKONA_FONT_FAMILY = "Old Standard TT"
 export const ARKONA_FONT_FAMILY_NAME = "Old Standard TT"
 export const MAX_Z = 15
-export const START_X = 347
-export const START_Y = 1176
+// export const START_X = 347
+// export const START_Y = 1176
+export const START_X = 154
+export const START_Y = 916
 export const PLAYER_CREATURE_NAME = "man"
 export const GODMODE = document.location.hostname == "localhost"
 

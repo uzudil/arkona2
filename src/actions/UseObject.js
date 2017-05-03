@@ -1,45 +1,54 @@
 import * as Config from "../config/Config"
 
 export default class {
-	getType() {
-		return "use_object"
-	}
+    getType() {
+        return "use_object"
+    }
 
-	getPos() {
-		return this.sprite ? this.sprite.gamePos : null
-	}
+    getPos() {
+        return this.sprite ? this.sprite.gamePos : null
+    }
 
-	// eslint-disable-next-line no-unused-vars
-	setContext(context) {
-		this.sprite = null
-	}
+    // eslint-disable-next-line no-unused-vars
+    setContext(context) {
+        this.sprite = null
+    }
 
-	check(arkona) {
-		this.sprite = arkona.blocks.findClosestObject(arkona.player.animatedSprite.sprite, 10,
-			(sprite) => this.isValid(arkona, sprite))
-		return this.sprite
-	}
+    check(arkona) {
+        this.sprite = arkona.blocks.findClosestObject(arkona.player.animatedSprite.sprite, 10,
+            (sprite) => this.isValid(arkona, sprite))
+        return this.sprite
+    }
 
-	isValid(arkona, sprite) {
-		return Config.DOORS.indexOf(sprite.name) >= 0 || arkona.getAction(sprite.gamePos, this) != null
-	}
+    isValid(arkona, sprite) {
+        return Config.DOORS.indexOf(sprite.name) >= 0 ||
+            arkona.getAction(sprite.gamePos, this) != null ||
+            (arkona.player.ship == null && sprite.vehicle) ||
+            (arkona.player.ship && arkona.player.canExitShipHere(sprite))
+    }
 
-	setSprite(sprite) {
-		this.sprite = sprite
-		return this
-	}
+    setSprite(sprite) {
+        this.sprite = sprite
+        return this
+    }
 
-	run(arkona) {
-		let updated = false
-		if(Config.DOORS.indexOf(this.sprite.name) >= 0) {
-			arkona.blocks.replace(this.sprite, Config.getOppositeDoor(this.sprite.name))
-			updated = true
-		}
-		let action = arkona.getAction(this.sprite.gamePos, this);
-		if(action) {
-			action.action(arkona)
-			updated = true
-		}
-		return updated
-	}
+    run(arkona) {
+        let updated = false
+        if(Config.DOORS.indexOf(this.sprite.name) >= 0) {
+            arkona.blocks.replace(this.sprite, Config.getOppositeDoor(this.sprite.name))
+            updated = true
+        }
+        if(arkona.player.ship == null && this.sprite.vehicle) {
+            arkona.player.enterShip(this.sprite)
+            updated = true
+        } else if(arkona.player.ship) {
+            updated = arkona.player.exitShip()
+        }
+        let action = arkona.getAction(this.sprite.gamePos, this);
+        if(action) {
+            action.action(arkona)
+            updated = true
+        }
+        return updated
+    }
 }

@@ -106,6 +106,8 @@ export const BLOCKS = {
 	// placeholder for creatures
 	"2x2x4.placeholder": { size: [2, 2, 4], pos: [400, 0], dim: [32, 64] },
 	"4x4x4.placeholder": { size: [4, 4, 4], pos: [400, 0], dim: [64, 64] },
+	"6x6x6.placeholder": { size: [6, 6, 6], pos: [400, 0], dim: [96, 96] },
+	"8x8x8.placeholder": { size: [8, 8, 8], pos: [400, 0], dim: [128, 128] },
 
 	// arkona 2
 	"chair.w": { size: [1, 1, 2], pos: [0, 0], dim: [16, 32], options: { sprites: 2 } },

@@ -15,7 +15,7 @@ export default class {
         this.anchorY = y
         this.anchorZ = z
         this.options = options || {}
-        this.dir = Config.DIR_N
+        this.dir = options["dir"] || Config.DIR_N
         this.stopClock = null
         this.creatureName = creatureName
         this.info = Creatures.CREATURES[creatureName]
@@ -82,7 +82,7 @@ export default class {
     }
 
     _turnToPlayer() {
-        if(this.isNearPlayer()) {
+        if(this.isNearPlayer() && this.options.movement != Config.MOVE_DONT) {
             if(this.dirToPlayer != null) this.dir = this.dirToPlayer
         }
         this.animatedSprite.setAnimation("stand", this.dir)
@@ -93,6 +93,8 @@ export default class {
     }
 
     _willStop() {
+        if(this.options.movement == Config.MOVE_DONT) return true
+
         if(this.options.movement == Config.MOVE_ATTACK) return false
 
         // move near player acts as anchor when the player is far

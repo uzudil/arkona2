@@ -29,6 +29,11 @@ export const WORLD = {
             }
         }
     },
+    "1,9": {
+        vehicles: [
+            { name: "ship", x: 139, y: 892, dir: "se" }
+        ]
+    },
     "1,12": {
         generators: [
             { x: 153, y: 1205, z: 0, type: MONSTERS.goblin, count: 3 }

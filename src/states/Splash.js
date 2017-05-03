@@ -2,6 +2,7 @@ import Phaser from "phaser"
 import { centerGameObjects, loadSettings, saveSettings } from "../utils"
 import * as Config from "../config/Config"
 import * as Creatures from "../config/Creatures"
+import * as Vehicles from "../config/Vehicles"
 import $ from "jquery"
 import Transition from "../ui/Transition"
 import Arkona from "./Arkona"
@@ -32,6 +33,10 @@ export default class extends Phaser.State {
 
 		for(let k in Creatures.CREATURES) {
 			let c = Creatures.CREATURES[k]
+			this.game.load.spritesheet(k, c.src + "?cb=" + Date.now(), ...c.dim)
+		}
+		for(let k in Vehicles.VEHICLES) {
+			let c = Vehicles.VEHICLES[k]
 			this.game.load.spritesheet(k, c.src + "?cb=" + Date.now(), ...c.dim)
 		}
 	}
