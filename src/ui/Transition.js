@@ -11,7 +11,7 @@ export default class {
 				"top: 0; left: 0; " +
 				"width: 100%; height: 100%;" +
 				"z-index: 1000;" +
-				"'><img src='/assets/images/loading.svg' style='" +
+				"'><img src='./assets/images/loading.svg' style='" +
 				"position: relative; " +
 				"top: 50%; left: 50%; " +
 				"margin-left: -32px; " +

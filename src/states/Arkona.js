@@ -56,7 +56,7 @@ export default class extends Phaser.State {
         this.transition = new Transition()
         this.inGameMenu = new InGameMenu(this)
 
-        if(document.location.hostname == "localhost") {
+        if(Config.DEBUG_MODE) {
             this.stats = new Stats();
             this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
             this.phaserStatsPanel = this.stats.addPanel( new Stats.Panel( "SP", "#ff8", "#221" ) );
@@ -101,7 +101,7 @@ export default class extends Phaser.State {
             // assemble the actions
             for(let key in this.sections) {
                 let section = this.sections[key]
-                if(section.npcs) this.actionQueue.add(Queue.MOVE_NPC, section.npcs)
+                if(section.npcs) this.actionQueue.add(Queue.MOVE_NPC, section.npcs.filter(npc => npc.isVisible()))
                 if(section.generators) this.actionQueue.add(Queue.GENERATORS, section.generators)
             }
 

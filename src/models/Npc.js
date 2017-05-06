@@ -24,6 +24,10 @@ export default class {
         this.alive = new Alive(this.getMonster() ? this.getMonster()["alive"] : {}, this)
     }
 
+    isVisible() {
+        return this.animatedSprite.sprite.visible
+    }
+
     onDamage(amount) {
         console.warn(this.getName() + " takes " + amount + " damage.")
         this.arkona.damages.add(amount, this.x - 2, this.y - 2, this.z)

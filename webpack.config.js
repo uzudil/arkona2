@@ -1,6 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
-var BrowserSyncPlugin = require('browser-sync-webpack-plugin')
+var ElectronConnectWebpackPlugin = require('electron-connect-webpack-plugin')
 
 // Phaser webpack config
 var phaserModule = path.join(__dirname, '/node_modules/phaser/')
@@ -31,12 +31,10 @@ module.exports = {
   plugins: [
     definePlugin,
     new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.bundle.js"),
-    new BrowserSyncPlugin({
-      host: process.env.IP || 'localhost',
-      port: process.env.PORT || 3000,
-      server: {
-        baseDir: ['./', './build']
-      }
+    new ElectronConnectWebpackPlugin({
+        test: /^.\/src/,
+        path: "start.js",
+        logLevel: 0
     })
   ],
   module: {

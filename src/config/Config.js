@@ -3,7 +3,7 @@ import {BLOCKS} from "./Blocks"
 export const WIDTH = 1024
 export const HEIGHT = 768
 export const NARRATE_HEIGHT = 100
-export const CONVO_HEIGHT = 220
+export const CONVO_HEIGHT = 250
 export const GROUND_TILE_W = BLOCKS["grass"].size[0]
 export const GROUND_TILE_H = BLOCKS["grass"].size[1]
 export const GRID_SIZE = 8
@@ -50,7 +50,8 @@ export const MAX_Z = 15
 export const START_X = 154
 export const START_Y = 916
 export const PLAYER_CREATURE_NAME = "man"
-export const GODMODE = document.location.hostname == "localhost"
+export const GODMODE = false
+export const DEBUG_MODE = true
 
 export const NO_BLEND = 0
 export const BLENDS = 1
@@ -80,7 +81,7 @@ export function getOppositeDoor(name) {
 export function toCss(name) {
 	let suffix = BLOCKS[name].options && BLOCKS[name].options["sprites"] ? BLOCKS[name].options.sprites : ""
 	return "" +
-		"background-image: url(\"/assets/images/arkona" + suffix + ".png\"); " +
+		"background-image: url(\"./assets/images/arkona" + suffix + ".png\"); " +
 		"background-position: -" + BLOCKS[name].pos[0] + "px -" + BLOCKS[name].pos[1] + "px; " +
 		"width: " + BLOCKS[name].dim[0] + "px; " +
 		"height: " + BLOCKS[name].dim[1] + "px; ";

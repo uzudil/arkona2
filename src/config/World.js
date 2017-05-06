@@ -1,9 +1,21 @@
 import {MOVE_ANCHOR} from "./Config"
 import * as FARM_CONVO from "../convo/farm"
 import * as MEDIAN_CONVO from "../convo/median"
+import * as ELDUN_CONVO from "../convo/eldun"
 import {MONSTERS} from "./Monsters"
 
 export const WORLD = {
+    "2,10": {
+        npcs: [
+            { creature: "man_blue", x: 252, y: 1019, options: { movement: MOVE_ANCHOR, name: "Arton", convo: ELDUN_CONVO.ARTON } },
+            { creature: "woman", x: 256, y: 1036, options: { movement: MOVE_ANCHOR, name: "Sara", convo: ELDUN_CONVO.SARA } },
+        ]
+    },
+    "3,10": {
+        npcs: [
+            { creature: "monk_red", x: 309, y: 1007, z: 7, options: { movement: MOVE_ANCHOR, name: "Marisan of Eldun", convo: ELDUN_CONVO.MARISAN } },
+        ]
+    },
     "2,12": {
         npcs: [
             {

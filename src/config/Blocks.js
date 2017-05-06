@@ -59,6 +59,7 @@ export const BLOCKS = {
 	"rug.round": { size: [4, 4, 0], pos: [64, 256], dim: [64, 62], options: { sprites: 2, stamp: true } },
 	"corpse": { size: [4, 4, 0], pos: [192, 192], dim: [56, 56], options: { sprites: 2, stamp: true } },
 
+    // walls
 	"wood.column": { size: [1, 1, 6], pos: [176, 0], dim: [16, 64] },
 	"stone.wall.x": { size: [4, 1, 6], pos: [216, 0], dim: [40, 96] },
 	"stone.wall.y": { size: [1, 4, 6], pos: [280, 0], dim: [40, 96] },
@@ -130,10 +131,10 @@ export const BLOCKS = {
 	"stalagmite.big": { size: [2, 2, 4], pos: [448, 64], dim: [32, 64], options: { sprites: 2 } },
 	"stalagmite.small": { size: [1, 1, 3], pos: [496, 64], dim: [16, 40], options: { sprites: 2 } },
 	"step": { size: [4, 2, 1], pos: [592, 0], dim: [48, 56], options: { sprites: 2 } },
-	"ceiling": { size: [9, 9, 1], pos: [640, 0], dim: [144, 152], options: { sprites: 2 } },
-	"ceiling.small": { size: [4, 9, 1], pos: [800, 0], dim: [104, 112], options: { sprites: 2 } },
-	"ceiling.long": { size: [1, 9, 1], pos: [912, 0], dim: [80, 88], options: { sprites: 2 } },
-	"ceiling.short": { size: [4, 1, 1], pos: [912, 96], dim: [40, 48], options: { sprites: 2 } },
+	"ceiling": { size: [9, 9, 1], pos: [640, 0], dim: [144, 152], options: { sprites: 2, roof: true } },
+	"ceiling.small": { size: [4, 9, 1], pos: [800, 0], dim: [104, 112], options: { sprites: 2, roof: true } },
+	"ceiling.long": { size: [1, 9, 1], pos: [912, 0], dim: [80, 88], options: { sprites: 2, roof: true } },
+	"ceiling.short": { size: [4, 1, 1], pos: [912, 96], dim: [40, 48], options: { sprites: 2, roof: true } },
 	"shelves.empty": { size: [1, 4, 5], pos: [0, 160], dim: [40, 80], options: { sprites: 2 } },
 	"shelves.books": { size: [1, 4, 5], pos: [48, 160], dim: [40, 80], options: { sprites: 2 } },
 	"shelves.empty.n": { size: [4, 1, 5], pos: [88, 320], dim: [40, 80], options: { sprites: 2 } },
@@ -152,10 +153,10 @@ export const BLOCKS = {
     "force": { size: [2, 2, 2], pos: [128, 416], dim: [32, 48], options: { sprites: 2 } },
 
 	// roofs
-	"roof.ns": { size: [10, 10, 6], pos: [496, 0], dim: [164, 172] },
-	"roof.ew": { size: [10, 10, 6], pos: [688, 0], dim: [164, 172] },
-	"roof.ns.brown": { size: [10, 10, 3], pos: [448, 192], dim: [164, 164] },
-	"roof.ew.brown": { size: [10, 10, 3], pos: [640, 192], dim: [160, 164] },
+	"roof.ns": { size: [10, 10, 6], pos: [496, 0], dim: [164, 172], options: { roof: true } },
+	"roof.ew": { size: [10, 10, 6], pos: [688, 0], dim: [164, 172], options: { roof: true } },
+	"roof.ns.brown": { size: [10, 10, 3], pos: [448, 192], dim: [164, 164], options: { roof: true } },
+	"roof.ew.brown": { size: [10, 10, 3], pos: [640, 192], dim: [160, 164], options: { roof: true } },
 
 	// dungeon
 	"dungeon.s.4": { size: [4, 1, 6], pos: [0, 0], dim: [40, 88], options: { sprites: 3 } },

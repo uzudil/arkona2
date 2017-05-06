@@ -6,12 +6,20 @@ import * as Config from "../config/Config"
 import Palette from "../editor/Palette"
 import $ from "jquery"
 
+// electron has to be included like this: https://github.com/electron/electron/issues/7300
+const electron = window.require("electron")
+
 export default class extends Phaser.State {
 
     init() {
     }
 
     preload() {
+
+
+        // make window bigger
+        electron.remote.getCurrentWindow().setSize(1400, 800)
+
         document.getElementById("new-map").onclick = () => {
             $("#new-map-dialog").show()
             $("#new-map-name").focus()

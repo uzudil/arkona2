@@ -165,7 +165,10 @@ class Layer {
     hasRoofAbove(worldX, worldY, worldZ) {
         for(let z = worldZ; z < Config.MAX_Z; z++) {
             let info = this.infos[_key(worldX, worldY, z)]
-            if(info && info.imageInfos.find(ii => ii.name.indexOf("roof.") == 0)) {
+            if(info && info.imageInfos.find(ii => {
+                let block = BLOCKS[ii.name];
+                return block["options"] && block.options["roof"]
+            })) {
                 return true
             }
         }
@@ -1120,7 +1123,7 @@ export default class {
 
     _load(name, x, y, onLoad, onError) {
         $.ajax({
-            url: "/assets/maps/" + name + ".json",
+            url: "assets/maps/" + name + ".json",
             dataType: "json",
             success: (data) => {
                 if(this.editorMode) {
@@ -1130,9 +1133,10 @@ export default class {
                         for (let xx = -1; xx <= 1; xx++) {
                             for (let yy = -1; yy <= 1; yy++) {
                                 if (xx == 0 && yy == 0) continue;
+                                if (x + xx < 0 || y + yy < 0) continue;
 
                                 $.ajax({
-                                    url: "/assets/maps/" + this._name(x + xx, y + yy) + ".json",
+                                    url: "assets/maps/" + this._name(x + xx, y + yy) + ".json",
                                     dataType: "json",
                                     success: (data) => {
                                         data.layers.forEach(layerInfo =>
