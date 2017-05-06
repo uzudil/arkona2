@@ -29,22 +29,26 @@ export default class {
         }
     }
 
-    onLevelStart(startX, startY, startDir) {
+    onLevelStart(startX, startY, startZ, startDir) {
         let creatureInfo = Creatures.CREATURES[Config.PLAYER_CREATURE_NAME]
-        this.animatedSprite = new AnimatedSprite(
-            this.arkona.game,
-            Config.PLAYER_CREATURE_NAME,
-            this.arkona.blocks,
-            startX == null ? this.arkona.level.info.startPos[0] : startX,
-            startY == null ? this.arkona.level.info.startPos[1] : startY,
-            0,
-            creatureInfo.animations,
-            creatureInfo.blockName)
-        this.animatedSprite.sprite.userControlled = true
-        this.animatedSprite.animationSpeed = 16
-        let dir = startDir || this.arkona.level.info["startDir"]
-        if(dir) this.lastDir = dir
-        this.animatedSprite.setAnimation("stand", dir || this.lastDir || Config.DIR_E)
+        if(this.animatedSprite) {
+            this.arkona.blocks.forceMoveTo(this.animatedSprite.sprite, startX, startY, startZ)
+        } else {
+            this.animatedSprite = new AnimatedSprite(
+                this.arkona.game,
+                Config.PLAYER_CREATURE_NAME,
+                this.arkona.blocks,
+                startX,
+                startY,
+                startZ,
+                creatureInfo.animations,
+                creatureInfo.blockName)
+            this.animatedSprite.sprite.userControlled = true
+            this.animatedSprite.animationSpeed = 16
+        }
+
+        if(startDir) this.lastDir = startDir
+        this.animatedSprite.setAnimation("stand", startDir || this.lastDir || Config.DIR_E)
         this.animatedSprite.centerOn()
     }
 
@@ -129,7 +133,7 @@ export default class {
             // move the player along
             this.arkona.blocks.forceMoveTo(this.animatedSprite.sprite, px, py, 0)
             // load maps
-            this.arkona.checkMapBoundary(px, py, this.lastDir)
+            this.arkona.checkMapBoundary(px, py)
         }
     }
 
@@ -145,7 +149,7 @@ export default class {
             this.setDir(dir)
             this.setAnimation("walk")
         }
-        this.arkona.checkMapBoundary(px, py, this.lastDir)
+        this.arkona.checkMapBoundary(px, py)
     }
 
     /**

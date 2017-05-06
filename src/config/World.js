@@ -120,6 +120,30 @@ export const WORLD = {
             { creature: "monk", x: 46, y: 1100, options: { movement: MOVE_ANCHOR, name: "Brother Xan", convo: MEDIAN_CONVO.XAN } },
             { creature: "monk", x: 64, y: 1096, options: { movement: MOVE_ANCHOR, name: "Brother Fran", convo: MEDIAN_CONVO.FRAN } },
             { creature: "monk", x: 71, y: 1115, options: { movement: MOVE_ANCHOR, name: "Brother Smen", convo: MEDIAN_CONVO.SMEN } },
+        ],
+        actions: [
+            {
+                type: "use_object", x: 77, y: 1089, z: 0,
+                // eslint-disable-next-line no-unused-vars
+                allow: (arkona) => true,
+                action: (arkona) => arkona.showOverlay("sign", arkona.gameState["archives_open"] ? "The Archives" : "The Archives [Closed]")
+            }
+        ],
+        connect: [
+            {
+                x: 76, y: 1088, z: 0,
+                allow: (arkona) => arkona.gameState["archives_open"],
+                action: (arkona) => arkona.transitionTo(40, 2021, 0, "s")
+            }
+        ]
+    },
+    "0,21": {
+        lamplight: true,
+        connect: [
+            {
+                x: 40, y: 2017, z: 0,
+                action: (arkona) => arkona.transitionTo(73, 1091, 0, "n")
+            }
         ]
     }
 }

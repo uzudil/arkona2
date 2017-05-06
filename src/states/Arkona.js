@@ -16,6 +16,10 @@ import Device from "../ui/Device"
 import { dist3d } from "../utils"
 import Section from "../models/Section"
 
+const fs = window.require("fs")
+const path = window.require("path")
+const os = window.require("os")
+
 export default class extends Phaser.State {
     constructor() {
         super()
@@ -67,18 +71,7 @@ export default class extends Phaser.State {
         }
 
         // start game
-        // this.loadGame(this.startFromSavedGame)
-        this.loading = true
-        let mx = (Config.START_X / Config.MAP_SIZE)|0
-        let my = (Config.START_Y / Config.MAP_SIZE)|0
-        this.blocks.loadXY(mx, my, () => {
-            this.player.onLevelStart(Config.START_X, Config.START_Y, Config.DIR_E)
-            // this.lamp.setVisible(this.level.info["lamplight"]);
-            this.mapLoaded(mx, my)
-            this.transition.fadeOut(() => {
-                this.loading = false
-            })
-        })
+        this.loadGame(this.startFromSavedGame)
 
         // for debug/hacking
         window.arkona = this
@@ -215,10 +208,7 @@ export default class extends Phaser.State {
         return dir
     }
 
-    // eslint-disable-next-line no-unused-vars
-    checkMapBoundary(px, py, dir) {
-        if(this.loading) return
-
+    checkMapBoundary(px, py, onLoad) {
         let mx = (px / Config.MAP_SIZE)|0
         let my = (py / Config.MAP_SIZE)|0
         let dx = ((px % Config.MAP_SIZE) / (Config.MAP_SIZE/2))|0
@@ -238,24 +228,20 @@ export default class extends Phaser.State {
             if (dy == 1) maps.push([mx, my + 1])
             if (dy == 0) maps.push([mx, my - 1])
             maps.push([mx, my])
-            let c = 0
+
+            // load all the maps in parallel
+            let c = {}
             maps.forEach(pos => {
-                // console.warn("Loading map: " + pos[0] + "," + pos[1])
                 this.blocks.loadXY(pos[0], pos[1], () => {
-                    this.mapLoaded(mx, my)
-                    c++
-                    if (c == maps.length) {
+                    c[pos] = true
+                    if (Object.keys(c).length == maps.length) {
                         this.blocks.sort()
-                        this.loading = false
+                        this.mapLoaded(mx, my)
+                        if(onLoad) onLoad()
                     }
                 })
             })
         }
-
-        // let dst = this.level.checkBounds(this, px, py)
-        // if(dst) {
-        // 	this.transitionToLevel(dst.map, dst.x, dst.y, dst.dir)
-        // }
     }
 
     checkMapPosition(x, y, z) {
@@ -265,40 +251,75 @@ export default class extends Phaser.State {
     }
 
     static doesSaveGameExist() {
-        return window.localStorage["arkona"] != null
+        let dir = path.join(os.homedir(), ".arkona")
+        return fs.existsSync(dir)
     }
 
     /**
      * Save the game. This currently only saves player state not level state.
      */
     saveGame() {
-        window.localStorage["arkona"] = JSON.stringify({
+        let dir = path.join(os.homedir(), ".arkona")
+        if(!fs.existsSync(dir)) {
+            fs.mkdirSync(dir)
+        }
+        fs.writeFileSync(path.join(dir, "state.json"), JSON.stringify({
             version: 1,
-            levelx: this.blocks.x,
-            levely: this.blocks.y,
             pos: this.player.animatedSprite.sprite.gamePos,
             dir: this.player.lastDir,
             state: this.gameState
-        })
+        }));
     }
 
     /**
      * Load the game. This currently only loads player state not level state.
      */
-    // loadGame(startFromSavedGame) {
-        // if(startFromSavedGame) {
-        //     let savegameStr = window.localStorage["arkona2"]
-        //     if (savegameStr) {
-        //         let savegame = JSON.parse(savegameStr)
-        //         if (savegame) {
-        //             this.gameState = savegame.state
-        //             this.loadLevel(savegame.levelx, savegame.levely, savegame.pos[0], savegame.pos[1], savegame.dir)
-        //             return
-        //         }
-        //     }
-        // }
-        // this.loadLevel(Config.START_MAP_X, Config.START_MAP_Y, 64, 64, Config.DIR_W)
-    // }
+    loadGame(startFromSavedGame) {
+        let startX = Config.START_X
+        let startY = Config.START_Y
+        let startZ = 0
+        let startDir = Config.DIR_E
+
+        let dir = path.join(os.homedir(), ".arkona")
+        if(startFromSavedGame && fs.existsSync(dir)) {
+            let str = fs.readFileSync(path.join(dir, "state.json"))
+            if(str) {
+                let obj = JSON.parse(str)
+                startX = obj.pos[0]
+                startY = obj.pos[1]
+                startZ = obj.pos[2]
+                startDir = obj.dir
+                this.gameState = obj.state
+            }
+        }
+
+        this.teleport(startX, startY, startZ, startDir)
+    }
+
+    transitionTo(startX, startY, startZ, startDir) {
+        this.transition.fadeIn(() => {
+            this.teleport(startX, startY, startZ, startDir)
+        })
+    }
+
+    teleport(x, y, z, dir, onLoad) {
+        this.loading = true
+        let mx = (x / Config.MAP_SIZE)|0
+        let my = (y / Config.MAP_SIZE)|0
+        this.blocks.loadXY(mx, my, () => {
+            this.player.onLevelStart(x, y, z, dir)
+            this.lamp.setVisible(Section.isLamplight(mx, my));
+            this.mapLoaded(mx, my)
+            this.blocks.sort()
+
+            this.checkMapBoundary(x, y, () => {
+                this.transition.fadeOut(() => {
+                    this.loading = false
+                    if(onLoad) onLoad()
+                })
+            })
+        })
+    }
 
     narrate(message) {
         this.allCreaturesStop()

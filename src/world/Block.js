@@ -1060,7 +1060,10 @@ export default class {
     }
 
     loadXY(x, y, onLoad, onError) {
-        if(x < 0 || y < 0 || x >= Config.MAX_MAP_X + 4 || y >= Config.MAX_MAP_Y + 4) return
+        if(x < 0 || y < 0 || x >= Config.MAX_MAP_X + 4 || y >= Config.MAX_MAP_Y + 4) {
+            if(onLoad) onLoad()
+            return
+        }
 
         let name = this._name(x, y)
         if(this.editorMode) {

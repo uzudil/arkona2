@@ -115,15 +115,15 @@ export default class {
 
     checkPosition(x, y, z) {
         for(let c of this.info.connect || []) {
-            if (c.src["x"] == x && c.src["y"] == y && c.src["z"] == z) {
-                if(c["test"] && !c.test(this.arkona)) {
+            if (c.x == x && c.y == y && c.z == z) {
+                if(c["allow"] && !c.allow(this.arkona)) {
                     // todo: play 'denined' sound
                     return
                 }
-                return c.dst
+                c.action(this.arkona)
             }
         }
-        return null
+        return
     }
 
     isAllowed(action) {
@@ -144,5 +144,10 @@ export default class {
 
     _getAction(pos, type) {
         return this.info.actions.find(o => o.type == type && o.x == pos[0] && o.y == pos[1] && o.z == pos[2])
+    }
+
+    static isLamplight(mapX, mapY) {
+        let key = "" + mapX + "," + mapY
+        return WORLD[key] && WORLD[key]["lamplight"]
     }
 }
