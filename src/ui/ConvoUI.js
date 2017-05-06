@@ -78,7 +78,7 @@ export default class {
 			this.activeIndex = 0
 			this.npcMessage.text = this.convo.getQuestion(this.arkona)
 			for(let a of this.pcAnswer) a.visible = false
-			let y = 125
+			let y = 115
 			let index = 0
 			for (let i = 0; i < this.convo.answers.length; i++) {
 				if(this.convo.answers[i].eval(this.arkona)) {

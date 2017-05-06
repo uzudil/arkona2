@@ -5,6 +5,16 @@ import * as ELDUN_CONVO from "../convo/eldun"
 import {MONSTERS} from "./Monsters"
 
 export const WORLD = {
+    "1,10": {
+        actions: [
+            {
+                type: "use_object", x: 177, y: 1014, z: 0,
+                // eslint-disable-next-line no-unused-vars
+                allow: (arkona) => true,
+                action: (arkona) => arkona.showOverlay("sign", "Eldun")
+            }
+        ]
+    },
     "2,10": {
         npcs: [
             { creature: "man_blue", x: 252, y: 1019, options: { movement: MOVE_ANCHOR, name: "Arton", convo: ELDUN_CONVO.ARTON } },
@@ -13,7 +23,28 @@ export const WORLD = {
     },
     "3,10": {
         npcs: [
-            { creature: "monk_red", x: 309, y: 1007, z: 7, options: { movement: MOVE_ANCHOR, name: "Marisan of Eldun", convo: ELDUN_CONVO.MARISAN } },
+            { creature: "monk_red", x: 314, y: 1012, z: 7, options: { movement: MOVE_ANCHOR, name: "Marisan of Eldun", convo: ELDUN_CONVO.MARISAN } },
+        ],
+        actions: [
+            {
+                type: "use_object", x: 316, y: 1009, z: 0, allow: (arkona) => arkona.gameState["marisan_key"] == true
+            },
+            {
+                type: "use_object", x: 310, y: 1008, z: 0,
+                allow: (arkona) => arkona.gameState["marisan_key"] == true && arkona.gameState["marisan_purple_tome"] != true,
+                action: (arkona) => {
+                    arkona.gameState["marisan_purple_tome"] = true
+                    arkona.narrate("You carefully inspect the books on this shelf. " +
+                        "After considering many, you pick a large purple tome with ornately gilded lettering. " +
+                        "You can't understand its text but hopefully Marisan can make sense of it.")
+                }
+            },
+            {
+                type: "use_object", x: 318, y: 1015, z: 14,
+                // eslint-disable-next-line no-unused-vars
+                allow: (arkona) => true,
+                action: (arkona) => arkona.showOverlay("raighd")
+            }
         ]
     },
     "2,12": {
@@ -55,6 +86,14 @@ export const WORLD = {
         generators: [
             { x: 180, y: 1096, z: 0, type: MONSTERS.goblin, count: 3 }
         ],
+        actions: [
+            {
+                type: "use_object", x: 155, y: 1133, z: 0,
+                // eslint-disable-next-line no-unused-vars
+                allow: (arkona) => true,
+                action: (arkona) => arkona.showOverlay("sign", "Median")
+            }
+       ]
     },
     "0,12": {
         npcs: [

@@ -307,7 +307,7 @@ export default class extends Phaser.State {
 
     showOverlay(image, message) {
         let overlay = $("#overlay")
-        $("img", overlay).attr("src", "/assets/images/" + image + ".png")
+        $("img", overlay).attr("src", "./assets/images/" + image + ".png")
         $(".text", overlay).text(message ? message : "")
         overlay.show()
         $("#overlay-shadow").show();
