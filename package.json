@@ -9,8 +9,8 @@
     "dev": "webpack",
     "deploy": "webpack --config webpack.production.config.js",
     "test": "standard",
-    "pack": "build --dir",
-    "dist": "build"
+    "pack": "build -mwl --dir",
+    "dist": "build -mwl"
   },
   "license": "ISC",
   "devDependencies": {
@@ -63,6 +63,8 @@
         }
       ]
     },
+    "win": null,
+    "nsis": null,
     "linux": {
       "target": [
         "AppImage",
