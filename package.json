@@ -1,13 +1,12 @@
 {
   "name": "arkona2",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "retro isometric rpg",
   "author": "Gabor Torok <cctorok@yahoo.com>",
   "repository": "https://github.com/uzudil/arkona2",
   "main": "start.js",
   "scripts": {
     "dev": "webpack",
-    "deploy": "webpack --config webpack.production.config.js",
     "test": "standard",
     "pack": "build -mwl --dir",
     "dist": "build -mwl"

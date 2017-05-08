@@ -49,7 +49,8 @@ export const START_X = 347
 export const START_Y = 1176
 export const PLAYER_CREATURE_NAME = "man"
 export const GODMODE = false
-export const DEBUG_MODE = true
+let args = window.require("electron").remote.process.argv
+export const DEBUG_MODE = args && args.length > 0 && args[0].indexOf("node_modules") >= 0
 
 export const NO_BLEND = 0
 export const BLENDS = 1
