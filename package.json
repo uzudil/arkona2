@@ -8,7 +8,9 @@
   "scripts": {
     "dev": "webpack",
     "deploy": "webpack --config webpack.production.config.js",
-    "test": "standard"
+    "test": "standard",
+    "pack": "build --dir",
+    "dist": "build"
   },
   "license": "ISC",
   "devDependencies": {
@@ -20,6 +22,7 @@
     "electron": "~1.6.2",
     "electron-connect": "~0.6.1",
     "electron-connect-webpack-plugin": "^0.1.1",
+    "electron-builder": "^17.3.1",
     "eslint": "^3.15.0",
     "eslint-loader": "^1.6.1",
     "expose-loader": "^0.7.1",
@@ -31,5 +34,40 @@
     "jquery": "^3.1.1",
     "phaser": "^2.6.2",
     "stats.js": "^0.17.0"
+  },
+  "build": {
+    "appId": "com.arkona.Arkona",
+    "productName": "Arkona II",
+    "copyright": "Copyright © 2017 Gabor Torok.",
+    "files": [
+      "out",
+      "node_modules",
+      "index.html",
+      "start.js",
+      "assets"
+    ],
+    "mac": {
+      "category": "public.app-category.games"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    }
   }
 }
