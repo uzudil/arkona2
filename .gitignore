@@ -7,4 +7,4 @@ arkona.iml
 npm-debug.log
 assets/world
 out.png
-
+out/
