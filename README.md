@@ -2,7 +2,7 @@ Arkona II is the open-world, desktop app version of <a href="https://github.com/
 
 # Releases
 
-<i>distros to be posted soon</i>
+Binaries for windows, mac and linux: https://github.com/uzudil/arkona2/releases
 
 # Developer
 
