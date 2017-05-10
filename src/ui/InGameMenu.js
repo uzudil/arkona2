@@ -1,4 +1,5 @@
 import $ from "jquery"
+import {restart} from "../utils"
 
 export default class {
 	constructor(arkona) {
@@ -19,7 +20,7 @@ export default class {
 		})
 		$("#resume-game").click(() => this.hide())
 		$("#quit-game").click(() => {
-			if(confirm("Quite game. Are you sure?")) location.reload()
+			if(confirm("Quite game. Are you sure?")) restart()
 		})
 	}
 

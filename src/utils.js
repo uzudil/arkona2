@@ -25,15 +25,58 @@ export const inRect = (x, y, rx, ry, rw, rh) => {
 	return x >= rx && x < rx + rw && y >= ry && y < ry + rh
 }
 
+const fs = window.require("fs")
+const path = window.require("path")
+const os = window.require("os")
+const electron = window.require("electron")
+import {WIDTH, HEIGHT} from "./config/Config"
+
+function settingsFile() {
+    let dir = path.join(os.homedir(), ".arkona")
+    if(!fs.existsSync(dir)) {
+        fs.mkdirSync(dir)
+    }
+    return path.join(dir, "settings.json")
+}
 
 export function loadSettings() {
-	let o = window.localStorage["arkona"]
-	if (o) return JSON.parse(o)
-	else return {}
+    try {
+        let str = fs.readFileSync(settingsFile())
+        return str ? JSON.parse(str) : {}
+    } catch(exc) {
+        console.warn(exc)
+        return {}
+    }
 }
 
 export function saveSettings(o) {
-	window.localStorage["arkona"] = JSON.stringify(o)
+    fs.writeFileSync(settingsFile(), JSON.stringify(o))
+}
+
+export function exit() {
+    electron.remote.app.quit(0)
+}
+
+export function restart(hard) {
+    if(hard) {
+        electron.remote.app.relaunch()
+        electron.remote.app.quit(0)
+    } else {
+        document.location.reload()
+    }
+}
+
+export function scaleGame(game) {
+    // adjust game size and scale to electron window
+    let [w, h] = electron.remote.getCurrentWindow().getSize()
+    // note that this will create a distorted aspect ratio in an attempt to fill the screen
+    if(w > h) {
+        let nw = h/HEIGHT * WIDTH
+        game.scale.setGameSize(nw, h)
+        game.world.scale.set(h/HEIGHT, h/HEIGHT)
+    } else {
+        throw "fixme"
+    }
 }
 
 export const flatten = list => list.reduce(

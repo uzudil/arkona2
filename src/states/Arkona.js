@@ -34,6 +34,7 @@ export default class extends Phaser.State {
 
     create() {
         this.game.stage.backgroundColor = "#000000"
+
         this.gameState = {}
         this.overlayShowing = false
         this.actionQueue = new Queue.Queue(this)
@@ -252,7 +253,7 @@ export default class extends Phaser.State {
 
     static doesSaveGameExist() {
         let dir = path.join(os.homedir(), ".arkona")
-        return fs.existsSync(dir)
+        return fs.existsSync(path.join(dir, "state.json"))
     }
 
     /**

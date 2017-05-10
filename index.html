@@ -53,10 +53,19 @@
     </div>
     <div id="overlay-shadow"></div>
 
-    <div id="options" class="dialog">
+    <div id="options" class="dialog med">
         <div class="title">Options</div>
         <div class="body">
-            <label><input type="checkbox" id="use-webgl"> Use WebGL renderer</label>
+            <div>
+                <b>Video</b>
+                <label><input type="radio" name="resolution" id="res-full"> Fullscreen</label>
+                <label><input type="radio" name="resolution" id="res-1024"> 1024x768</label>
+                <!-- causes flickering... <label><input type="radio" name="resolution" id="res-800"> 800x600</label> -->
+            </div>
+            <div>
+                <b>Options</b>
+                <label><input type="checkbox" id="use-webgl"> Use WebGL renderer</label>
+            </div>
         </div>
         <div class="footer">
             <button id="close-options">Close</button>

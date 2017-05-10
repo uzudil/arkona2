@@ -1,5 +1,5 @@
 import Phaser from "phaser"
-import { centerGameObjects, loadSettings, saveSettings } from "../utils"
+import { centerGameObjects, loadSettings, saveSettings, restart, exit } from "../utils"
 import * as Config from "../config/Config"
 import * as Creatures from "../config/Creatures"
 import * as Vehicles from "../config/Vehicles"
@@ -8,7 +8,9 @@ import Transition from "../ui/Transition"
 import Arkona from "./Arkona"
 import ConvoEditor from "../editor/ConvoEditor"
 
-const MENU_OPTIONS = Config.DEBUG_MODE ? ["New Game", "Load Game", "Options", "Game Editor", "Convo Editor", "Mapper"] : ["New Game", "Load Game", "Options"]
+const MENU_OPTIONS = Config.DEBUG_MODE ?
+    ["New Game", "Load Game", "Options", "Exit", "Game Editor", "Convo Editor", "Mapper"] :
+    ["New Game", "Load Game", "Options", "Exit"]
 
 export default class extends Phaser.State {
     init() {
@@ -54,13 +56,18 @@ export default class extends Phaser.State {
     create() {
         $("#close-options").click(()=>{
             $(".dialog").hide()
-            window.location.reload()
+            restart()
         });
         $("#use-webgl").click(()=>{
             let o = loadSettings()
             o["use_webgl"] = $("#use-webgl").is(":checked")
             saveSettings(o)
         });
+        $("input[name='resolution']").click(() => {
+            let o = loadSettings()
+            o["resolution"] = $("input[name='resolution']:checked").attr("id")
+            saveSettings(o)
+        })
 
         this.loaderBg.kill()
         this.loaderBar.kill()
@@ -128,17 +135,27 @@ export default class extends Phaser.State {
                     this.state.start("Arkona", true, false, { loadGame: true })
                 })
             } else if(this.menuIndex == 2) {
-                let o = loadSettings()
-                $("#use-webgl").attr("checked", o["use_webgl"])
+                this.constructor.updateSettings(loadSettings())
                 $("#options").show();
             } else if(this.menuIndex == 3) {
+                if(confirm("Exit game?")) {
+                    exit()
+                }
+            } else if(this.menuIndex == 4) {
                 $("#right-menu").show()
                 this.state.start("Editor")
-            } else if(this.menuIndex == 4) {
-                new ConvoEditor();
             } else if(this.menuIndex == 5) {
+                new ConvoEditor();
+            } else if(this.menuIndex == 6) {
                 this.state.start("Mapper")
             }
         }
+    }
+
+    static updateSettings(o) {
+        $("#use-webgl").attr("checked", o["use_webgl"])
+        let res = o["resolution"] || "res-1024"
+        $("input[name='resolution']").attr("checked", false)
+        $("#" + res).attr("checked", true)
     }
 }

@@ -14,11 +14,17 @@ import MapperState from "./states/Mapper"
 
 import * as Config from "./config/Config"
 
+// electron has to be included like this: https://github.com/electron/electron/issues/7300
+const electron = window.require("electron")
+
 class Game extends Phaser.Game {
 
 	constructor() {
 		let o = loadSettings()
-		// set to Phaser.AUTO for webgl (this will result in more fan noise)
+
+        electron.remote.getCurrentWindow().setFullScreen(o["resolution"] == "res-full")
+
+        // set to Phaser.AUTO for webgl (this will result in more fan noise)
 		super(Config.WIDTH, Config.HEIGHT, o["use_webgl"] ? Phaser.AUTO : Phaser.CANVAS, "content", null)
 		$("#palette").height((Config.HEIGHT - 46) + "px")
 

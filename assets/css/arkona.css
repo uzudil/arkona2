@@ -13,7 +13,6 @@ body {
 }
 
 #content {
-    float: left;
 }
 
 #menu {
@@ -95,6 +94,13 @@ body {
     font-family: "Trade Winds";
 }
 
+.dialog.med {
+    width: 400px;
+    height: 300px;
+    margin-left: -200px;
+    margin-top: -150px;
+}
+
 .dialog.big {
     width: 500px;
     height: 400px;
@@ -116,6 +122,10 @@ body {
     height: 108px;
     color: #888;
     background: #352545;
+}
+
+.dialog.med .body {
+    height: 158px;
 }
 
 .dialog .footer {
@@ -240,4 +250,9 @@ body {
 .convo-answer {
     font-style: italic;
     color: darkslateblue;
+}
+
+canvas {
+    display : block;
+    margin : auto;
 }
