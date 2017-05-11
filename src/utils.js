@@ -69,13 +69,12 @@ export function restart(hard) {
 export function scaleGame(game) {
     // adjust game size and scale to electron window
     let [w, h] = electron.remote.getCurrentWindow().getSize()
-    // note that this will create a distorted aspect ratio in an attempt to fill the screen
+    // scale game to window size
+    game.scale.scaleMode = 4
     if(w > h) {
-        let nw = h/HEIGHT * WIDTH
-        game.scale.setGameSize(nw, h)
-        game.world.scale.set(h/HEIGHT, h/HEIGHT)
+        game.scale.setUserScale(h/HEIGHT, h/HEIGHT)
     } else {
-        throw "fixme"
+        game.scale.setUserScale(w/WIDTH, w/WIDTH)
     }
 }
 
