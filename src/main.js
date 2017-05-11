@@ -1,7 +1,6 @@
 import "pixi"
 import "p2"
 import Phaser from "phaser"
-import $ from "jquery"
 import { loadSettings, flatten } from "./utils"
 
 import {LEVELS} from "./config/Levels"
@@ -34,7 +33,6 @@ class Game extends Phaser.Game {
 
         // set to Phaser.AUTO for webgl (this will result in more fan noise)
         super(Config.WIDTH, Config.HEIGHT, o["use_webgl"] ? Phaser.AUTO : Phaser.CANVAS, "content", null)
-        $("#palette").height((Config.HEIGHT - 46) + "px")
 
         try {
             this.checkConvos()
@@ -42,6 +40,7 @@ class Game extends Phaser.Game {
             console.error(exc);
         }
 
+        this.state.add("Init", InitState, false)
         this.state.add("Boot", BootState, false)
         this.state.add("Splash", SplashState, false)
         this.state.add("Editor", EditorState, false)
@@ -49,7 +48,7 @@ class Game extends Phaser.Game {
         this.state.add("Arkona", ArkonaState, false)
         this.state.add("Mapper", MapperState, false)
 
-        this.state.start("Boot")
+        this.state.start("Init")
     }
 
     // some basic sanity checking of the convos
@@ -58,6 +57,25 @@ class Game extends Phaser.Game {
             .filter(npc => npc["options"] && npc.options["convo"])
             .map(npc => npc.options.convo)
             .forEach(convo => convo.validate())
+    }
+}
+
+class InitState extends Phaser.State {
+    init() {
+        // get the actual size (fullscreen doesn't respect set size)
+        let [w, h] = electron.remote.getCurrentWindow().getSize()
+
+        // adjust game size and scale to electron window
+        this.game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE
+        if(w > h) {
+            this.game.scale.setUserScale(h/Config.HEIGHT, h/Config.HEIGHT)
+        } else {
+            this.game.scale.setUserScale(w/Config.WIDTH, w/Config.WIDTH)
+        }
+    }
+
+    render() {
+        this.state.start("Boot")
     }
 }
 

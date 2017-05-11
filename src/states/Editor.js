@@ -17,6 +17,7 @@ export default class extends Phaser.State {
     preload() {
         // adjust canvas
         $("#content").css("float", "left")
+        $("#palette").height((Config.HEIGHT - 46) + "px")
 
         // make window bigger
         electron.remote.getCurrentWindow().setSize(1400, 800)

@@ -2,7 +2,6 @@ import Phaser from "phaser"
 import WebFont from "webfontloader"
 import {FONT_FAMILY, ARKONA_FONT_FAMILY} from "../config/Config"
 import * as Filters from "../world/Filters"
-import {scaleGame} from "../utils"
 
 export default class extends Phaser.State {
     init() {
@@ -30,9 +29,6 @@ export default class extends Phaser.State {
         this.load.image("loaderBar", "./assets/images/loader-bar.png")
 
         Filters.preload(this)
-
-        window.boot = this
-        scaleGame(this.game)
     }
 
     render() {

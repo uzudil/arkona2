@@ -29,7 +29,6 @@ const fs = window.require("fs")
 const path = window.require("path")
 const os = window.require("os")
 const electron = window.require("electron")
-import {WIDTH, HEIGHT} from "./config/Config"
 
 function settingsFile() {
     let dir = path.join(os.homedir(), ".arkona")
@@ -63,18 +62,6 @@ export function restart(hard) {
         electron.remote.app.quit(0)
     } else {
         document.location.reload()
-    }
-}
-
-export function scaleGame(game) {
-    // adjust game size and scale to electron window
-    let [w, h] = electron.remote.getCurrentWindow().getSize()
-    // scale game to window size
-    game.scale.scaleMode = 4
-    if(w > h) {
-        game.scale.setUserScale(h/HEIGHT, h/HEIGHT)
-    } else {
-        game.scale.setUserScale(w/WIDTH, w/WIDTH)
     }
 }
 
