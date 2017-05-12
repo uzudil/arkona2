@@ -23,7 +23,11 @@ class Game extends Phaser.Game {
 
         // set the electron window size
         let win = electron.remote.getCurrentWindow()
-        win.setFullScreen(o["resolution"] == "res-full")
+
+        // set fullscreen mode if requested or as the default for a packaged app
+        win.setFullScreen(o["resolution"] == "res-full" || (o["resolution"] == null && !Config.DEBUG_MODE))
+
+        // 800x600 windowed mode
         let w = Config.WIDTH, h = Config.HEIGHT
         if(o["resolution"] == "res-800") {
             w = 800
@@ -62,7 +66,7 @@ class Game extends Phaser.Game {
 
 class InitState extends Phaser.State {
     init() {
-        // get the actual size (fullscreen doesn't respect set size)
+        // get the actual size (fullscreen doesn't respect set size, it will return something like 1900x1200)
         let [w, h] = electron.remote.getCurrentWindow().getSize()
 
         // adjust game size and scale to electron window

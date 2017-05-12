@@ -49,7 +49,18 @@ export default class {
 			m.setShadow(1, 1, "rgba(0,0,0,1)", 2)
 			m.setTextBounds(15, 5, Config.WIDTH - 20, Config.CONVO_HEIGHT - 10)
 			m.visible = false
-			this.pcAnswer.push(m)
+            m.inputEnabled = true
+            m.index = i
+            m.events.onInputDown.add((sprite) => {
+                this.activeIndex = sprite.index
+                this.showActiveAnswer()
+                this.select()
+            }, this)
+            m.events.onInputOver.add((sprite) => {
+                this.activeIndex = sprite.index
+                this.showActiveAnswer()
+            }, this)
+            this.pcAnswer.push(m)
 		}
 
 		this.npcName = arkona.game.add.text(5, 0, "", {

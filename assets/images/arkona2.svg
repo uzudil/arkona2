@@ -17,7 +17,7 @@
    inkscape:version="0.91 r13725"
    viewBox="0 0 1024 1200"
    sodipodi:docname="arkona2.svg"
-   inkscape:export-filename="/Users/gtorok/github/arkona/assets/images/arkona2.png"
+   inkscape:export-filename="/Users/gtorok/github/arkona2/assets/images/arkona2.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <sodipodi:namedview
@@ -28,8 +28,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.9999996"
-     inkscape:cx="145.45562"
-     inkscape:cy="746.43029"
+     inkscape:cx="509.27046"
+     inkscape:cy="982.36673"
      inkscape:current-layer="layer1"
      inkscape:document-units="px"
      showgrid="true"
@@ -44,7 +44,7 @@
      inkscape:window-maximized="0"
      inkscape:snap-path-clip="false"
      showguides="false"
-     inkscape:snap-global="true">
+     inkscape:snap-global="false">
     <inkscape:grid
        type="xygrid"
        id="grid4195"
@@ -794,7 +794,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -12883,5 +12883,54 @@
        d="m 68,448.43385 40.29041,40.29041"
        id="path7002"
        inkscape:connector-curvature="0" />
+    <g
+       id="g7055"
+       transform="matrix(0.72666435,0,0,0.72666435,148.35034,58.987542)">
+      <path
+         sodipodi:nodetypes="cccccccc"
+         inkscape:connector-curvature="0"
+         id="path7027"
+         d="m 501.62503,184.62495 15.25,37.125 9.8125,-9.8125 10.8125,10.8125 6,-6 -9.625,-9.625 9.125,-9.125 z"
+         style="fill:#b8a909;fill-opacity:1;stroke:#493110;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path7033"
+         d="m 505.87503,188.74995 11.625,27.5 8.75,-8.5 11.125,12.125 3,-2.875 -10.375,-11.5 7,-6.5 z"
+         style="fill:#c8be58;fill-opacity:1;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <g
+         transform="matrix(1.0967742,0,0,1.0577778,-48.931457,-10.883887)"
+         id="g7041">
+        <path
+           style="fill:#e2dda8;fill-opacity:1;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 505.62503,188.37495 12.875,14.75 18.125,13.375 z"
+           id="path7037"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:#9d9008;fill-opacity:1;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 506.12503,188.37495 29.875,27.125 -13,-15 z"
+           id="path7039"
+           inkscape:connector-curvature="0" />
+      </g>
+      <path
+         inkscape:connector-curvature="0"
+         id="path7045"
+         d="m 522.75003,200.37495 16.75,-1.875 -14.5,4.125 z"
+         style="fill:#9d9008;fill-opacity:1;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path7049"
+         d="m 539.62503,198.99995 -17.375,4.75 2.625,2.375 z"
+         style="fill:#e2dda8;fill-opacity:1;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path7051"
+         d="m 523.87503,206.49995 -6.375,12.125 4.375,-14.125 z"
+         style="fill:#e2dda8;fill-opacity:1;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path7053"
+         d="m 517.25003,217.87495 4.125,-12.875 -1.75,-1 -0.75,-1 z"
+         style="fill:#9d9008;fill-opacity:1;stroke:none;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
   </g>
 </svg>

@@ -24,6 +24,7 @@ export const BLOCKS = {
 	"road": { size: [4, 4, 0], pos: [368, 208], dim: [64, 64], options: { blendLevel: 1 } },
 	"scree": { size: [4, 4, 0], pos: [448, 0], dim: [64, 64], options: { blendLevel: 1, sprites: 2 } },
 	"lava": { size: [4, 4, 0], pos: [416, 192], dim: [64, 64], options: { blendLevel: 2, sprites: 2, filter: "lava"  } },
+    "cursor.arrow": { size: [2, 2, 0], pos: [512, 192], dim: [32, 32], options: { sprites: 2 } },
 	"room.floor.stone": { size: [4, 4, 0], pos: [288, 208], dim: [64, 64], options: { blendLevel: 0 } },
 
 	// edges

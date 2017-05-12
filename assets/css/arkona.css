@@ -3,8 +3,11 @@ body {
     margin: 0;
     padding: 0;
     background: #000;
-    cursor: url('/assets/cursor.ico'), default;
     overflow: hidden;
+}
+
+* {
+    cursor: url('../images/cursor.png'), default;
 }
 
 .clearfix {

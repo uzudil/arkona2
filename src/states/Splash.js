@@ -11,6 +11,8 @@ import ConvoEditor from "../editor/ConvoEditor"
 const MENU_OPTIONS = Config.DEBUG_MODE ?
     ["New Game", "Load Game", "Options", "Exit", "Game Editor", "Convo Editor", "Mapper"] :
     ["New Game", "Load Game", "Options", "Exit"]
+const MENU_STYLE = {font: "bold 20px " + Config.FONT_FAMILY, fill: "#888"}
+const MENU_ACTIVE_STYLE = {font: "bold 22px " + Config.FONT_FAMILY, fill: "#6ac"}
 
 export default class extends Phaser.State {
     init() {
@@ -73,7 +75,6 @@ export default class extends Phaser.State {
         this.loaderBar.kill()
         this.game.stage.backgroundColor = "#000000";
 
-
         this.back = this.add.image(512, 400, "back")
         this.back.anchor.setTo(0.5, 0.5)
 
@@ -83,9 +84,24 @@ export default class extends Phaser.State {
         var style = {font: "bold 20px " + Config.FONT_FAMILY, fill: "#888"};
         this.menu = []
         let y = 230
-        for(let s of MENU_OPTIONS) {
+        for(let index = 0; index < MENU_OPTIONS.length; index++) {
+            let s = MENU_OPTIONS[index]
             let m = this.game.add.text(750, y, s, style)
             m.anchor.setTo(0.5, 0.5)
+            m.inputEnabled = true
+            m.index = index
+
+            m.events.onInputDown.add((sprite) => {
+                this.menuAction(sprite.index)
+            }, this)
+            m.events.onInputOver.add((sprite) => {
+                this.menuIndex = sprite.index
+                this.updateMenu()
+            }, this)
+            // m.events.onInputOut.add((sprite) => {
+            //     sprite.setStyle(MENU_STYLE)
+            // }, this)
+
             this.menu.push(m)
             y += 35
         }
@@ -98,15 +114,14 @@ export default class extends Phaser.State {
 
         this.cursors = this.game.input.keyboard.createCursorKeys()
         this.space = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
+        this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
 
         this.transition = new Transition()
     }
 
     updateMenu() {
-        var style = {font: "bold 20px " + Config.FONT_FAMILY, fill: "#888"};
-        var activeStyle = {font: "bold 22px " + Config.FONT_FAMILY, fill: "#6ac"};
         for(let i = 0; i < this.menu.length; i++) {
-            this.menu[i].setStyle(i == this.menuIndex ? activeStyle : style)
+            this.menu[i].setStyle(i == this.menuIndex ? MENU_ACTIVE_STYLE : MENU_STYLE)
         }
     }
 
@@ -121,34 +136,44 @@ export default class extends Phaser.State {
         else if (this.menuIndex < 0) this.menuIndex = this.menu.length - 1
         if (oldMenu != this.menuIndex) this.updateMenu()
 
-        if(this.space.justDown) {
-            if(this.menuIndex == 0) {
+        if(this.space.justDown || this.enter.justDown) {
+            this.menuAction(this.menuIndex)
+        }
+    }
+
+    menuAction(menuIndex) {
+        switch(menuIndex) {
+            case 0:
                 // new game
                 if(!Arkona.doesSaveGameExist() || confirm("Delete saved game?")) {
                     this.transition.fadeIn(() => {
                         this.state.start("Intro")
                     })
                 }
-            } else if(this.menuIndex == 1) {
+                break
+            case 1:
                 // load game
                 this.transition.fadeIn(() => {
                     this.state.start("Arkona", true, false, { loadGame: true })
                 })
-            } else if(this.menuIndex == 2) {
+                break
+            case 2:
                 this.constructor.updateSettings(loadSettings())
                 $("#options").show();
-            } else if(this.menuIndex == 3) {
-                if(confirm("Exit game?")) {
-                    exit()
-                }
-            } else if(this.menuIndex == 4) {
+                break
+            case 3:
+                if(confirm("Exit game?")) exit()
+                break
+            case 4:
                 $("#right-menu").show()
                 this.state.start("Editor")
-            } else if(this.menuIndex == 5) {
+                break
+            case 5:
                 new ConvoEditor();
-            } else if(this.menuIndex == 6) {
+                break
+            case 6:
                 this.state.start("Mapper")
-            }
+                break
         }
     }
 
