@@ -282,19 +282,42 @@ export default class extends Phaser.State {
         if(this.forest.justDown) {
             for(let x = 0; x < Config.MAP_SIZE; x++) {
                 for(let y = 0; y < Config.MAP_SIZE; y++) {
-                    if(Math.random() > 0.95) {
-                        if(Math.random() < 0.75) {
-                            this._drawTree(x, y);
-                        } else {
-                            let name = getRandom([...Array(3).fill("bush"), ...Array(3).fill("dead"), ...Array(3).fill("rock.1"), ...Array(3).fill("rock.2"), "trunk.broken"])
-                            let block = BLOCKS[name]
-                            if(this.blocks.isFree(x, y, 0, ...block.size) && this.blocks.isFloorSafeForShape(x, y, name)) {
-                                this.blocks.clear(name, x, y, 0)
-                                this.blocks.set(name, x, y, 0)
-                            }
-                        }
+                    if(this.forest.shiftKey) {
+                        this.drawDesertAt(x, y)
+                    } else {
+                        this.drawForestAt(x, y)
                     }
                 }
+            }
+        }
+    }
+
+    drawForestAt(x, y) {
+        if(Math.random() > 0.95) {
+            if(Math.random() < 0.75) {
+                this._drawTree(x, y);
+            } else {
+                let name = getRandom([...Array(3).fill("bush"), ...Array(3).fill("dead"), ...Array(3).fill("rock.1"), ...Array(3).fill("rock.2"), "trunk.broken"])
+                let block = BLOCKS[name]
+                if(this.blocks.isFree(x, y, 0, ...block.size) && this.blocks.isFloorSafeForShape(x, y, name)) {
+                    this.blocks.clear(name, x, y, 0)
+                    this.blocks.set(name, x, y, 0)
+                }
+            }
+        }
+    }
+
+    drawDesertAt(x, y) {
+        if(Math.random() > 0.96) {
+            let name = getRandom([...Array(3).fill("cactus.1"), ...Array(3).fill("cactus.2"), ...Array(3).fill("cactus.3"),
+                ...Array(2).fill("rock.1"), ...Array(2).fill("rock.2"),
+                "dead",
+                "bones.1",
+                "dunes"])
+            let block = BLOCKS[name]
+            if(this.blocks.isFree(x, y, 0, ...block.size) && this.blocks.getFloor(x, y) == "sand") {
+                this.blocks.clear(name, x, y, 0)
+                this.blocks.set(name, x, y, 0)
             }
         }
     }
@@ -304,7 +327,7 @@ export default class extends Phaser.State {
             let gx = ((x / Config.GROUND_TILE_W) | 0) * Config.GROUND_TILE_W
             let gy = ((y / Config.GROUND_TILE_H) | 0) * Config.GROUND_TILE_H
             let check = this.blocks.getFloor(gx, gy)
-            this._drawFlood(gx, gy, check, {}, this.flood.ctrlKey ? "grass" : "water")
+            this._drawFlood(gx, gy, check, {}, this.flood.ctrlKey ? "grass" : (this.flood.shiftKey ? "sand" : "water" ))
         }
     }
 

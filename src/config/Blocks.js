@@ -12,6 +12,13 @@ export const BLOCKS = {
     "rock.1": { size: [2, 2, 2], pos: [192, 0], dim: [32, 32], options: { sprites: 5 } },
     "rock.2": { size: [2, 2, 4], pos: [240, 0], dim: [32, 48], options: { sprites: 5 } },
 
+    // desert
+    "cactus.1": { size: [4, 2, 6], pos: [0, 128], dim: [48, 96], options: { sprites: 5 } },
+    "cactus.2": { size: [3, 2, 6], pos: [64, 128], dim: [40, 96], options: { sprites: 5 } },
+    "cactus.3": { size: [4, 2, 6], pos: [128, 128], dim: [48, 96], options: { sprites: 5 } },
+    "bones.1": { size: [3, 2, 2], pos: [192, 128], dim: [40, 56], options: { sprites: 5 } },
+    "dunes": { size: [6, 4, 4], pos: [256, 128], dim: [80, 112], options: { sprites: 5 } },
+
 	// floors
 	// blendLevels: 0=no blend, 1=blends into 0, 2=blends into 0 & 1
 	"grass": { size: [4, 4, 0], pos: [96, 0], dim: [64, 64], options: { blendLevel: 0 } },

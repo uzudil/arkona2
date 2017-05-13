@@ -4,10 +4,10 @@ import Transition from "../ui/Transition"
 import Block from "../world/Block"
 import $ from "jquery"
 
-const MINX=14
+const MINX=4
 const MINY=0
-const MAXX=Config.MAX_MAP_X
-const MAXY=9
+const MAXX=11
+const MAXY=6
 
 const ZOOM = 0.25
 

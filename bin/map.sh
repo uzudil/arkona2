@@ -7,16 +7,18 @@ size=272
 ox=7
 oy=4
 
-minx=14
+minx=4
 miny=0
-maxx=21
-maxy=9
+maxx=11
+maxy=6
 
 w=`echo "$maxx*$size" | bc`
 h=`echo "$maxy*$size" | bc`
 
-#echo "image size=$w x $h"
-#convert -size ${w}x${h} canvas:black map.png
+if [ -z map.png ]; then
+    echo "image size=$w x $h"
+    convert -size ${w}x${h} canvas:black map.png
+fi
 
 for ((x=$minx; x < $maxx; x++)); do
     for ((y=$miny; y < $maxy; y++)); do
