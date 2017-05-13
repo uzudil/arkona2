@@ -157,6 +157,8 @@ class Layer {
     toggleHigherThan(z, visible) {
         for(let k in this.world) {
             for(let ii of this.world[k].imageInfos) {
+                let block = BLOCKS[ii.name];
+                if(block.options && block.options.alwaysVisible) continue
                 ii.image.visible = z > 0 && ii.image.gamePos[2] >= z ? visible : true
             }
         }
@@ -599,7 +601,9 @@ export default class {
         this.objectLayer.toggleHigherThan(this.visibleHeight, this.roofVisible)
     }
 
-    getFloor(x, y) {
+    getFloor(worldX, worldY, onGridPos) {
+        let x = onGridPos ? (((worldX/Config.GRID_SIZE)|0)*Config.GRID_SIZE) : worldX
+        let y = onGridPos ? (((worldY/Config.GRID_SIZE)|0)*Config.GRID_SIZE) : worldY
         return this.isInBounds(x, y) ? this.floorLayer.getFloorAt(x, y) : null
     }
 

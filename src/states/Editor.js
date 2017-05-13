@@ -400,17 +400,24 @@ export default class extends Phaser.State {
 
     _drawTree(x, y, unpassable) {
         if(this.blocks.isFree(x, y, 0, 4, 4, 8) && this.blocks.isFloorSafeForShape(x, y, "trunk")) {
-            if(unpassable) {
-                this.blocks.clear("trunk.wide", x, y, 0)
-                this.blocks.set("trunk.wide", x, y, 0)
+            if(this.blocks.getFloor(x, y, true) == "sand") {
+                this.blocks.clear("trunk.palm", x, y, 0)
+                this.blocks.set("trunk.palm", x, y, 0)
+                this.blocks.clear("palm", x + 1, y + 2, 8)
+                this.blocks.set("palm", x + 1, y + 2, 8)
             } else {
-                this.blocks.clear("trunk", x, y, 0)
-                this.blocks.set("trunk", x, y, 0)
-            }
+                if (unpassable) {
+                    this.blocks.clear("trunk.wide", x, y, 0)
+                    this.blocks.set("trunk.wide", x, y, 0)
+                } else {
+                    this.blocks.clear("trunk", x, y, 0)
+                    this.blocks.set("trunk", x, y, 0)
+                }
 
-            let name = getRandom([...Array(4).fill("oak"), ...Array(3).fill("pine"), ...Array(3).fill("pine2"), "brown"])
-            this.blocks.clear(name, x, y, 4)
-            this.blocks.set(name, x, y, 4)
+                let name = getRandom([...Array(4).fill("oak"), ...Array(3).fill("pine"), ...Array(3).fill("pine2"), "brown"])
+                this.blocks.clear(name, x, y, 4)
+                this.blocks.set(name, x, y, 4)
+            }
             this.blocks.sort()
         }
     }

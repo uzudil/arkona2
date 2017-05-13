@@ -1,6 +1,8 @@
 // don't chane the names
 export const BLOCKS = {
 	"trunk": { size: [2, 2, 4], pos: [32, 0], dim: [31, 48] },
+	"trunk.palm": { size: [1, 1, 8], pos: [512, 128], dim: [16, 80], options: { sprites: 5 } },
+	"palm": { size: [6, 6, 1], pos: [544, 128], dim: [64, 72], options: { sprites: 5, alwaysVisible: true } },
 	"trunk.wide": { size: [4, 4, 4], pos: [192, 448], dim: [64, 56] },
 	"brown": { size: [4, 4, 6], pos: [512, 384], dim: [64, 80] },
 	"oak": { size: [4, 4, 6], pos: [384, 384], dim: [64, 80] },
@@ -77,6 +79,8 @@ export const BLOCKS = {
 	"wood.wall.y": { size: [1, 4, 6], pos: [960, 0], dim: [40, 96] },
 	"brick.wall.x": { size: [4, 1, 6], pos: [1024, 0], dim: [40, 96] },
 	"brick.wall.y": { size: [1, 4, 6], pos: [1088, 0], dim: [40, 96] },
+	"adobe.wall.y": { size: [1, 4, 6], pos: [384, 120], dim: [40, 96], options: { sprites: 5 } },
+    "adobe.wall.x": { size: [4, 1, 6], pos: [448, 120], dim: [40, 96], options: { sprites: 5 } },
 
 	// new doors
 	"regular.door.x": { size: [1, 3, 6], pos: [192, 306], dim: [32, 80] },
