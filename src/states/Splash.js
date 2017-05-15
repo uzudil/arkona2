@@ -98,9 +98,6 @@ export default class extends Phaser.State {
                 this.menuIndex = sprite.index
                 this.updateMenu()
             }, this)
-            // m.events.onInputOut.add((sprite) => {
-            //     sprite.setStyle(MENU_STYLE)
-            // }, this)
 
             this.menu.push(m)
             y += 35

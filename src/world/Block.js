@@ -408,20 +408,18 @@ class Layer {
     }
 
     save() {
-        return {
-            name: this.name,
-            world: Object.keys(this.world).
-            filter(k => this.world[k].x >= 0 && this.world[k].x < Config.MAP_SIZE && this.world[k].y >= 0 && this.world[k].y < Config.MAP_SIZE).
-            map(key => {
-                let info = this.world[key]
-                return {
-                    x: info.x,
-                    y: info.y,
-                    z: info.z,
-                    images: info.imageInfos.map(ii => ii.name)
-                }
-            })
-        }
+        let sprites = {}
+        Object.keys(this.world).
+        filter(k => this.world[k].x >= 0 && this.world[k].x < Config.MAP_SIZE && this.world[k].y >= 0 && this.world[k].y < Config.MAP_SIZE).
+        forEach(key => {
+            let info = this.world[key]
+            let pos = (info.z << 24) + (info.x << 12) + (info.y)
+            for(let ii of info.imageInfos) {
+                if(sprites[ii.name]) sprites[ii.name].push(pos)
+                else sprites[ii.name] = [pos]
+            }
+        })
+        return { name: this.name, world: sprites }
     }
 
     deleteMapImages(mapX, mapY) {
@@ -446,35 +444,52 @@ class Layer {
             "INFO from=" + infoSize + " to=" + Object.keys(this.infos).length);
     }
 
-    load(layerInfo, blocks, mapX, mapY) {
-        for(let info of layerInfo.world) {
-            for (let image of info.images) {
-                blocks.set(image,
-                    info.x + mapX * Config.MAP_SIZE,
-                    info.y + mapY * Config.MAP_SIZE,
-                    info.z)
-            }
-        }
+    load(version, layerInfo, blocks, mapX, mapY) {
+        this._loadWorld(version, layerInfo, (name, x, y, z) => {
+            blocks.set(name,
+                x + mapX * Config.MAP_SIZE,
+                y + mapY * Config.MAP_SIZE,
+                z)
+        })
     }
 
-    loadPerimeter(layerInfo, blocks, mapDx, mapDy) {
-        for(let info of layerInfo.world) {
-            for (let image of info.images) {
-                let xsm = info.x < Config.BORDER_SIZE
-                let xbg = info.x >= Config.MAP_SIZE - Config.BORDER_SIZE
-                let ysm = info.y < Config.BORDER_SIZE
-                let ybg = info.y >= Config.MAP_SIZE - Config.BORDER_SIZE
-                if(
-                    (mapDx == 1  && mapDy == 1  && xsm && ysm) ||
-                    (mapDx == -1 && mapDy == 1  && xbg && ysm) ||
-                    (mapDx == -1 && mapDy == -1 && xbg && ybg) ||
-                    (mapDx == 1  && mapDy == -1 && xsm && ybg) ||
-                    (mapDy == 0 && ((mapDx == 1 && xsm) || (mapDx == -1 && xbg))) ||
-                    (mapDx == 0 && ((mapDy == 1 && ysm) || (mapDy == -1 && ybg)))
-                ) {
-                    blocks.set(image, info.x + mapDx * Config.MAP_SIZE, info.y + mapDy * Config.MAP_SIZE, info.z)
+    loadPerimeter(version, layerInfo, blocks, mapDx, mapDy) {
+        this._loadWorld(version, layerInfo, (name, x, y, z) => {
+            let xsm = x < Config.BORDER_SIZE
+            let xbg = x >= Config.MAP_SIZE - Config.BORDER_SIZE
+            let ysm = y < Config.BORDER_SIZE
+            let ybg = y >= Config.MAP_SIZE - Config.BORDER_SIZE
+            if(
+                (mapDx == 1  && mapDy == 1  && xsm && ysm) ||
+                (mapDx == -1 && mapDy == 1  && xbg && ysm) ||
+                (mapDx == -1 && mapDy == -1 && xbg && ybg) ||
+                (mapDx == 1  && mapDy == -1 && xsm && ybg) ||
+                (mapDy == 0 && ((mapDx == 1 && xsm) || (mapDx == -1 && xbg))) ||
+                (mapDx == 0 && ((mapDy == 1 && ysm) || (mapDy == -1 && ybg)))
+            ) {
+                blocks.set(name, x + mapDx * Config.MAP_SIZE, y + mapDy * Config.MAP_SIZE, z)
+            }
+        })
+    }
+
+    _loadWorld(version, layerInfo, callback) {
+        if(version == 1) {
+            for(let info of layerInfo.world) {
+                for (let image of info.images) {
+                    callback(image, info.x, info.y, info.z)
                 }
             }
+        } else if(version == 2) {
+            for(let name in layerInfo.world) {
+                for (let pos of layerInfo.world[name]) {
+                    let z = pos >> 24
+                    let x = (pos >> 12) & 0xfff
+                    let y = pos & 0xfff
+                    callback(name, x, y, z)
+                }
+            }
+        } else {
+            throw "Don't know how to load version " + version
         }
     }
 }
@@ -1134,7 +1149,7 @@ export default class {
             dataType: "json",
             success: (data) => {
                 if(this.editorMode) {
-                    data.layers.forEach(layerInfo => this.layersByName[layerInfo.name].load(layerInfo, this, 0, 0))
+                    data.layers.forEach(layerInfo => this.layersByName[layerInfo.name].load(data.version, layerInfo, this, 0, 0))
                     // load perimeter data
                     if(this.loadPerimeter) {
                         for (let xx = -1; xx <= 1; xx++) {
@@ -1147,7 +1162,7 @@ export default class {
                                     dataType: "json",
                                     success: (data) => {
                                         data.layers.forEach(layerInfo =>
-                                            this.layersByName[layerInfo.name].loadPerimeter(layerInfo, this, xx, yy))
+                                            this.layersByName[layerInfo.name].loadPerimeter(data.version, layerInfo, this, xx, yy))
                                     }
                                 })
                             }
@@ -1155,7 +1170,7 @@ export default class {
                     }
                     this.sort()
                 } else {
-                    data.layers.forEach(layerInfo => this.layersByName[layerInfo.name].load(layerInfo, this, x, y))
+                    data.layers.forEach(layerInfo => this.layersByName[layerInfo.name].load(data.version, layerInfo, this, x, y))
                 }
 
                 if (onLoad) onLoad()

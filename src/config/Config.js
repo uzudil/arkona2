@@ -12,7 +12,7 @@ export const MAX_MAP_X = 21
 export const MAX_MAP_Y = 21
 export const MAX_MAP_CACHE_SIZE = 6
 export const BORDER_SIZE = 16 // how much of the next map to show in the editor?
-export const MAP_VERSION = 1
+export const MAP_VERSION = 2
 export const PLAYER_SPEED = 1.33
 export const DOORS = Object.keys(BLOCKS).filter(name => name.indexOf(".door.") >= 0)
 export const UNSTABLE_FLOORS = [ "water", "bramble", "lava" ]
