@@ -22,6 +22,17 @@ export const CREATURES = {
 		],
 		speed: 2.0
 	},
+	scorpion: {
+		src: "assets/creatures/scorpion.png",
+		dim: [64, 64],
+		blockName: "4x4x4.placeholder",
+		animations: [
+			{ name: "walk", frameCount: 4, dirs: dirsFrom("e") },
+			{ name: "stand", frameCount: 1, dirs: dirsFrom("e") },
+			{ name: "attack", frameCount: 4, dirs: dirsFrom("e") },
+		],
+		speed: 2.0
+	},
 	goblin: {
 		src: "assets/creatures/goblin.png",
 		dim: [64, 64],

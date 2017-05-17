@@ -202,5 +202,31 @@ export const WORLD = {
                 }
             }
         ]
-    }
+    },
+    "9,2": {
+        generators: [
+            { x: 917, y: 243, z: 0, type: MONSTERS.scorpion, count: 3 }
+        ],
+    },
+    "7,2": {
+        generators: [
+            { x: 720, y: 206, z: 0, type: MONSTERS.scorpion, count: 3 }
+        ],
+    },
+    "6,1": {
+        generators: [
+            { x: 608, y: 130, z: 0, type: MONSTERS.scorpion, count: 3 }
+        ],
+    },
+    "7,4": {
+        generators: [
+            { x: 702, y: 417, z: 0, type: MONSTERS.scorpion, count: 3 }
+        ],
+    },
+    "6,3": {
+        generators: [
+            { x: 534, y: 344, z: 0, type: MONSTERS.scorpion, count: 3 }
+        ],
+    },
+
 }

@@ -20,5 +20,15 @@ export const MONSTERS = {
 			health: 30,
 			strength: 8
 		}
+	},
+	scorpion: {
+		creature: "scorpion",
+		speed: 100,
+		animationSpeed: 10,
+		movement: MOVE_ATTACK,
+		alive: {
+			health: 20,
+			strength: 4
+		}
 	}
 }

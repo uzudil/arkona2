@@ -103,15 +103,31 @@ export default class extends Phaser.State {
             if (moving) {
                 let dir = this.getDirFromCursorKeys()
                 if (dir != null) this.actionQueue.add(Queue.MOVE_PLAYER, dir)
+            } else if(this.player.path) {
+                this.actionQueue.add(Queue.MOVE_PLAYER, null)
             }
 
             if (this.t_key.justDown) this.actionQueue.add(Queue.TALK)
             if (this.space.justDown) this.actionQueue.add(Queue.USE_OBJECT)
             if (this.a_key.justDown) this.actionQueue.add(Queue.ATTACK)
 
-            let underMouse = this.getSpriteUnderMouse()
-            if (underMouse && this.game.input.activePointer.justReleased(25)) {
-                this.actionQueue.add(Queue.CLICK, underMouse)
+            if(this.game.input.activePointer.justReleased(25)) {
+                let underMouse = this.getSpriteUnderMouse()
+                if (underMouse) {
+                    this.actionQueue.add(Queue.CLICK, underMouse)
+                } else {
+                    let pos = this.blocks.getAccessiblePosAt(this.player.animatedSprite.sprite, this.game.input.x, this.game.input.y)
+                    console.warn("Clicked pos: ", pos)
+                    if(pos) {
+                        let p = this.blocks.getPath(this.player.animatedSprite.sprite,
+                            this.player.animatedSprite.sprite.gamePos[0], this.player.animatedSprite.sprite.gamePos[1], this.player.animatedSprite.sprite.gamePos[2],
+                            pos[0], pos[1], pos[2])
+                        console.warn("path: ", p)
+                        if(p) {
+                            this.player.path = p
+                        }
+                    }
+                }
             }
 
             // run the actions

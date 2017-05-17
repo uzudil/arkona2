@@ -4,6 +4,9 @@ import ImpreciseSort from "./ImpreciseSort"
 import DAGSort from "./DAGSort"
 import $ from "jquery"
 import * as Filters from "./Filters"
+import {dist3d} from "../utils"
+
+const aStar = window.require("a-star")
 
 function getBlendLevel(block) {
     return block && block.options && block.options["blendLevel"] ? block.options["blendLevel"] : Config.NO_BLEND
@@ -1197,6 +1200,48 @@ export default class {
             if(info && info["imageInfos"] && info.imageInfos.length > 0) return info.imageInfos[0].image
         }
         return null
+    }
+
+    getAccessiblePosAt(sprite, screenX, screenY) {
+        let fromZ = this.visibleHeight > 0 ? this.visibleHeight - 1 : Config.MAX_Z
+        for(let z = fromZ; z >= 0; z--) {
+            let [worldX, worldY, worldZ] = this.toWorldCoords(screenX / this.zoom, (screenY + z * Config.GRID_SIZE) / this.zoom)
+            worldZ = z
+            if(this.isAccessiblePos(sprite, worldX, worldY, worldZ)) {
+                return [worldX, worldY, worldZ]
+            }
+        }
+        return null
+    }
+
+    isAccessiblePos(sprite, worldX, worldY, worldZ) {
+        return this.floorLayer.canMoveTo(sprite, worldX, worldY, worldZ) &&
+            this.objectLayer.canMoveTo(sprite, worldX, worldY, worldZ)
+    }
+
+    getPath(sprite, fromX, fromY, fromZ, toX, toY, toZ) {
+        let result = aStar({
+            start: [fromX, fromY, fromZ],
+            isEnd: (node) => node[0] == toX && node[1] == toY && node[2] == toZ,
+            neighbor: (node) => {
+                let n = []
+                for(let dx = -1; dx <= 1; dx++) {
+                    for(let dy = -1; dy <= 1; dy++) {
+                        for (let dz = -1; dz <= 1; dz++) {
+                            if(dx == 0 && dy == 0 && dz == 0) continue
+                            let newNode = [node[0] + dx, node[1] + dy, node[2] + dz]
+                            if(this.isAccessiblePos(sprite, ...newNode)) n.push(newNode)
+                        }
+                    }
+                }
+                return n
+            },
+            distance: (a, b) => dist3d(...a, ...b),
+            heuristic: (node) => dist3d(...node, toX, toY, toZ),
+            hash: (node) => "" + node[0] + "," + node[1] + "," + node[2],
+            timeout: 200
+        })
+        return result.status == "success" ? result.path : null
     }
 
     highlight(sprite) {
