@@ -40,5 +40,35 @@ export const MONSTERS = {
 			health: 30,
 			strength: 8
 		}
+	},
+	drake: {
+		creature: "drake",
+		speed: 80,
+		animationSpeed: 10,
+		movement: MOVE_ATTACK,
+		alive: {
+			health: 200,
+			strength: 45
+		}
+	},
+	drake_blue: {
+		creature: "drake_blue",
+		speed: 80,
+		animationSpeed: 10,
+		movement: MOVE_ATTACK,
+		alive: {
+			health: 200,
+			strength: 45
+		}
+	},
+	drake_green: {
+		creature: "drake_green",
+		speed: 80,
+		animationSpeed: 10,
+		movement: MOVE_ATTACK,
+		alive: {
+			health: 200,
+			strength: 45
+		}
 	}
 }

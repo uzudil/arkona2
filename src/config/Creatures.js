@@ -44,6 +44,39 @@ export const CREATURES = {
 		],
 		speed: 2.0
 	},
+    drake: {
+        src: "assets/creatures/drake.png",
+        dim: [128, 128],
+        blockName: "8x8x8.placeholder",
+        animations: [
+            { name: "walk", frameCount: 4, dirs: dirsFrom("e") },
+            { name: "stand", frameCount: 1, dirs: dirsFrom("e") },
+            { name: "attack", frameCount: 4, dirs: dirsFrom("e") },
+        ],
+        speed: 2.0
+    },
+    drake_blue: {
+        src: "assets/creatures/drake_blue.png",
+        dim: [128, 128],
+        blockName: "8x8x8.placeholder",
+        animations: [
+            { name: "walk", frameCount: 4, dirs: dirsFrom("e") },
+            { name: "stand", frameCount: 1, dirs: dirsFrom("e") },
+            { name: "attack", frameCount: 4, dirs: dirsFrom("e") },
+        ],
+        speed: 2.0
+    },
+    drake_green: {
+        src: "assets/creatures/drake_green.png",
+        dim: [128, 128],
+        blockName: "8x8x8.placeholder",
+        animations: [
+            { name: "walk", frameCount: 4, dirs: dirsFrom("e") },
+            { name: "stand", frameCount: 1, dirs: dirsFrom("e") },
+            { name: "attack", frameCount: 4, dirs: dirsFrom("e") },
+        ],
+        speed: 2.0
+    },
 	goblin: {
 		src: "assets/creatures/goblin.png",
 		dim: [64, 64],
