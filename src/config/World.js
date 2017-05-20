@@ -1,11 +1,46 @@
-import {MOVE_ANCHOR} from "./Config"
+import {MOVE_ANCHOR, MOVE_NEAR_PLAYER} from "./Config"
 import * as FARM_CONVO from "../convo/farm"
 import * as MEDIAN_CONVO from "../convo/median"
 import * as ELDUN_CONVO from "../convo/eldun"
 import * as ARCHIVES_CONVO from "../convo/archives"
+import * as DRAGONS_CONVO from "../convo/dragons"
+import * as VOLN_CONVO from "../convo/voln"
 import {MONSTERS} from "./Monsters"
 
 export const WORLD = {
+    "1,4": {
+        npcs: [
+            { creature: "woman_brown", x: 103, y: 464, options: { movement: MOVE_ANCHOR, name: "Farmer Rhee", convo: VOLN_CONVO.RHEE } },
+            { creature: "woman_brown", x: 103, y: 411, options: { movement: MOVE_ANCHOR, name: "Vernon", convo: VOLN_CONVO.VERNON } },
+            { creature: "woman", x: 147, y: 392, options: { movement: MOVE_ANCHOR, name: "Kat", convo: VOLN_CONVO.KAT } },
+            { creature: "woman", x: 134, y: 434, options: { movement: MOVE_ANCHOR, name: "Niso", convo: VOLN_CONVO.NISO } },
+            { creature: "cow", x: 150, y: 427, options: { convo: FARM_CONVO.COW } },
+            { creature: "cow", x: 133, y: 397, options: { convo: FARM_CONVO.COW } },
+            { creature: "man_blue", x: 173, y: 390, options: { movement: MOVE_NEAR_PLAYER, name: "Sgt Travor", convo: VOLN_CONVO.TRAVOR } },
+            { creature: "man_yellow", x: 167, y: 398, options: { movement: MOVE_ANCHOR, name: "Prenor", convo: VOLN_CONVO.COMMON } },
+            { creature: "woman_brown", x: 150, y: 395, options: { movement: MOVE_ANCHOR, name: "Clanis", convo: VOLN_CONVO.COMMON } },
+        ]
+    },
+    "0,4": {
+        npcs: [
+            { creature: "monk_blue", x: 33, y: 424, options: { movement: MOVE_ANCHOR, name: "The hermit", convo: VOLN_CONVO.HERMIT } }
+        ]
+    },
+    "2,4": {
+        npcs: [
+            { creature: "man_yellow", x: 227, y: 474, options: { movement: MOVE_ANCHOR, name: "Hiso", convo: VOLN_CONVO.HISO } },
+            { creature: "man_blue", x: 234, y: 417, z: 7, options: { movement: MOVE_ANCHOR, name: "Mayor Gratt", convo: VOLN_CONVO.MAYOR } },
+            { creature: "man_yellow", x: 203, y: 467, options: { movement: MOVE_ANCHOR, name: "Encat", convo: VOLN_CONVO.ENCAT } },
+            { creature: "man_blue", x: 262, y: 400, options: { movement: MOVE_ANCHOR, name: "Eris", convo: VOLN_CONVO.COMMON } },
+            { creature: "man_yellow", x: 245, y: 391, options: { movement: MOVE_ANCHOR, name: "Staln", convo: VOLN_CONVO.COMMON } },
+            { creature: "woman", x: 203, y: 394, options: { movement: MOVE_ANCHOR, name: "Manitt", convo: VOLN_CONVO.COMMON } },
+        ]
+    },
+    "0,10": {
+        npcs: [
+            { creature: "drake", x: 78, y: 1036, options: { movement: MOVE_ANCHOR, name: "Aggroxzu", convo: DRAGONS_CONVO.AGGROX } }
+        ]
+    },
     "1,10": {
         actions: [
             {

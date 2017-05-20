@@ -1,7 +1,7 @@
 import Convo from "./Convo"
 
 // eslint-disable-next-line no-unused-vars
-const COMMON = new Convo("Our town of Voln has stood here for near a millennia!", "VOLN_COMMON")
+export const COMMON = new Convo("Our town of Voln has stood here for near a millennia!", "VOLN_COMMON")
     .answer("Tell me what lies to the north.",
         new Convo("Hast thou not heard of the Raighd to the north? Our town is all that stops its chaos from running wild over all of Arkona!")
             .answer("What is this Raighd?",
