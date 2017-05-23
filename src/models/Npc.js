@@ -4,6 +4,12 @@ import * as Creatures from "../config/Creatures"
 import AnimatedSprite from "../world/Animation"
 import Alive from "./Alive"
 
+const SPEEDS = {
+    "slow": 0.01,
+    "normal": 0.05,
+    "fast": 0.1
+}
+
 export default class {
 
     constructor(arkona, x, y, z, options, creatureName) {
@@ -17,6 +23,7 @@ export default class {
         this.options = options || {}
         this.dir = options["dir"] || Config.DIR_N
         this.stopClock = null
+        this.moveClock = Date.now() + Config.MOVE_TIME
         this.creatureName = creatureName
         this.info = Creatures.CREATURES[creatureName]
         this.animatedSprite = new AnimatedSprite(arkona.game, creatureName, arkona.blocks, x, y, z, this.info.animations, this.info.blockName)
@@ -105,11 +112,10 @@ export default class {
         if(this.options.movement == Config.MOVE_NEAR_PLAYER && this.distToPlayer < Config.MID_DIST) return false;
 
         // anchor stops near the player
-        let probability = 9.7
         if(this.arkona.player.animatedSprite && this.distToPlayer < Config.NEAR_DIST) {
-            probability = 1
+            this.moveClock = 0
         }
-        return !this._isStopped() && Math.random() * 10 >= probability
+        return !this._isStopped() && (Date.now() >= this.moveClock)
     }
 
     isNearPlayer() {
@@ -126,11 +132,17 @@ export default class {
 
     _stop() {
         this.stopClock = Date.now()
+        this.moveClock = Date.now() + Config.STOP_TIME + Config.MOVE_TIME * (0.5 + Math.random() * 0.5)
         this._turnToPlayer()
     }
 
+    _speed() {
+        return SPEEDS[this.info.speed || "normal"]
+    }
+
+
     _takeStep() {
-        let [nx, ny, nz] = this.arkona.moveInDir(this.x, this.y, this.z, this.dir, this.info.speed)
+        let [nx, ny, nz] = this.arkona.moveInDir(this.x, this.y, this.z, this.dir, this._speed())
         if(this.x == nx && this.y == ny) {
             this.animatedSprite.setAnimation("stand", this.dir)
             return true

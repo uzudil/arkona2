@@ -5,13 +5,15 @@ export default class {
 		this.arkona = arkona
 		this.info = info
 		this.generated = []
+        this.lastTime = null
 	}
 
 	update() {
 		// - only create 1 per call
 		// - only if generator location is off-screen
-		if(this.getCount() > this.generated.length && !this.isOnScreen()) {
-			console.warn("Generating " + this.info.type.creature + " at " + this.info.x + "," + this.info.y + "," + this.info.z)
+		if(this._generateNow()) {
+            console.warn("Generating " + this.info.type.creature + " at " + this.info.x + "," + this.info.y + "," + this.info.z)
+            this.lastTime = Date.now()
             let section = this.arkona.sectionAt(this.info.x, this.info.y)
             if(section) {
                 let monster = this.info.type
@@ -37,6 +39,12 @@ export default class {
             }
 		}
 	}
+
+	_generateNow() {
+        return (this.lastTime == null || Date.now() - this.lastTime > Math.random() * 15000 + 10000) &&
+            this.getCount() > this.generated.length &&
+            !this.isOnScreen()
+    }
 
 	remove(npc) {
 		let idx = this.generated.indexOf(npc)

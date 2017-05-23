@@ -93,11 +93,15 @@ export default class extends Phaser.State {
             this.damages.update()
 
             // assemble the actions
+            let npcs = []
+            let generators = []
             for(let key in this.sections) {
                 let section = this.sections[key]
-                if(section.npcs) this.actionQueue.add(Queue.MOVE_NPC, section.npcs.filter(npc => npc.isVisible()))
-                if(section.generators) this.actionQueue.add(Queue.GENERATORS, section.generators)
+                if(section.npcs) section.npcs.filter(npc => npc.isVisible()).forEach(npc => npcs.push(npc))
+                if(section.generators) section.generators.forEach(g => generators.push(g))
             }
+            if(npcs.length > 0) this.actionQueue.add(Queue.MOVE_NPC, npcs)
+            if(generators.length > 0) this.actionQueue.add(Queue.GENERATORS, generators)
 
             let moving = this.isCursorKeyDown()
             if (moving) {
@@ -361,10 +365,13 @@ export default class extends Phaser.State {
 
     // move along a direction vector
     moveInDir(x, y, z, dir, speed) {
-        let d = this.game.time.elapsedMS / (60 * speed)
+        // run at 100% speed at 60fps (16.666 ms/frame)
+        // if game runs slower, increase speed of movement
+        let d = (this.game.time.elapsedMS * speed) / 16.666
         // smooth movement, fallback to a delta of 1 if can't maintain fps
         let dx = Math.max(-1, Math.min(1, Config.MOVE_DELTA[dir][0] * d))
         let dy = Math.max(-1, Math.min(1, Config.MOVE_DELTA[dir][1] * d))
+        // console.warn("*** " + this.game.time.elapsedMS + " ms, d=" + dx. toFixed(2) + ", " + dy.toFixed(2))
         return [x + dx, y + dy, z]
     }
 

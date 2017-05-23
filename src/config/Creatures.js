@@ -9,7 +9,7 @@ export const CREATURES = {
 			{ name: "walk", frameCount: 4, dirs: dirsFrom("s") },
 			{ name: "stand", frameCount: 1, dirs: dirsFrom("sw") },
 		],
-		speed: 2.5
+		speed: "slow"
 	},
 	man: {
 		src: "assets/creatures/man.png",
@@ -19,8 +19,7 @@ export const CREATURES = {
 			{ name: "walk", frameCount: 4, dirs: dirsFrom("e") },
 			{ name: "stand", frameCount: 1, dirs: dirsFrom("se") },
 			{ name: "attack", frameCount: 1, dirs: dirsFrom("e") },
-		],
-		speed: 2.0
+		]
 	},
 	scorpion: {
 		src: "assets/creatures/scorpion.png",
@@ -30,8 +29,7 @@ export const CREATURES = {
 			{ name: "walk", frameCount: 4, dirs: dirsFrom("e") },
 			{ name: "stand", frameCount: 1, dirs: dirsFrom("e") },
 			{ name: "attack", frameCount: 4, dirs: dirsFrom("e") },
-		],
-		speed: 2.0
+		]
 	},
 	scorpion_large: {
 		src: "assets/creatures/scorpion2.png",
@@ -41,8 +39,7 @@ export const CREATURES = {
 			{ name: "walk", frameCount: 4, dirs: dirsFrom("e") },
 			{ name: "stand", frameCount: 1, dirs: dirsFrom("e") },
 			{ name: "attack", frameCount: 4, dirs: dirsFrom("e") },
-		],
-		speed: 2.0
+		]
 	},
     drake: {
         src: "assets/creatures/drake.png",
@@ -52,8 +49,7 @@ export const CREATURES = {
             { name: "walk", frameCount: 4, dirs: dirsFrom("e") },
             { name: "stand", frameCount: 1, dirs: dirsFrom("e") },
             { name: "attack", frameCount: 4, dirs: dirsFrom("e") },
-        ],
-        speed: 2.0
+        ]
     },
     drake_blue: {
         src: "assets/creatures/drake_blue.png",
@@ -63,8 +59,7 @@ export const CREATURES = {
             { name: "walk", frameCount: 4, dirs: dirsFrom("e") },
             { name: "stand", frameCount: 1, dirs: dirsFrom("e") },
             { name: "attack", frameCount: 4, dirs: dirsFrom("e") },
-        ],
-        speed: 2.0
+        ]
     },
     drake_green: {
         src: "assets/creatures/drake_green.png",
@@ -74,8 +69,7 @@ export const CREATURES = {
             { name: "walk", frameCount: 4, dirs: dirsFrom("e") },
             { name: "stand", frameCount: 1, dirs: dirsFrom("e") },
             { name: "attack", frameCount: 4, dirs: dirsFrom("e") },
-        ],
-        speed: 2.0
+        ]
     },
 	goblin: {
 		src: "assets/creatures/goblin.png",
@@ -85,8 +79,7 @@ export const CREATURES = {
 			{ name: "walk", frameCount: 4, dirs: dirsFrom("w") },
 			{ name: "stand", frameCount: 1, dirs: dirsFrom("w") },
 			{ name: "attack", frameCount: 2, dirs: dirsFrom("w") },
-		],
-		speed: 2.5
+		]
 	},
 	ogre: {
 		src: "assets/creatures/ogre.png",
@@ -96,8 +89,7 @@ export const CREATURES = {
 			{ name: "walk", frameCount: 4, dirs: dirsFrom("w") },
 			{ name: "stand", frameCount: 1, dirs: dirsFrom("w") },
 			{ name: "attack", frameCount: 2, dirs: dirsFrom("w") },
-		],
-		speed: 2.5
+		]
 	},
 	man_blue: {
 		src: "assets/creatures/man-blue.png",
@@ -106,8 +98,7 @@ export const CREATURES = {
 		animations: [
 			{ name: "walk", frameCount: 4, dirs: dirsFrom("e") },
 			{ name: "stand", frameCount: 1, dirs: dirsFrom("se") },
-		],
-		speed: 2.0
+		]
 	},
 	man_yellow: {
 		src: "assets/creatures/man-yellow.png",
@@ -116,8 +107,7 @@ export const CREATURES = {
 		animations: [
 			{ name: "walk", frameCount: 4, dirs: dirsFrom("e") },
 			{ name: "stand", frameCount: 1, dirs: dirsFrom("se") },
-		],
-		speed: 2.0
+		]
 	},
 	monk: {
 		src: "assets/creatures/monk.png",
@@ -126,8 +116,7 @@ export const CREATURES = {
 		animations: [
 			{ name: "walk", frameCount: 4, dirs: dirsFrom("s") },
 			{ name: "stand", frameCount: 1, dirs: dirsFrom("s") },
-		],
-		speed: 2.0
+		]
 	},
 	monk_blue: {
 		src: "assets/creatures/monk-blue.png",
@@ -136,8 +125,7 @@ export const CREATURES = {
 		animations: [
 			{ name: "walk", frameCount: 4, dirs: dirsFrom("s") },
 			{ name: "stand", frameCount: 1, dirs: dirsFrom("s") },
-		],
-		speed: 2.0
+		]
 	},
 	monk_red: {
 		src: "assets/creatures/monk-red.png",
@@ -146,8 +134,7 @@ export const CREATURES = {
 		animations: [
 			{ name: "walk", frameCount: 4, dirs: dirsFrom("s") },
 			{ name: "stand", frameCount: 1, dirs: dirsFrom("s") },
-		],
-		speed: 2.0
+		]
 	},
 	woman: {
 		src: "assets/creatures/woman.png",
@@ -156,8 +143,7 @@ export const CREATURES = {
 		animations: [
 			{ name: "walk", frameCount: 4, dirs: dirsFrom("e") },
 			{ name: "stand", frameCount: 1, dirs: dirsFrom("se") },
-		],
-		speed: 2.0
+		]
 	},
 	woman_brown: {
 		src: "assets/creatures/woman.brown.png",
@@ -166,7 +152,6 @@ export const CREATURES = {
 		animations: [
 			{ name: "walk", frameCount: 4, dirs: dirsFrom("e") },
 			{ name: "stand", frameCount: 1, dirs: dirsFrom("se") },
-		],
-		speed: 2.0
+		]
 	}
 }

@@ -32,6 +32,9 @@ class Game extends Phaser.Game {
         if(o["resolution"] == "res-800") {
             w = 800
             h = 600
+        } else if(o["resolution"] == "res-400") {
+            w = 400
+            h = 300
         }
         win.setSize(w, h)
 
