@@ -9,7 +9,9 @@ export const GROUND_TILE_H = BLOCKS["grass"].size[1]
 export const GRID_SIZE = 8
 export const MAP_SIZE = 96
 export const MAX_MAP_X = 21
-export const MAX_MAP_Y = 21
+export const MAX_MAP_Y = 20
+export const TOTAL_MAP_X = MAX_MAP_X * MAP_SIZE
+export const TOTAL_MAP_Y = MAX_MAP_Y * MAP_SIZE
 export const MAX_MAP_CACHE_SIZE = 6
 export const BORDER_SIZE = 16 // how much of the next map to show in the editor?
 export const MAP_VERSION = 2
@@ -67,6 +69,10 @@ export const MOVE_DELTA = {
 	se: [0.71, 0.71],
 	sw: [-0.71, 0.71],
 	ne: [0.71, -0.71],
+}
+
+export function isOverland(x, y) {
+    return x >= 0 && y >= 0 && x < TOTAL_MAP_X && y < TOTAL_MAP_Y
 }
 
 export function getRandomDir() {

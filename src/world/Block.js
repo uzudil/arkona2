@@ -558,6 +558,20 @@ export default class {
 
         }
 
+        // a generic sea to show at the edge of the world
+        let world = []
+        for(let x = 0; x < Config.MAP_SIZE; x += Config.GRID_SIZE/2) {
+            for(let y = 0; y < Config.MAP_SIZE; y += Config.GRID_SIZE/2) {
+                world.push({x: x, y: y, z: 0, images: ["water"]})
+            }
+        }
+        this.SEA_MAP = {
+            version: 1,
+            layers: [
+                { name: "floor", world: world }
+            ]
+        }
+
         this.highlightedSprite = null
     }
 
@@ -1082,17 +1096,21 @@ export default class {
     }
 
     loadXY(x, y, onLoad, onError) {
-        if(x < 0 || y < 0 || x >= Config.MAX_MAP_X + 4 || y >= Config.MAX_MAP_Y + 4) {
-            if(onLoad) onLoad()
-            return
-        }
-
         let name = this._name(x, y)
         if(this.editorMode) {
+            if(x < 0 || y < 0 || x >= Config.MAX_MAP_X + 4 || y >= Config.MAX_MAP_Y + 4) {
+                if(onLoad) onLoad()
+                return
+            }
             this._load(name, x, y, () => {
                 if(onLoad) onLoad()
             }, onError)
         } else {
+            if(x < 0 || y < 0 || x >= Config.MAX_MAP_X + 4 || y >= Config.MAX_MAP_Y + 4) {
+                this.SEA_MAP.layers.forEach(layerInfo => this.layersByName[layerInfo.name].load(this.SEA_MAP.version, layerInfo, this, x, y))
+                if(onLoad) onLoad()
+                return
+            }
             if (this.cache[name] == null) {
 
                 // delete oldest maps
@@ -1181,6 +1199,10 @@ export default class {
             error: (error) => {
                 console.warn("Error loading " + name + ":", error)
                 if (onError) onError(error)
+                else {
+                    this.SEA_MAP.layers.forEach(layerInfo => this.layersByName[layerInfo.name].load(this.SEA_MAP.version, layerInfo, this, x, y))
+                    if (onLoad) onLoad()
+                }
             }
         })
 

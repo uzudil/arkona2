@@ -35,6 +35,9 @@ export default class {
         let creatureInfo = Creatures.CREATURES[Config.PLAYER_CREATURE_NAME]
         if(this.animatedSprite) {
             this.arkona.blocks.forceMoveTo(this.animatedSprite.sprite, startX, startY, startZ)
+            if(this.ship) {
+                this.arkona.blocks.forceMoveTo(this.ship, startX, startY, startZ)
+            }
         } else {
             this.animatedSprite = new AnimatedSprite(
                 this.arkona.game,
@@ -107,7 +110,14 @@ export default class {
                     if (this.arkona.blocks.moveShipTo(this.ship, nx, ny, true) ||
                         this.arkona.blocks.moveShipTo(this.ship, nx, oy, true) ||
                         this.arkona.blocks.moveShipTo(this.ship, ox, ny, true)) {
-                        this._shipMoved(dir)
+                        if(!Config.isOverland(this.ship.gamePos[0], this.ship.gamePos[1])) {
+                            console.warn("calling wrap around")
+                            this.arkona.wrapAroundWorld(this.ship, dir, () => {
+                                this._shipMoved(dir)
+                            })
+                        } else {
+                            this._shipMoved(dir)
+                        }
                         return true
                     }
                 }

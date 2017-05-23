@@ -229,6 +229,19 @@ export default class extends Phaser.State {
         return dir
     }
 
+    wrapAroundWorld(sprite, dir, onLoad) {
+        let [x, y, z] = sprite.gamePos
+        let [ox, oy] = [x, y]
+        if(x < 0) x = Config.TOTAL_MAP_X + x
+        if(y < 0) y = Config.TOTAL_MAP_Y + y
+        if(x >= Config.TOTAL_MAP_X) x -= Config.TOTAL_MAP_X
+        if(y >= Config.TOTAL_MAP_Y) y -= Config.TOTAL_MAP_Y
+        if(x != ox || y != oy) {
+            console.warn("teleport around: from " + ox + "," + oy + " to " + x + "," + y)
+            this.teleport(x, y, z, dir, onLoad)
+        }
+    }
+
     checkMapBoundary(px, py, onLoad) {
         let mx = (px / Config.MAP_SIZE)|0
         let my = (py / Config.MAP_SIZE)|0
