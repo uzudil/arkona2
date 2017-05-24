@@ -8,6 +8,11 @@ import {dist3d} from "../utils"
 
 const aStar = window.require("a-star")
 
+export function isRoof(name) {
+    let block = BLOCKS[name];
+    return block["options"] && block.options["roof"]
+}
+
 function getBlendLevel(block) {
     return block && block.options && block.options["blendLevel"] ? block.options["blendLevel"] : Config.NO_BLEND
 }
@@ -171,8 +176,7 @@ class Layer {
         for(let z = worldZ; z < Config.MAX_Z; z++) {
             let info = this.infos[_key(worldX, worldY, z)]
             if(info && info.imageInfos.find(ii => {
-                let block = BLOCKS[ii.name];
-                return block["options"] && block.options["roof"]
+                return isRoof(ii.name)
             })) {
                 return true
             }
@@ -1036,8 +1040,8 @@ export default class {
         let worldY = (sy - 10 - sx) / 2
         let worldX = sx + worldY
         return [
-            (worldX)|0,
-            (worldY)|0,
+            Math.round(worldX),
+            Math.round(worldY),
             0
         ]
     }
@@ -1216,7 +1220,7 @@ export default class {
         // try the object layer
         let fromZ = this.visibleHeight > 0 ? this.visibleHeight - 1 : Config.MAX_Z
         for(let z = fromZ; z >= 0; z--) {
-            let [worldX, worldY, worldZ] = this.toWorldCoords(screenX / this.zoom, (screenY + z * Config.GRID_SIZE) / this.zoom)
+            let [worldX, worldY, worldZ] = this.toWorldCoords(screenX / this.zoom, (screenY + z * Math.sqrt(2) * Config.GRID_SIZE) / this.zoom)
             worldZ = z
             let info = this.objectLayer.infos[_key(worldX, worldY, worldZ)]
             if(info && info["imageInfos"] && info.imageInfos.length > 0) return info.imageInfos[0].image
@@ -1224,24 +1228,28 @@ export default class {
         return null
     }
 
-    getAccessiblePosAt(sprite, screenX, screenY) {
+    getAccessiblePosAt(sprite, screenX, screenY, isOnLand) {
         let fromZ = this.visibleHeight > 0 ? this.visibleHeight - 1 : Config.MAX_Z
         for(let z = fromZ; z >= 0; z--) {
             let [worldX, worldY, worldZ] = this.toWorldCoords(screenX / this.zoom, (screenY + z * Config.GRID_SIZE) / this.zoom)
             worldZ = z
-            if(this.isAccessiblePos(sprite, worldX, worldY, worldZ)) {
+            if(this.isAccessiblePos(sprite, isOnLand, worldX, worldY, worldZ)) {
                 return [worldX, worldY, worldZ]
             }
         }
         return null
     }
 
-    isAccessiblePos(sprite, worldX, worldY, worldZ) {
-        return this.floorLayer.canMoveTo(sprite, worldX, worldY, worldZ) &&
-            this.objectLayer.canMoveTo(sprite, worldX, worldY, worldZ)
+    isAccessiblePos(sprite, isOnLand, worldX, worldY, worldZ) {
+        let floorOk = worldZ > 0 ||
+            (isOnLand ?
+                this.isFloorSafe(worldX, worldY) :
+                this.floorLayer.isOnWater(sprite, worldX, worldY)
+            )
+        return floorOk && this.objectLayer.canMoveTo(sprite, worldX, worldY, worldZ)
     }
 
-    getPath(sprite, fromX, fromY, fromZ, toX, toY, toZ) {
+    getPath(sprite, fromX, fromY, fromZ, toX, toY, toZ, isOnLand) {
         let result = aStar({
             start: [fromX, fromY, fromZ],
             isEnd: (node) => node[0] == toX && node[1] == toY && node[2] == toZ,
@@ -1251,8 +1259,9 @@ export default class {
                     for(let dy = -1; dy <= 1; dy++) {
                         for (let dz = -1; dz <= 1; dz++) {
                             if(dx == 0 && dy == 0 && dz == 0) continue
+                            if(node[2] + dz < 0) continue
                             let newNode = [node[0] + dx, node[1] + dy, node[2] + dz]
-                            if(this.isAccessiblePos(sprite, ...newNode)) n.push(newNode)
+                            if(this.isAccessiblePos(sprite, isOnLand, ...newNode)) n.push(newNode)
                         }
                     }
                 }

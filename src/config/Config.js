@@ -154,6 +154,16 @@ export function getDirToLocation(fromX, fromY, toX, toY) {
 	return dir
 }
 
+export function getDirByDelta(dx, dy) {
+    if(dy < 0) {
+        return dx < 0 ? DIR_NW : (dx == 0 ? DIR_N : DIR_NE)
+    } else if(dy > 0) {
+        return dx < 0 ? DIR_SW : (dx == 0 ? DIR_S : DIR_SE)
+    } else {
+        return dx < 0 ? DIR_W : DIR_E
+    }
+}
+
 export function dirsFrom(startDir) {
 	let idx = DIRS.indexOf(startDir)
 	let dirs = []

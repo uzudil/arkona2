@@ -115,21 +115,15 @@ export default class extends Phaser.State {
             if (this.space.justDown) this.actionQueue.add(Queue.USE_OBJECT)
             if (this.a_key.justDown) this.actionQueue.add(Queue.ATTACK)
 
+            let spriteUnderMouse = this.getSpriteUnderMouse()
             if(this.game.input.activePointer.justReleased(25)) {
-                let underMouse = this.getSpriteUnderMouse()
-                if (underMouse) {
-                    this.actionQueue.add(Queue.CLICK, underMouse)
+                if (spriteUnderMouse) {
+                    this.actionQueue.add(Queue.CLICK, spriteUnderMouse)
                 } else {
-                    let pos = this.blocks.getAccessiblePosAt(this.player.animatedSprite.sprite, this.game.input.x, this.game.input.y)
+                    let pos = this.blocks.getAccessiblePosAt(this.player.animatedSprite.sprite, this.game.input.x, this.game.input.y, this.player.ship == null)
                     console.warn("Clicked pos: ", pos)
                     if(pos) {
-                        let p = this.blocks.getPath(this.player.animatedSprite.sprite,
-                            this.player.animatedSprite.sprite.gamePos[0], this.player.animatedSprite.sprite.gamePos[1], this.player.animatedSprite.sprite.gamePos[2],
-                            pos[0], pos[1], pos[2])
-                        console.warn("path: ", p)
-                        if(p) {
-                            this.player.path = p
-                        }
+                        this.player.findPathTo(pos)
                     }
                 }
             }
