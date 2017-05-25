@@ -61,6 +61,11 @@ export default class extends Phaser.State {
         this.transition = new Transition()
         this.inGameMenu = new InGameMenu(this)
 
+        // movement cursor
+        this.movementCursor = this.game.add.image(0, 0, "sprites2", "cursor.arrow2")
+        this.movementCursor.visible = false
+        this.movementCursor.anchor.setTo(0.5, 0.5)
+
         if(Config.DEBUG_MODE) {
             this.stats = new Stats();
             this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
@@ -88,6 +93,7 @@ export default class extends Phaser.State {
         this.blocks.update()
 
         if(!this.paused && !this.updateUI()) {
+            this.positionMovementCursor()
 
             // show damage texts
             this.damages.update()
@@ -107,8 +113,8 @@ export default class extends Phaser.State {
             if (moving) {
                 let dir = this.getDirFromCursorKeys()
                 if (dir != null) this.actionQueue.add(Queue.MOVE_PLAYER, dir)
-            } else if(this.player.path) {
-                this.actionQueue.add(Queue.MOVE_PLAYER, null)
+            // } else if(this.player.path) {
+            //     this.actionQueue.add(Queue.MOVE_PLAYER, null)
             }
 
             if (this.t_key.justDown) this.actionQueue.add(Queue.TALK)
@@ -116,17 +122,22 @@ export default class extends Phaser.State {
             if (this.a_key.justDown) this.actionQueue.add(Queue.ATTACK)
 
             let spriteUnderMouse = this.getSpriteUnderMouse()
+            this.showMovementCursor(!spriteUnderMouse)
             if(this.game.input.activePointer.justReleased(25)) {
                 if (spriteUnderMouse) {
                     this.actionQueue.add(Queue.CLICK, spriteUnderMouse)
                 } else {
-                    let pos = this.blocks.getAccessiblePosAt(this.player.animatedSprite.sprite, this.game.input.x, this.game.input.y, this.player.ship == null)
-                    console.warn("Clicked pos: ", pos)
-                    if(pos) {
-                        this.player.findPathTo(pos)
-                    }
+                    // let pos = this.blocks.getAccessiblePosAt(this.player.animatedSprite.sprite, this.game.input.x, this.game.input.y, this.player.ship == null)
+                    // console.warn("Clicked pos: ", pos)
+                    // if(pos) {
+                    //     this.player.findPathTo(pos)
+                    // }
                 }
+            } else if(this.game.input.activePointer.isDown && this.movementCursor.visible) {
+                this.actionQueue.add(Queue.MOVE_PLAYER, this.movementCursor.dir)
+                moving = true
             }
+
 
             // run the actions
             if(this.actionQueue.update()) {
@@ -141,12 +152,43 @@ export default class extends Phaser.State {
             }
 
             this.player.update(moving)
+        } else {
+            this.showMovementCursor(false)
         }
 
         if(this.stats) {
             this.stats.end()
             this.phaserStatsPanel.update(this.world.camera.totalInView, this.stage.currentRenderOrderID)
         }
+    }
+
+    positionMovementCursor() {
+        // position
+        this.movementCursor.position.x = this.game.input.x
+        this.movementCursor.position.y = this.game.input.y
+
+        // size
+        let d = dist3d(Config.WIDTH/2, Config.HEIGHT/2, 0, this.game.input.x, Config.HEIGHT - this.game.input.y, 0)
+        this.movementCursor.scale.setTo(1, 1 + (d / (Config.HEIGHT / 2)) * 2)
+
+        // angle
+        let rot = Config.getRotation(
+            this.game.input.x, Config.HEIGHT - this.game.input.y,
+            Config.WIDTH/2, Config.HEIGHT/2
+        ) - Math.PI/2
+        // need to use a variable here b/c assigning to cursor.angle changes the value to negative
+        let angle = ((Math.round((rot / Math.PI * 180) / 45) * 45) + 360) % 360
+        this.movementCursor.angle = angle
+        this.movementCursor.dir = Config.DIR_ANGLES[angle]
+    }
+
+    getPlayerSpeed() {
+        return Config.PLAYER_SPEED * (this.movementCursor.scale.y/3)
+    }
+
+    showMovementCursor(visible) {
+        $("canvas").toggleClass("no-cursor", visible)
+        this.movementCursor.visible = visible
     }
 
     getSpriteUnderMouse() {

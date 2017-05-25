@@ -30,6 +30,16 @@ export const DIR_W = "w"
 export const DIR_NW = "nw"
 export const DIR_NONE = "none"
 export const DIRS = [DIR_E, DIR_NE, DIR_N, DIR_NW, DIR_W, DIR_SW, DIR_S, DIR_SE]
+export const DIR_ANGLES = {
+    0: DIR_NW,
+    45: DIR_N,
+    90: DIR_NE,
+    135: DIR_E,
+    180: DIR_SE,
+    225: DIR_S,
+    270: DIR_SW,
+    315: DIR_W
+}
 export const MOVE_RANDOM = "random"
 export const MOVE_ANCHOR = "anchor"
 export const MOVE_ATTACK = "attack"
@@ -129,12 +139,20 @@ function _isOfSprite(sprites, key) {
 		(b.options && b.options.sprites == sprites)
 }
 
+export function getRotation(fromX, fromY, toX, toY) {
+    let dx = toX - fromX
+    let dy = fromY - toY
+    return Math.atan2(dy, dx)
+}
+
 export function getDirToLocation(fromX, fromY, toX, toY) {
-	let dx = toX - fromX
-	let dy = fromY - toY
-	let theta = Math.atan2(dy, dx)
-	let angle = theta/Math.PI*180
-	let e = 22.5
+    let theta = getRotation(fromX, fromY, toX, toY)
+    let angle = theta / Math.PI * 180
+    return getDirForAngle(angle)
+}
+
+export function getDirForAngle(angle) {
+    let e = 22.5
 	let oct = angle / e
 	let dir;
 	if((oct >= 0 && oct <= 1) || (oct < 0 && oct > -1)) dir = DIR_E;

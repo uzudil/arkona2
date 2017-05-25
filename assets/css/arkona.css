@@ -10,6 +10,10 @@ body {
     cursor: url('../images/cursor.png'), default;
 }
 
+.no-cursor {
+    cursor: none!important;
+}
+
 .clearfix {
     overflow: auto;
     zoom: 1;
