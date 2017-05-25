@@ -329,19 +329,19 @@ class Layer {
         return maxZ
     }
 
-    canFit(sprite, x, y, z, blockers) {
+    canFit(sprite, x, y, z, blockers, ignoreSprite) {
         return _visit3SS(sprite.name, x, y, z, (xx, yy, zz) => {
             let info = this.infos[_key(xx, yy, zz)]
             if(!info) return true
-            let blocker = info.imageInfos.find((ii) => ii.image != sprite && ii.image.visible)
+            let blocker = info.imageInfos.find((ii) => ii.image != sprite && ii.image != ignoreSprite && ii.image.visible)
             if(!blocker) return true
             if(blockers != null) blockers.push(blocker.image)
             return false
         })
     }
 
-    canMoveTo(sprite, x, y, z, skipSupportCheck, blockers) {
-        let fits = this.canFit(sprite, x, y, z, blockers)
+    canMoveTo(sprite, x, y, z, skipSupportCheck, blockers, ignoreSprite) {
+        let fits = this.canFit(sprite, x, y, z, blockers, ignoreSprite)
         // if it fits, make sure we're standing on something
         if(fits && z > 0 && !skipSupportCheck) {
             // tricky: we want to test that at least one shape below the player can be stood on
@@ -350,7 +350,7 @@ class Layer {
             // Todo: make this code more readable while still performant...
             let allNotFound = _visitSS(sprite.name, x, y, (xx, yy) => {
                 let info = this.infos[_key(xx, yy, z - 1)]
-                let canBeStoodOn = info && info.imageInfos.find((ii) => ii.image != sprite)
+                let canBeStoodOn = info && info.imageInfos.find((ii) => ii.image != sprite && ii.image != ignoreSprite)
                 return !canBeStoodOn;
             })
             if(allNotFound) fits = false
@@ -1228,28 +1228,24 @@ export default class {
         return null
     }
 
-    getAccessiblePosAt(sprite, screenX, screenY, isOnLand) {
+    getAccessiblePosAt(sprite, ignoreSprite, screenX, screenY) {
         let fromZ = this.visibleHeight > 0 ? this.visibleHeight - 1 : Config.MAX_Z
         for(let z = fromZ; z >= 0; z--) {
             let [worldX, worldY, worldZ] = this.toWorldCoords(screenX / this.zoom, (screenY + z * Config.GRID_SIZE) / this.zoom)
             worldZ = z
-            if(this.isAccessiblePos(sprite, isOnLand, worldX, worldY, worldZ)) {
+            if(this.isAccessiblePos(sprite, ignoreSprite, worldX, worldY, worldZ)) {
                 return [worldX, worldY, worldZ]
             }
         }
         return null
     }
 
-    isAccessiblePos(sprite, isOnLand, worldX, worldY, worldZ) {
-        let floorOk = worldZ > 0 ||
-            (isOnLand ?
-                this.isFloorSafe(worldX, worldY) :
-                this.floorLayer.isOnWater(sprite, worldX, worldY)
-            )
-        return floorOk && this.objectLayer.canMoveTo(sprite, worldX, worldY, worldZ)
+    isAccessiblePos(sprite, ignoreSprite, worldX, worldY, worldZ) {
+        let floorOk = worldZ > 0 || this.isFloorSafe(worldX, worldY)
+        return floorOk && this.objectLayer.canMoveTo(sprite, worldX, worldY, worldZ, false, null, ignoreSprite)
     }
 
-    getPath(sprite, fromX, fromY, fromZ, toX, toY, toZ, isOnLand) {
+    getPath(sprite, fromX, fromY, fromZ, toX, toY, toZ, ignoreSprite) {
         let result = aStar({
             start: [fromX, fromY, fromZ],
             isEnd: (node) => node[0] == toX && node[1] == toY && node[2] == toZ,
@@ -1261,7 +1257,7 @@ export default class {
                             if(dx == 0 && dy == 0 && dz == 0) continue
                             if(node[2] + dz < 0) continue
                             let newNode = [node[0] + dx, node[1] + dy, node[2] + dz]
-                            if(this.isAccessiblePos(sprite, isOnLand, ...newNode)) n.push(newNode)
+                            if(this.isAccessiblePos(sprite, ignoreSprite, ...newNode)) n.push(newNode)
                         }
                     }
                 }

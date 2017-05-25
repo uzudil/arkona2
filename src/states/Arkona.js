@@ -113,8 +113,6 @@ export default class extends Phaser.State {
             if (moving) {
                 let dir = this.getDirFromCursorKeys()
                 if (dir != null) this.actionQueue.add(Queue.MOVE_PLAYER, dir)
-            // } else if(this.player.path) {
-            //     this.actionQueue.add(Queue.MOVE_PLAYER, null)
             }
 
             if (this.t_key.justDown) this.actionQueue.add(Queue.TALK)
@@ -126,18 +124,11 @@ export default class extends Phaser.State {
             if(this.game.input.activePointer.justReleased(25)) {
                 if (spriteUnderMouse) {
                     this.actionQueue.add(Queue.CLICK, spriteUnderMouse)
-                } else {
-                    // let pos = this.blocks.getAccessiblePosAt(this.player.animatedSprite.sprite, this.game.input.x, this.game.input.y, this.player.ship == null)
-                    // console.warn("Clicked pos: ", pos)
-                    // if(pos) {
-                    //     this.player.findPathTo(pos)
-                    // }
                 }
             } else if(this.game.input.activePointer.isDown && this.movementCursor.visible) {
                 this.actionQueue.add(Queue.MOVE_PLAYER, this.movementCursor.dir)
                 moving = true
             }
-
 
             // run the actions
             if(this.actionQueue.update()) {

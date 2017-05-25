@@ -11,8 +11,6 @@ export default class {
         this.ship = null
         this.lastDir = null
         this.attacking = null
-        this.pathIndex = 0
-        this.path = null
 
         this.alive = new Alive({
             health: 10,
@@ -26,7 +24,7 @@ export default class {
     update(moving) {
         if(this.isAttacking()) {
             this.setAnimation("attack")
-        } else if (!moving && this.path == null) {
+        } else if (!moving) {
             this.setAnimation("stand")
         }
     }
@@ -105,7 +103,6 @@ export default class {
                 let [ox, oy] = this.ship.floatPos
                 let oz = this.ship.gamePos[2]
                 if (dir) {
-                    // this.clearPath()
                     let [nx, ny] = this.arkona.moveInDir(ox, oy, oz, dir, this.arkona.getPlayerSpeed())
                     if (this.arkona.blocks.moveShipTo(this.ship, nx, ny, true) ||
                         this.arkona.blocks.moveShipTo(this.ship, nx, oy, true) ||
@@ -120,37 +117,12 @@ export default class {
                         }
                         return true
                     }
-                // } else if(this.path) {
-                //     console.warn("path=", this.path, " index=" + this.pathIndex)
-                //     let [px, py, pz] = this.path[this.pathIndex]
-                //     let currPos = this.arkona.player.animatedSprite.sprite.gamePos
-                //     if(Utils.dist3d(currPos[0], currPos[1], currPos[2], px, py, pz) < 0.1) {
-                //         this.pathIndex++
-                //         if(this.pathIndex >= this.path.length) {
-                //             console.warn("Path completed.")
-                //             this.clearPath()
-                //         }
-                //         if (this.arkona.blocks.moveTo(this.ship, px, py, pz, false, true)) {
-                //             this._shipMoved(dir)
-                //             return true
-                //         }
-                //     } else {
-                //         // calculate direction from integers
-                //         let dir = Config.getDirByDelta(px - currPos[0], py - currPos[1])
-                //         // dir = Config.getDirToLocation(currPos[0], currPos[1], px, py)
-                //         let [nx, ny, nz] = this.arkona.moveInDir(ox, oy, oz, dir, this.arkona.getPlayerSpeed())
-                //         if (this.arkona.blocks.moveTo(this.ship, nx, ny, nz, false, true)) {
-                //             this._shipMoved(dir)
-                //             return true
-                //         }
-                //     }
                 }
             } else {
                 let [ox, oy] = this.animatedSprite.sprite.floatPos
                 let oz = this.animatedSprite.sprite.gamePos[2]
                 let blockTestFx = (blocker) => this._blockedBy(blocker)
                 if (dir) {
-                    // this.clearPath()
                     let [nx, ny, nz] = this.arkona.moveInDir(ox, oy, oz, dir, this.arkona.getPlayerSpeed())
                     if (this.arkona.blocks.moveTo(this.animatedSprite.sprite, nx, ny, nz, false, true, blockTestFx) ||
                         this.arkona.blocks.moveTo(this.animatedSprite.sprite, nx, oy, nz, false, true, blockTestFx) ||
@@ -158,55 +130,11 @@ export default class {
                         this._moved(dir)
                         return true
                     }
-                // } else if(this.path) {
-                //     console.warn("path=", this.path, " index=" + this.pathIndex)
-                //     let [px, py, pz] = this.path[this.pathIndex]
-                //     let currPos = this.arkona.player.animatedSprite.sprite.gamePos
-                //     if(Utils.dist3d(currPos[0], currPos[1], currPos[2], px, py, pz) < 0.1) {
-                //         this.pathIndex++
-                //         if(this.pathIndex >= this.path.length) {
-                //             console.warn("Path completed.")
-                //             this.clearPath()
-                //         }
-                //         if (this.arkona.blocks.moveTo(this.animatedSprite.sprite, px, py, pz, false, true, blockTestFx)) {
-                //             this._moved(dir)
-                //             return true
-                //         }
-                //     } else {
-                //         // calculate direction from integers
-                //         let dir = Config.getDirByDelta(px - currPos[0], py - currPos[1])
-                //         // dir = Config.getDirToLocation(currPos[0], currPos[1], px, py)
-                //         let [nx, ny, nz] = this.arkona.moveInDir(ox, oy, oz, dir, this.arkona.getPlayerSpeed())
-                //         if (this.arkona.blocks.moveTo(this.animatedSprite.sprite, nx, ny, nz, false, true, blockTestFx)) {
-                //             this._moved(dir)
-                //             return true
-                //         }
-                //     }
                 }
             }
         }
         return false
     }
-
-    // clearPath() {
-    //     this.pathIndex = 0
-    //     this.path = null
-    // }
-    //
-    // setPath(path) {
-    //     this.path = path
-    //     this.pathIndex = 0
-    // }
-    //
-    // findPathTo(pos) {
-    //     let p = this.arkona.blocks.getPath(this.ship ? this.ship : this.animatedSprite.sprite,
-    //         this.animatedSprite.sprite.gamePos[0], this.animatedSprite.sprite.gamePos[1], this.animatedSprite.sprite.gamePos[2],
-    //         pos[0], pos[1], pos[2],
-    //         this.ship == null)
-    //     if(p) {
-    //         this.setPath(p)
-    //     }
-    // }
 
     _shipMoved(dir) {
         if(dir && this.ship) {

@@ -17,6 +17,11 @@ export default class {
         this.x = x
         this.y = y
         this.z = z
+        this.pathIndex = 0
+        this.path = null
+        this.lastPlayerPos = [0, 0, 0]
+        this.lastPathCheck = 0
+        this.playerMoved = false
         this.anchorX = x
         this.anchorY = y
         this.anchorZ = z
@@ -51,6 +56,11 @@ export default class {
         // precalculate some stuff
         this.distToPlayer = this.arkona.getDistanceToPlayer(this.x, this.y, this.z)
         this.dirToPlayer = this.getDirToPlayer()
+        let playerPos = this.arkona.player.animatedSprite.sprite.gamePos
+        this.playerMoved = !(this.lastPlayerPos[0] == playerPos[0] && this.lastPlayerPos[1] == playerPos[1] && this.lastPlayerPos[2] == playerPos[2])
+        this.lastPlayerPos[0] = playerPos[0]
+        this.lastPlayerPos[1] = playerPos[1]
+        this.lastPlayerPos[2] = playerPos[2]
 
         if(this.options["movement"] == Config.MOVE_ATTACK) {
             this.moveAttack()
@@ -63,22 +73,69 @@ export default class {
         return this.options["monster"]
     }
 
-    // todo: eventually replace with A*
     moveAttack() {
         if(this.arkona.player.animatedSprite) {
-            if(this.dirToPlayer != null) this.dir = this.dirToPlayer
             if(this.distToPlayer <= Config.NEAR_DIST) {
                 // todo: attack instead
                 if(this.alive.attack(this.arkona.player.alive)) {
                     this.animatedSprite.setAnimation("attack", this.dir)
                 }
             } else if(this.distToPlayer <= Config.FAR_DIST) {
-                this._takeStep()
+                if(this.path == null) {
+                    this._findPathToPlayer()
+                } else {
+                    this._followPath()
+                }
             } else {
                 this.moveFriendly()
             }
         } else {
             this.animatedSprite.setAnimation("stand", this.dir)
+        }
+    }
+
+    _findPathToPlayer() {
+        this._findPathTo(...this.arkona.player.animatedSprite.sprite.gamePos)
+    }
+
+    _findPathTo(toX, toY, toZ) {
+        let currPos = this.animatedSprite.sprite.gamePos
+        let p = this.arkona.blocks.getPath(this.animatedSprite.sprite, currPos[0], currPos[1], currPos[2], toX, toY, toZ, this.arkona.player.animatedSprite.sprite)
+        if(p) {
+            this._setPath(p)
+        }
+    }
+
+    _setPath(path) {
+        this.path = path
+        this.pathIndex = 0
+    }
+
+    _clearPath() {
+        this.path = null
+        this.pathIndex = 0
+    }
+
+    _followPath() {
+        let now = Date.now()
+        if(this.playerMoved && now - this.lastPathCheck > 1000) {
+            this.lastPathCheck = now
+            this._findPathToPlayer()
+            return
+        }
+        let [px, py, pz] = this.path[this.pathIndex]
+        let currPos = this.animatedSprite.sprite.gamePos
+        if(dist3d(currPos[0], currPos[1], currPos[2], px, py, pz) < 0.1) {
+            this.pathIndex++
+            if(this.pathIndex >= this.path.length) {
+                this._clearPath()
+            }
+            // force position to waypoint
+            return this._stepTo(px, py, pz)
+        } else {
+            // calculate direction from integers
+            this.dir = Config.getDirByDelta(px - currPos[0], py - currPos[1])
+            return this._takeStep()
         }
     }
 
@@ -143,6 +200,10 @@ export default class {
 
     _takeStep() {
         let [nx, ny, nz] = this.arkona.moveInDir(this.x, this.y, this.z, this.dir, this._speed())
+        return this._stepTo(nx, ny, nz)
+    }
+
+    _stepTo(nx, ny, nz) {
         if(this.x == nx && this.y == ny) {
             this.animatedSprite.setAnimation("stand", this.dir)
             return true
