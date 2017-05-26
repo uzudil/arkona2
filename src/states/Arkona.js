@@ -160,7 +160,7 @@ export default class extends Phaser.State {
 
         // size
         let d = dist3d(Config.WIDTH/2, Config.HEIGHT/2, 0, this.game.input.x, Config.HEIGHT - this.game.input.y, 0)
-        this.movementCursor.scale.setTo(1, 1 + (d / (Config.HEIGHT / 2)) * 2)
+        this.movementCursor.scale.setTo(1, 1 + (d / (Config.HEIGHT / 2)))
 
         // angle
         let rot = Config.getRotation(

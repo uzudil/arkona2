@@ -1,7 +1,7 @@
 import {BLOCKS} from "./Blocks"
 
-export const WIDTH = 1024
-export const HEIGHT = 768
+export var WIDTH = 1024
+export var HEIGHT = 768
 export const NARRATE_HEIGHT = 100
 export const CONVO_HEIGHT = 250
 export const GROUND_TILE_W = BLOCKS["grass"].size[0]
