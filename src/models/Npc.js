@@ -19,7 +19,9 @@ export default class {
         this.z = z
         this.pathIndex = 0
         this.path = null
+        this.lastPathFindTime = 0
         this.lastPlayerPos = [0, 0, 0]
+        this.playerPosAtPathFind = [0, 0, 0]
         this.lastPathCheck = 0
         this.playerMoved = false
         this.anchorX = x
@@ -84,7 +86,11 @@ export default class {
                 if(this.path == null) {
                     this._findPathToPlayer()
                 } else {
-                    this._followPath()
+                    if(!this._followPath()) {
+                        // couldn't move
+                        console.warn("Abandoning path")
+                        this._clearPath()
+                    }
                 }
             } else {
                 this.moveFriendly()
@@ -95,10 +101,23 @@ export default class {
     }
 
     _findPathToPlayer() {
-        this._findPathTo(...this.arkona.player.animatedSprite.sprite.gamePos)
+        let now = Date.now()
+        // if the player hasn't moved since the last path find, don't bother
+        let playerHasntMoved =
+            this.playerPosAtPathFind[0] == this.lastPlayerPos[0] &&
+            this.playerPosAtPathFind[1] == this.lastPlayerPos[1] &&
+            this.playerPosAtPathFind[2] == this.lastPlayerPos[2]
+        if(now - this.lastPathFindTime > 1000 && !playerHasntMoved) {
+            this.lastPathFindTime = now
+            this.playerPosAtPathFind[0] = this.lastPlayerPos[0]
+            this.playerPosAtPathFind[1] = this.lastPlayerPos[1]
+            this.playerPosAtPathFind[2] = this.lastPlayerPos[2]
+            this._findPathTo(...this.arkona.player.animatedSprite.sprite.gamePos)
+        }
     }
 
     _findPathTo(toX, toY, toZ) {
+        console.warn("Finding path")
         let currPos = this.animatedSprite.sprite.gamePos
         let p = this.arkona.blocks.getPath(this.animatedSprite.sprite, currPos[0], currPos[1], currPos[2], toX, toY, toZ, this.arkona.player.animatedSprite.sprite)
         if(p) {
@@ -121,7 +140,7 @@ export default class {
         if(this.playerMoved && now - this.lastPathCheck > 1000) {
             this.lastPathCheck = now
             this._findPathToPlayer()
-            return
+            return true
         }
         let [px, py, pz] = this.path[this.pathIndex]
         let currPos = this.animatedSprite.sprite.gamePos
