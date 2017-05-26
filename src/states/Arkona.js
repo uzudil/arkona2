@@ -43,10 +43,13 @@ export default class extends Phaser.State {
         this.paused = false
         this.lastPos = null
         this.sections = {}
+        this.playerSpeed = 1
+        this.mouseClicked = false
 
         // controls
         this.cursors = this.game.input.keyboard.createCursorKeys()
         this.space = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
+        this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
         this.esc = this.game.input.keyboard.addKey(Phaser.Keyboard.ESC)
         this.t_key = this.game.input.keyboard.addKey(Phaser.Keyboard.T)
         this.a_key = this.game.input.keyboard.addKey(Phaser.Keyboard.A)
@@ -79,8 +82,16 @@ export default class extends Phaser.State {
         // start game
         this.loadGame(this.startFromSavedGame)
 
+        // use jquery click detection - couldn't get phaser's to work...
+        $("body").click(() => this.onMouseClick())
+
         // for debug/hacking
         window.arkona = this
+    }
+
+    onMouseClick() {
+        this.mouseClicked = true
+        setTimeout(() => this.mouseClicked = false, 500)
     }
 
     update() {
@@ -112,7 +123,10 @@ export default class extends Phaser.State {
             let moving = this.isCursorKeyDown()
             if (moving) {
                 let dir = this.getDirFromCursorKeys()
-                if (dir != null) this.actionQueue.add(Queue.MOVE_PLAYER, dir)
+                if (dir != null) {
+                    this.actionQueue.add(Queue.MOVE_PLAYER, dir)
+                    this.playerSpeed = 1
+                }
             }
 
             if (this.t_key.justDown) this.actionQueue.add(Queue.TALK)
@@ -121,12 +135,14 @@ export default class extends Phaser.State {
 
             let spriteUnderMouse = this.getSpriteUnderMouse()
             this.showMovementCursor(!spriteUnderMouse)
-            if(this.game.input.activePointer.justReleased(25)) {
+            if(this.mouseClicked) {
                 if (spriteUnderMouse) {
+                    this.mouseClicked = false // consume click
                     this.actionQueue.add(Queue.CLICK, spriteUnderMouse)
                 }
             } else if(this.game.input.activePointer.isDown && this.movementCursor.visible) {
                 this.actionQueue.add(Queue.MOVE_PLAYER, this.movementCursor.dir)
+                this.playerSpeed = (this.movementCursor.scale.y/3)
                 moving = true
             }
 
@@ -174,7 +190,7 @@ export default class extends Phaser.State {
     }
 
     getPlayerSpeed() {
-        return Config.PLAYER_SPEED * (this.movementCursor.scale.y/3)
+        return Config.PLAYER_SPEED * this.playerSpeed
     }
 
     showMovementCursor(visible) {
@@ -201,7 +217,8 @@ export default class extends Phaser.State {
             }
             return true
         } else if(this.overlayShowing) {
-            if (this.esc.justDown || this.space.justDown) {
+            if (this.esc.justDown || this.space.justDown || this.enter.justDown || this.mouseClicked) {
+                this.mouseClicked = false // consume click
                 this.hideOverlay()
             }
             return true
@@ -213,7 +230,7 @@ export default class extends Phaser.State {
         } else if(this.convoUi.group.visible) {
             if (this.esc.justDown) {
                 this.convoUi.end()
-            } else if (this.space.justDown) {
+            } else if (this.space.justDown || this.enter.justDown) {
                 this.convoUi.select()
             } else if (this.cursors.up.justDown) {
                 this.convoUi.change(-1)
