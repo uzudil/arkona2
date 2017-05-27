@@ -3,8 +3,6 @@ import {MOVE_ATTACK} from "./Config"
 export const MONSTERS = {
 	goblin: {
 		creature: "goblin",
-		speed: 100,
-		animationSpeed: 10,
 		movement: MOVE_ATTACK,
 		alive: {
 			health: 10,
@@ -13,8 +11,6 @@ export const MONSTERS = {
 	},
 	ogre: {
 		creature: "ogre",
-		speed: 80,
-		animationSpeed: 10,
 		movement: MOVE_ATTACK,
 		alive: {
 			health: 30,
@@ -23,8 +19,6 @@ export const MONSTERS = {
 	},
 	scorpion: {
 		creature: "scorpion",
-		speed: 100,
-		animationSpeed: 10,
 		movement: MOVE_ATTACK,
 		alive: {
 			health: 20,
@@ -33,8 +27,6 @@ export const MONSTERS = {
 	},
 	scorpion_large: {
 		creature: "scorpion_large",
-		speed: 80,
-		animationSpeed: 10,
 		movement: MOVE_ATTACK,
 		alive: {
 			health: 30,
@@ -43,8 +35,6 @@ export const MONSTERS = {
 	},
 	drake: {
 		creature: "drake",
-		speed: 80,
-		animationSpeed: 10,
 		movement: MOVE_ATTACK,
 		alive: {
 			health: 200,
@@ -53,8 +43,6 @@ export const MONSTERS = {
 	},
 	drake_blue: {
 		creature: "drake_blue",
-		speed: 80,
-		animationSpeed: 10,
 		movement: MOVE_ATTACK,
 		alive: {
 			health: 200,
@@ -63,12 +51,38 @@ export const MONSTERS = {
 	},
 	drake_green: {
 		creature: "drake_green",
-		speed: 80,
-		animationSpeed: 10,
 		movement: MOVE_ATTACK,
 		alive: {
 			health: 200,
 			strength: 45
 		}
-	}
+	},
+    skeleton: {
+        creature: "skeleton",
+        movement: MOVE_ATTACK,
+        alive: {
+            health: 25,
+            strength: 4,
+            attackWait: 1500
+        }
+    },
+    skeleton_blue: {
+        creature: "skeleton_blue",
+        movement: MOVE_ATTACK,
+        alive: {
+            health: 10,
+            strength: 6,
+            attackWait: 1000
+        }
+    },
+    skeleton_red: {
+        creature: "skeleton_red",
+        movement: MOVE_ATTACK,
+        alive: {
+            health: 10,
+            strength: 8,
+            attackWait: 500
+        }
+    },
+
 }

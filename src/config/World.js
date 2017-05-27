@@ -263,5 +263,10 @@ export const WORLD = {
             { x: 534, y: 344, z: 0, type: MONSTERS.scorpion_large, count: 2 }
         ],
     },
+    "0,2": {
+        generators: [
+            { x: 42, y: 274, z: 0, type: MONSTERS.skeleton, count: 3 }
+        ],
+    },
 
 }

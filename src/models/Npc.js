@@ -99,7 +99,7 @@ export default class {
             this.animatedSprite.setAnimation("stand", this.dir)
         }
     }
-
+    
     _findPathToPlayer() {
         let now = Date.now()
         // if the player hasn't moved since the last path find, don't bother
