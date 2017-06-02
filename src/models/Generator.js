@@ -4,7 +4,7 @@ export default class {
 	constructor(arkona, info) {
 		this.arkona = arkona
 		this.info = info
-		this.generated = []
+		this.generated = 0
         this.lastTime = null
 	}
 
@@ -30,8 +30,8 @@ export default class {
                 if (this.arkona.blocks.moveNear(npc.animatedSprite.sprite, this.info.x, this.info.y, this.info.z, this.getRange())) {
                     console.warn("Starting " + this.info.type.creature + " at " + npc.animatedSprite.sprite.gamePos)
                     npc.setPosFromSprite(npc.animatedSprite.sprite)
-                    this.generated.push(npc)
-                    npc.generator = this
+                    this.generated++
+                    npc.generator = [this.info.x, this.info.y]
                 } else {
                     console.warn("Generator unable to position " + this.info.type.creature + " at " + this.info.x + "," + this.info.y + "," + this.info.z)
                     section.removeNpc(npc)
@@ -42,13 +42,12 @@ export default class {
 
 	_generateNow() {
         return (this.lastTime == null || Date.now() - this.lastTime > Math.random() * 15000 + 10000) &&
-            this.getCount() > this.generated.length &&
+            this.getCount() > this.generated &&
             !this.isOnScreen()
     }
 
-	remove(npc) {
-		let idx = this.generated.indexOf(npc)
-		this.generated.splice(idx, 1)
+	remove() {
+		this.generated--
 	}
 
 	getCount() {

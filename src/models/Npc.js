@@ -244,17 +244,21 @@ export default class {
         } else if((this.options.movement == Config.MOVE_ANCHOR || this.options.movement == Config.MOVE_NEAR_PLAYER) &&
             dist3d(this.anchorX, this.anchorY, this.anchorZ, nx, ny, nz) > Config.MID_DIST) {
             return false
-        } else if(!this._inSameRegion(nx, ny)) {
-            // Disallow npc movement across section boundaries for now.
-            // It complicates memory management.
-            // Npcs are easy to move, but npc-s attached to a generator are harder.
-            return false
         }
-        return this.animatedSprite.moveTo(nx, ny, nz)
-    }
 
-    _inSameRegion(nx, ny) {
-        return this.arkona.sectionAt(this.x|0, this.y|0) == this.arkona.sectionAt(nx|0, ny|0)
+        // hand npc over to new section if needed
+        let currentSection = this.arkona.sectionAt(this.x|0, this.y|0)
+        let newSection = this.arkona.sectionAt(nx|0, ny|0)
+        if(currentSection != newSection) {
+            if(newSection == null) {
+                // npc must be offscreen... just pause
+                return false
+            }
+            currentSection.removeNpcRef(this)
+            newSection.addNpcRef(this)
+        }
+
+        return this.animatedSprite.moveTo(nx, ny, nz)
     }
 
     _changeDir() {

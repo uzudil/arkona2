@@ -67,7 +67,7 @@ export const WORLD = {
             }
         ],
         generators: [
-            { x: 233, y: 1102, z: 0, type: MONSTERS.wolf, count: 3 }
+            { x: 233, y: 1102, z: 0, type: MONSTERS.wolf, count: 1 }
         ],
     },
     "1,21": {
@@ -160,12 +160,12 @@ export const WORLD = {
     },
     "1,12": {
         generators: [
-            { x: 153, y: 1205, z: 0, type: MONSTERS.wolf, count: 3 }
+            { x: 153, y: 1205, z: 0, type: MONSTERS.wolf, count: 2 }
         ],
     },
     "1,11": {
         generators: [
-            { x: 180, y: 1096, z: 0, type: MONSTERS.wolf, count: 3 }
+            { x: 180, y: 1096, z: 0, type: MONSTERS.wolf, count: 1 }
         ],
         actions: [
             {

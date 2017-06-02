@@ -29,12 +29,15 @@ export default class {
 
     unload() {
         // todo: save mutated map section
+
+        // remove npcs (this also removes them from their generator)
+        this.npcs.forEach(npc => this.removeNpc(npc))
     }
 
     addNpc(npcInfo) {
         let [x, y, z] = [npcInfo.x, npcInfo.y, npcInfo["z"] || 0]
         let npc = new Npc(this.arkona, x, y, z, npcInfo["options"], npcInfo.creature)
-        this.npcs.push(npc)
+        this.addNpcRef(npc)
         return npc
     }
 
@@ -45,12 +48,19 @@ export default class {
                 movement: Config.MOVE_ATTACK,
                 monster: monsterInfo.monster
             }, monsterInfo.monster.creature)
-            this.npcs.push(npc)
+            this.addNpcRef(npc)
         }
     }
 
     addGenerator(generatorInfo) {
         this.generators.push(new Generator(this.arkona, generatorInfo))
+    }
+
+    getGeneratorAt(x, y) {
+        for(let g of this.generators) {
+            if(g.info.x == x && g.info.y == y) return g
+        }
+        return null
     }
 
     addVehicle(info) {
@@ -76,11 +86,26 @@ export default class {
 
     removeNpc(npc) {
         if(npc["generator"]) {
-            npc.generator.remove(npc)
+            // find the generator where this creature came from
+            let section = this.arkona.sectionAt(...npc["generator"])
+            if(section) {
+                let generator = section.getGeneratorAt(...npc["generator"])
+                if(generator) {
+                    generator.remove()
+                }
+            }
         }
         this.arkona.blocks.remove(npc.animatedSprite.sprite)
+        this.removeNpcRef(npc)
+    }
+
+    removeNpcRef(npc) {
         let idx = this.npcs.indexOf(npc)
         this.npcs.splice(idx, 1)
+    }
+
+    addNpcRef(npc) {
+        this.npcs.push(npc)
     }
 
     checkBounds(px, py) {
