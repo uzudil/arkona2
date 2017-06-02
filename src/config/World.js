@@ -51,6 +51,51 @@ export const WORLD = {
             }
         ]
     },
+    "2,11": {
+        connect: [
+            {
+                x: 276, y: 1072, z: 0,
+                action: (arkona) => arkona.transitionTo(144, 2044, 0, "s")
+            }
+        ],
+        actions: [
+            {
+                type: "use_object", x: 270, y: 1076, z: 0,
+                // eslint-disable-next-line no-unused-vars
+                allow: (arkona) => true,
+                action: (arkona) => arkona.showOverlay("sign", "Beware of wolves")
+            }
+        ],
+        generators: [
+            { x: 233, y: 1102, z: 0, type: MONSTERS.wolf, count: 3 }
+        ],
+    },
+    "1,21": {
+        lamplight: true,
+        connect: [
+            {
+                x: 144, y: 2033, z: 0,
+                action: (arkona) => arkona.transitionTo(275, 1080, 0, "n")
+            }
+        ],
+        monsters: [
+            { monster: MONSTERS.wolf, pos: [ [121, 2082], [123,2098], [138,2091] ] }
+        ]
+    },
+    "1,22": {
+        lamplight: true,
+        monsters: [
+            { monster: MONSTERS.wolf_red, pos: [ [124,2189] ] },
+            { monster: MONSTERS.wolf, pos: [ [119,2182], [133,2182], [125,2174], [167,2126], [159,2126] ] }
+        ]
+    },
+    "2,21": {
+        lamplight: true,
+        monsters: [
+            { monster: MONSTERS.wolf_blue, pos: [ [205, 2088], [213, 2092] ] },
+            { monster: MONSTERS.wolf, pos: [ [215, 2081], [220, 2087] ] }
+        ]
+    },
     "2,10": {
         npcs: [
             { creature: "man_blue", x: 252, y: 1019, options: { movement: MOVE_ANCHOR, name: "Arton", convo: ELDUN_CONVO.ARTON } },
@@ -115,12 +160,12 @@ export const WORLD = {
     },
     "1,12": {
         generators: [
-            { x: 153, y: 1205, z: 0, type: MONSTERS.goblin, count: 3 }
+            { x: 153, y: 1205, z: 0, type: MONSTERS.wolf, count: 3 }
         ],
     },
     "1,11": {
         generators: [
-            { x: 180, y: 1096, z: 0, type: MONSTERS.goblin, count: 3 }
+            { x: 180, y: 1096, z: 0, type: MONSTERS.wolf, count: 3 }
         ],
         actions: [
             {

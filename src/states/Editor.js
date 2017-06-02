@@ -209,6 +209,18 @@ export default class extends Phaser.State {
         }
     }
 
+    _isOffMap(x, y) {
+        return x < 0 || y < 0 || x >= Config.MAP_SIZE || y >= Config.MAP_SIZE
+    }
+
+    _isFloor(x, y, floorName) {
+        return this.blocks.getFloor(x, y) == floorName
+    }
+
+    _isOffMapOrFloor(x, y, floorName) {
+        return this._isOffMap(x, y) || this._isFloor(x, y, floorName)
+    }
+
     _drawDungeonAt(x, y, seen) {
         if(!seen[x + "." + y]) {
             seen[x + "." + y] = true
@@ -220,14 +232,14 @@ export default class extends Phaser.State {
                 }
             }
 
-            let w = this.blocks.getFloor(x - Config.GROUND_TILE_W, y) == dungeonFloorName
-            let e = this.blocks.getFloor(x + Config.GROUND_TILE_W, y) == dungeonFloorName
-            let n = this.blocks.getFloor(x, y - Config.GROUND_TILE_W) == dungeonFloorName
-            let s = this.blocks.getFloor(x, y + Config.GROUND_TILE_W) == dungeonFloorName
-            let nw = this.blocks.getFloor(x - Config.GROUND_TILE_W, y - Config.GROUND_TILE_W) == dungeonFloorName
-            let ne = this.blocks.getFloor(x + Config.GROUND_TILE_W, y - Config.GROUND_TILE_W) == dungeonFloorName
-            let sw = this.blocks.getFloor(x - Config.GROUND_TILE_W, y + Config.GROUND_TILE_W) == dungeonFloorName
-            let se = this.blocks.getFloor(x + Config.GROUND_TILE_W, y + Config.GROUND_TILE_W) == dungeonFloorName
+            let w = this._isOffMapOrFloor(x - Config.GROUND_TILE_W, y, dungeonFloorName)
+            let e = this._isOffMapOrFloor(x + Config.GROUND_TILE_W, y, dungeonFloorName)
+            let n = this._isOffMapOrFloor(x, y - Config.GROUND_TILE_W, dungeonFloorName)
+            let s = this._isOffMapOrFloor(x, y + Config.GROUND_TILE_W, dungeonFloorName)
+            let nw = this._isOffMapOrFloor(x - Config.GROUND_TILE_W, y - Config.GROUND_TILE_W, dungeonFloorName)
+            let ne = this._isOffMapOrFloor(x + Config.GROUND_TILE_W, y - Config.GROUND_TILE_W, dungeonFloorName)
+            let sw = this._isOffMapOrFloor(x - Config.GROUND_TILE_W, y + Config.GROUND_TILE_W, dungeonFloorName)
+            let se = this._isOffMapOrFloor(x + Config.GROUND_TILE_W, y + Config.GROUND_TILE_W, dungeonFloorName)
 
             // console.warn("pos=" + x + "," + y + " n=" + n + " s=" + s + " e=" + e + " w=" + w + " nw=" + nw + " ne=" + ne + " sw=" + sw + " se=" + se)
 
@@ -266,6 +278,16 @@ export default class extends Phaser.State {
                 this.blocks.set("dungeon.n.3", x - 1, y - Config.GROUND_TILE_H + 1, 0)
                 this.blocks.set("dungeon.e.3", x, y, 0)
             }
+
+            // only recurse if direction is still on map
+            w = this._isFloor(x - Config.GROUND_TILE_W, y, dungeonFloorName)
+            e = this._isFloor(x + Config.GROUND_TILE_W, y, dungeonFloorName)
+            n = this._isFloor(x, y - Config.GROUND_TILE_W, dungeonFloorName)
+            s = this._isFloor(x, y + Config.GROUND_TILE_W, dungeonFloorName)
+            nw = this._isFloor(x - Config.GROUND_TILE_W, y - Config.GROUND_TILE_W, dungeonFloorName)
+            ne = this._isFloor(x + Config.GROUND_TILE_W, y - Config.GROUND_TILE_W, dungeonFloorName)
+            sw = this._isFloor(x - Config.GROUND_TILE_W, y + Config.GROUND_TILE_W, dungeonFloorName)
+            se = this._isFloor(x + Config.GROUND_TILE_W, y + Config.GROUND_TILE_W, dungeonFloorName)
 
             if (w) this._drawDungeonAt(x - Config.GROUND_TILE_W, y, seen)
             if (e) this._drawDungeonAt(x + Config.GROUND_TILE_W, y, seen)

@@ -10,6 +10,6 @@
   },
   "rules": {
     "quotes": ["error", "double"],
-    "no-console": ["error", { "allow": ["warn", "error"] }]
+    "no-console": ["error", { "allow": ["warn", "error", "trace", "log"] }]
   }
 }

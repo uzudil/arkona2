@@ -184,5 +184,38 @@ export const CREATURES = {
 			{ name: "walk", frameCount: 4, dirs: dirsFrom("e") },
 			{ name: "stand", frameCount: 1, dirs: dirsFrom("se") },
 		]
-	}
+	},
+    wolf: {
+        src: "assets/creatures/wolf.png",
+        dim: [64, 64],
+        blockName: "2x2x4.placeholder",
+        animations: [
+            { name: "walk", frameCount: 4, dirs: dirsFrom("e") },
+            { name: "stand", frameCount: 1, dirs: dirsFrom("e") },
+            { name: "attack", frameCount: 2, dirs: dirsFrom("e") },
+        ],
+        speed: "fast"
+    },
+    wolf_blue: {
+        src: "assets/creatures/wolf_blue.png",
+        dim: [64, 64],
+        blockName: "2x2x4.placeholder",
+        animations: [
+            { name: "walk", frameCount: 4, dirs: dirsFrom("e") },
+            { name: "stand", frameCount: 1, dirs: dirsFrom("e") },
+            { name: "attack", frameCount: 2, dirs: dirsFrom("e") },
+        ],
+        speed: "fast"
+    },
+    wolf_red: {
+        src: "assets/creatures/wolf_red.png",
+        dim: [64, 64],
+        blockName: "2x2x4.placeholder",
+        animations: [
+            { name: "walk", frameCount: 4, dirs: dirsFrom("e") },
+            { name: "stand", frameCount: 1, dirs: dirsFrom("e") },
+            { name: "attack", frameCount: 2, dirs: dirsFrom("e") },
+        ],
+        speed: "fast"
+    },
 }

@@ -1,6 +1,5 @@
 import Npc from "./Npc"
-// import * as Levels from "./../config/Levels"
-// import * as Config from "./../config/Config"
+import * as Config from "./../config/Config"
 import Generator from "./Generator"
 import Vehicle from "./Vehicle"
 import {WORLD} from "../config/World"
@@ -41,13 +40,13 @@ export default class {
 
     // eslint-disable-next-line no-unused-vars
     addMonster(monsterInfo) {
-        // for(let pos of monsterInfo.pos) {
-            // let npc = new Npc(this.arkona, pos[0], pos[1], pos[2] || 0, {
-            // 	movement: Config.MOVE_ATTACK,
-            // 	monster: monsterInfo.monster
-            // }, monsterInfo.monster.creature)
-        // 	this.npcs.push(npc)
-        // }
+        for(let pos of monsterInfo.pos) {
+            let npc = new Npc(this.arkona, pos[0], pos[1], pos[2] || 0, {
+                movement: Config.MOVE_ATTACK,
+                monster: monsterInfo.monster
+            }, monsterInfo.monster.creature)
+            this.npcs.push(npc)
+        }
     }
 
     addGenerator(generatorInfo) {

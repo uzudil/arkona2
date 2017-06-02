@@ -84,5 +84,31 @@ export const MONSTERS = {
             attackWait: 500
         }
     },
-
+    wolf: {
+        creature: "wolf",
+        movement: MOVE_ATTACK,
+        alive: {
+            health: 12,
+            strength: 2,
+            attackWait: 1250
+        }
+    },
+    wolf_blue: {
+        creature: "wolf_blue",
+        movement: MOVE_ATTACK,
+        alive: {
+            health: 20,
+            strength: 5,
+            attackWait: 500
+        }
+    },
+    wolf_red: {
+        creature: "wolf_red",
+        movement: MOVE_ATTACK,
+        alive: {
+            health: 40,
+            strength: 8,
+            attackWait: 500
+        }
+    },
 }

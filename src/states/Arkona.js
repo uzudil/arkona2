@@ -319,6 +319,8 @@ export default class extends Phaser.State {
                     }
                 })
             })
+        } else {
+            if(onLoad) onLoad()
         }
     }
 
@@ -375,6 +377,7 @@ export default class extends Phaser.State {
     }
 
     transitionTo(startX, startY, startZ, startDir) {
+        this.loading = true // set this so further movement won't start a transition
         this.transition.fadeIn(() => {
             this.teleport(startX, startY, startZ, startDir)
         })
