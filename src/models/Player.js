@@ -71,6 +71,15 @@ export default class {
         }
     }
 
+    onHeal(amount) {
+        this.arkona.fx.run("heal", this.animatedSprite.sprite)
+        this.arkona.damages.add(-amount,
+            this.animatedSprite.sprite.gamePos[0] - 2,
+            this.animatedSprite.sprite.gamePos[1] - 2,
+            this.animatedSprite.sprite.gamePos[2],
+            true)
+    }
+
     setAnimation(name) {
         if(this.animatedSprite) this.animatedSprite.setAnimation(name, this.lastDir)
     }

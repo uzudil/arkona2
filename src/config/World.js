@@ -96,6 +96,23 @@ export const WORLD = {
             { monster: MONSTERS.wolf, pos: [ [215, 2081], [220, 2087] ] }
         ]
     },
+    "2,22": {
+        actions: [
+            {
+                type: "use_object", x: 230, y: 2143, z: 0,
+                // eslint-disable-next-line no-unused-vars
+                allow: (arkona) => true,
+                action: (arkona) => {
+                    if(!arkona.gameState["powerup-230-2143"]) {
+                        arkona.gameState["powerup-230-2143"] = true
+                        arkona.powerup()
+                    } else {
+                        arkona.heal()
+                    }
+                }
+            }
+        ],
+    },
     "2,10": {
         npcs: [
             { creature: "man_blue", x: 252, y: 1019, options: { movement: MOVE_ANCHOR, name: "Arton", convo: ELDUN_CONVO.ARTON } },

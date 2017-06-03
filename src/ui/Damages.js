@@ -12,9 +12,11 @@ export default class {
 	add(amount, worldX, worldY, worldZ, isPlayerDamage) {
 		let [screenX, screenY] = this.arkona.blocks.toAbsScreenCoords(worldX, worldY, worldZ)
 		let eol = Date.now() + TTL
-		let sprite = this.arkona.game.add.text(screenX, screenY - 50, "" + amount, this._getStyle(isPlayerDamage, eol));
+        let isHeal = amount < 0
+		let sprite = this.arkona.game.add.text(screenX, screenY - 50, "" + Math.abs(amount), this._getStyle(isPlayerDamage, isHeal, eol));
 		sprite.ttl = eol
 		sprite.isPlayerDamage = isPlayerDamage
+        sprite.isHeal = isHeal
 		this.damages.push(sprite)
 	}
 
@@ -28,13 +30,15 @@ export default class {
 				i--
 			} else {
 				sprite.y -= this.arkona.game.time.elapsedMS / (60 * SPEED)
-				sprite.setStyle(this._getStyle(sprite.isPlayerDamage, sprite.ttl))
+				sprite.setStyle(this._getStyle(sprite.isPlayerDamage, sprite.isHeal, sprite.ttl))
 			}
 		}
 	}
 
-	_getStyle(isPlayerDamage, ttl) {
+	_getStyle(isPlayerDamage, isHeal, ttl) {
 		let p = (ttl - Date.now()) / TTL
-		return {font: "bold 32px " + Config.FONT_FAMILY, fill: (isPlayerDamage ? "rgba(255,64,32," + p + ")" : "rgba(255,255,64," + p + ")"), boundsAlignH: "left", boundsAlignV: "top"}
+		return {font: "bold 32px " + Config.FONT_FAMILY,
+            fill: (isHeal ? "rgba(32,255,32," + p + ")" : (isPlayerDamage ? "rgba(255,64,32," + p + ")" : "rgba(255,255,64," + p + ")")),
+            boundsAlignH: "left", boundsAlignV: "top"}
 	}
 }

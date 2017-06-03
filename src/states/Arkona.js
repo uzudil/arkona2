@@ -15,6 +15,7 @@ import Damages from "../ui/Damages"
 import Device from "../ui/Device"
 import { dist3d } from "../utils"
 import Section from "../models/Section"
+import Fx from "../world/Fx"
 
 const fs = window.require("fs")
 const path = window.require("path")
@@ -45,6 +46,7 @@ export default class extends Phaser.State {
         this.sections = {}
         this.playerSpeed = 1
         this.mouseClicked = false
+        this.fx = new Fx(this)
 
         // controls
         this.cursors = this.game.input.keyboard.createCursorKeys()
@@ -102,6 +104,8 @@ export default class extends Phaser.State {
         if(this.loading || !this.player.animatedSprite) return
 
         this.blocks.update()
+
+        this.fx.update()
 
         if(!this.paused && !this.updateUI()) {
             this.positionMovementCursor()
@@ -491,5 +495,14 @@ export default class extends Phaser.State {
             this.sections[key].npcs.forEach(npc => npc.animatedSprite.setAnimation("stand", npc.dir))
         }
         if(this.player.animatedSprite) this.player.animatedSprite.setAnimation("stand", this.player.lastDir)
+    }
+
+    heal() {
+        // this.narrate("You feel suddenly energized!")
+        this.player.alive.heal()
+    }
+
+    powerup() {
+        this.narrate("The disruptor glows and buzzes with approval!")
     }
 }
