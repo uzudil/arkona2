@@ -55,12 +55,14 @@ export default class {
         this.animatedSprite.centerOn()
     }
 
-    onDamage(amount) {
+    onDamage(amount, type) {
         this.arkona.damages.add(amount,
             this.animatedSprite.sprite.gamePos[0] - 2,
             this.animatedSprite.sprite.gamePos[1] - 2,
             this.animatedSprite.sprite.gamePos[2],
             true)
+
+        if(type) this.arkona.fx.run(type, this.animatedSprite.sprite)
     }
 
     onDeath() {

@@ -6,7 +6,8 @@ export const MONSTERS = {
 		movement: MOVE_ATTACK,
 		alive: {
 			health: 10,
-			strength: 2
+			strength: 2,
+            attack: "slash"
 		}
 	},
 	ogre: {
@@ -14,7 +15,8 @@ export const MONSTERS = {
 		movement: MOVE_ATTACK,
 		alive: {
 			health: 30,
-			strength: 8
+			strength: 8,
+            attack: "slash_big"
 		}
 	},
 	scorpion: {
@@ -22,7 +24,8 @@ export const MONSTERS = {
 		movement: MOVE_ATTACK,
 		alive: {
 			health: 20,
-			strength: 4
+			strength: 4,
+            attack: "slash"
 		}
 	},
 	scorpion_large: {
@@ -30,7 +33,8 @@ export const MONSTERS = {
 		movement: MOVE_ATTACK,
 		alive: {
 			health: 30,
-			strength: 8
+			strength: 8,
+            attack: "slash_big"
 		}
 	},
 	drake: {
@@ -38,7 +42,8 @@ export const MONSTERS = {
 		movement: MOVE_ATTACK,
 		alive: {
 			health: 200,
-			strength: 45
+			strength: 45,
+            attack: "fire"
 		}
 	},
 	drake_blue: {
@@ -46,7 +51,8 @@ export const MONSTERS = {
 		movement: MOVE_ATTACK,
 		alive: {
 			health: 200,
-			strength: 45
+			strength: 45,
+            attack: "ice"
 		}
 	},
 	drake_green: {
@@ -54,7 +60,8 @@ export const MONSTERS = {
 		movement: MOVE_ATTACK,
 		alive: {
 			health: 200,
-			strength: 45
+			strength: 45,
+            attack: "slash"
 		}
 	},
     skeleton: {
@@ -63,7 +70,8 @@ export const MONSTERS = {
         alive: {
             health: 25,
             strength: 4,
-            attackWait: 1500
+            attackWait: 1500,
+            attack: "slash"
         }
     },
     skeleton_blue: {
@@ -72,7 +80,8 @@ export const MONSTERS = {
         alive: {
             health: 10,
             strength: 6,
-            attackWait: 1000
+            attackWait: 1000,
+            attack: "ice"
         }
     },
     skeleton_red: {
@@ -81,7 +90,8 @@ export const MONSTERS = {
         alive: {
             health: 10,
             strength: 8,
-            attackWait: 500
+            attackWait: 500,
+            attack: "fire"
         }
     },
     wolf: {
@@ -90,7 +100,8 @@ export const MONSTERS = {
         alive: {
             health: 12,
             strength: 2,
-            attackWait: 1250
+            attackWait: 1250,
+            attack: "slash"
         }
     },
     wolf_blue: {
@@ -99,7 +110,8 @@ export const MONSTERS = {
         alive: {
             health: 20,
             strength: 5,
-            attackWait: 500
+            attackWait: 500,
+            attack: "ice"
         }
     },
     wolf_red: {
@@ -108,7 +120,8 @@ export const MONSTERS = {
         alive: {
             health: 40,
             strength: 8,
-            attackWait: 500
+            attackWait: 500,
+            attack: "fire"
         }
     },
 }

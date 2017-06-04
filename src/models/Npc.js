@@ -42,9 +42,9 @@ export default class {
         return this.animatedSprite.sprite.visible
     }
 
-    onDamage(amount) {
-        console.warn(this.getName() + " takes " + amount + " damage.")
+    onDamage(amount, type) {
         this.arkona.damages.add(amount, this.x - 2, this.y - 2, this.z)
+        if(type) this.arkona.fx.run(type, this.animatedSprite.sprite)
     }
 
     onDeath() {

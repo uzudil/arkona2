@@ -16,16 +16,19 @@ export default class {
         let now = Date.now()
         if(now - this.lastAttack > this.attackWait) {
             this.lastAttack = now
-            other.takeDamage(Math.max(1, (Math.random() * this.strength * 0.3 + this.strength * 0.7)|0))
+            other.takeDamage(
+                Math.max(1, (Math.random() * this.strength * 0.3 + this.strength * 0.7)|0),
+                this.info["attack"]
+            )
             return true
         } else {
             return false
         }
     }
 
-    takeDamage(damage) {
+    takeDamage(damage, type) {
         this.health -= damage
-        this.events.onDamage(damage)
+        this.events.onDamage(damage, type)
         if(this.health <= 0) {
             this.events.onDeath()
         }
