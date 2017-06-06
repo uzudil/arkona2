@@ -1,28 +1,22 @@
 import UseObject from "./UseObject"
-import Talk from "./Talk"
 import MovePlayer from "./MovePlayer"
 import MoveNpc from "./MoveNpc"
 import GeneratorAction from "./GeneratorAction"
 import MouseClickAction from "./MouseClickAction"
-import Attack from "./Attack"
 
 const ACTIONS = [
 	new UseObject(),
-	new Talk(),
 	new MovePlayer(),
 	new MoveNpc(),
 	new GeneratorAction(),
-	new MouseClickAction(),
-	new Attack()
+	new MouseClickAction()
 ]
 
 export const USE_OBJECT = 0
-export const TALK = 1
-export const MOVE_PLAYER = 2
-export const MOVE_NPC = 3
-export const GENERATORS = 4
-export const CLICK = 5
-export const ATTACK = 6
+export const MOVE_PLAYER = 1
+export const MOVE_NPC = 2
+export const GENERATORS = 3
+export const CLICK = 4
 
 const DONT_LOG = [MOVE_PLAYER, MOVE_NPC, GENERATORS]
 

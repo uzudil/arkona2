@@ -52,8 +52,6 @@ export default class extends Phaser.State {
         this.space = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
         this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
         this.esc = this.game.input.keyboard.addKey(Phaser.Keyboard.ESC)
-        this.t_key = this.game.input.keyboard.addKey(Phaser.Keyboard.T)
-        this.a_key = this.game.input.keyboard.addKey(Phaser.Keyboard.A)
 
         // ui (order matters)
         this.blocks = new Block(this)
@@ -128,9 +126,7 @@ export default class extends Phaser.State {
                 }
             }
 
-            if (this.t_key.justDown) this.actionQueue.add(Queue.TALK)
             if (this.space.justDown) this.actionQueue.add(Queue.USE_OBJECT)
-            if (this.a_key.justDown) this.actionQueue.add(Queue.ATTACK)
 
             let spriteUnderMouse = this.getSpriteUnderMouse()
             this.showMovementCursor(!spriteUnderMouse)

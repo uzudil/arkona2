@@ -1,14 +1,10 @@
 import UseObject from "./UseObject"
-import Talk from "./Talk"
-import Attack from "./Attack"
 
 export default class {
 
 	constructor() {
 		this.sprite = null
-		this.talk = new Talk()
 		this.useObject = new UseObject()
-		this.attack = new Attack()
 		this.action = null
 	}
 
@@ -25,10 +21,6 @@ export default class {
 		if(this.sprite && arkona.player.canReach(this.sprite)) {
 			if(this.useObject.isValid(arkona, this.sprite)) {
 				this.action = this.useObject
-			} else if(this.talk.isValid(this.sprite)) {
-				this.action = this.talk
-			} else if(this.attack.isValid(this.sprite)) {
-				this.action = this.attack
 			}
 		}
 		return this.action != null
@@ -39,6 +31,6 @@ export default class {
 	}
 
 	run(arkona) {
-		return this.action.setSprite(this.sprite).run(arkona)
+		return this.action.setSprite(arkona, this.sprite).run(arkona)
 	}
 }
