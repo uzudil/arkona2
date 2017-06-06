@@ -56,12 +56,7 @@ export default class {
     }
 
     onDamage(amount, type) {
-        this.arkona.damages.add(amount,
-            this.animatedSprite.sprite.gamePos[0] - 2,
-            this.animatedSprite.sprite.gamePos[1] - 2,
-            this.animatedSprite.sprite.gamePos[2],
-            true)
-
+        this.arkona.fx.run("damages", this.animatedSprite.sprite, { amount: amount, isPlayerDamage: true })
         if(type) this.arkona.fx.run(type, this.animatedSprite.sprite)
     }
 
@@ -74,12 +69,8 @@ export default class {
     }
 
     onHeal(amount) {
+        this.arkona.fx.run("damages", this.animatedSprite.sprite, { amount: -amount, isPlayerDamage: true })
         this.arkona.fx.run("heal", this.animatedSprite.sprite)
-        this.arkona.damages.add(-amount,
-            this.animatedSprite.sprite.gamePos[0] - 2,
-            this.animatedSprite.sprite.gamePos[1] - 2,
-            this.animatedSprite.sprite.gamePos[2],
-            true)
     }
 
     setAnimation(name) {

@@ -119,13 +119,48 @@ class ColumnEffect extends Effect {
     }
 }
 
+const SPEED = 0.1
+const TTL = 1500
+
+class DamagesEffect extends Effect {
+    constructor(amount, isPlayerDamage, arkona, sprite) {
+        super(arkona, sprite)
+        this.amount = amount
+        this.isPlayerDamage = isPlayerDamage
+        this.isHeal = amount < 0
+
+        let [screenX, screenY] = this.arkona.blocks.toAbsScreenCoords(this.sprite.floatPos[0] - 2, this.sprite.floatPos[1] - 2, this.sprite.gamePos[2])
+        this.ttl = Date.now() + TTL
+        this.sprite = this.arkona.game.add.text(screenX, screenY - 50, "" + Math.abs(amount), this._getStyle());
+    }
+
+    update() {
+        let now = Date.now()
+        if(now > this.ttl) {
+            this.sprite.destroy()
+            return false
+        } else {
+            this.sprite.y -= this.arkona.game.time.elapsedMS / (60 * SPEED)
+            this.sprite.setStyle(this._getStyle())
+            return true
+        }
+    }
+
+    _getStyle() {
+        let p = (this.ttl - Date.now()) / TTL
+        return {font: "bold 32px " + Config.FONT_FAMILY,
+            fill: (this.isHeal ? "rgba(32,255,32," + p + ")" : (this.isPlayerDamage ? "rgba(255,64,32," + p + ")" : "rgba(255,255,64," + p + ")")),
+            boundsAlignH: "left", boundsAlignV: "top"}
+    }
+}
+
 export default class {
     constructor(arkona) {
         this.arkona = arkona
         this.queue = []
     }
 
-    run(type, sprite) {
+    run(type, sprite, options) {
         let effect
         switch(type) {
             case "heal": effect = new ColumnEffect(0x0088ff, this.arkona, sprite); break
@@ -133,6 +168,7 @@ export default class {
             case "slash_big": effect = new SlashEffect(2.5, this.arkona, sprite); break
             case "ice": effect = new RainEffect([0x0088ff, 0x0000ff, 0x0022ff], this.arkona, sprite); break
             case "fire": effect = new RainEffect([0xff8800, 0xff0000, 0xffff00, 0xff2200], this.arkona, sprite); break
+            case "damages": effect = new DamagesEffect(options.amount, options.isPlayerDamage, this.arkona, sprite); break
             default: throw "Can't create effect of type: " + type
         }
         console.log("Running effect: " + type)

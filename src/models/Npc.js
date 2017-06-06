@@ -43,7 +43,7 @@ export default class {
     }
 
     onDamage(amount, type) {
-        this.arkona.damages.add(amount, this.x - 2, this.y - 2, this.z)
+        this.arkona.fx.run("damages", this.animatedSprite.sprite, { amount: amount, isPlayerDamage: false })
         if(type) this.arkona.fx.run(type, this.animatedSprite.sprite)
     }
 

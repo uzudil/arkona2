@@ -11,7 +11,6 @@ import Lamp from "../ui/Lamp"
 import * as Queue from "../actions/Queue"
 import MouseClickAction from "../actions/MouseClickAction"
 import Stats from "stats.js"
-import Damages from "../ui/Damages"
 import Device from "../ui/Device"
 import { dist3d } from "../utils"
 import Section from "../models/Section"
@@ -58,7 +57,6 @@ export default class extends Phaser.State {
 
         // ui (order matters)
         this.blocks = new Block(this)
-        this.damages = new Damages(this)
         this.lamp = new Lamp(this)
         this.device = new Device(this)
         this.messages = new Messages(this)
@@ -106,8 +104,6 @@ export default class extends Phaser.State {
         this.blocks.update()
 
         this.fx.update()
-
-        this.damages.update()
 
         if(!this.paused && !this.updateUI()) {
             this.positionMovementCursor()
