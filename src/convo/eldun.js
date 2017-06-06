@@ -155,7 +155,7 @@ export const MARISAN =
 		)
 	)
 
-export const SARA = new Convo("Welcome to Eldun, young sir. If thou brings deliveries for the lord, thou can leave it here with me")
+export const SARA = new Convo("Welcome to Eldun, young sir. Deliveries for the lord: thou can leave it here with me. And if thou need healing, let me know!", "R_SARA_START")
 	.answer("Eldun? What kind of place is this?",
 		new Convo("The mountain-top fastness of Eldun is the outpost of the fabled mystic Marisan. Deep thinker and knower of the lore of all of Arkona.")
 			.answer("Where can I find this Lord Marisan?",
@@ -169,7 +169,27 @@ export const SARA = new Convo("Welcome to Eldun, young sir. If thou brings deliv
 		new Convo("Why it is Lord Marisan of Eldun. Wisest mystic of the land of Arkona. What do you wish of him?")
 			.answer("My business is my own. Where can I find him?", "R_MARISAN_TOWER")
 			.answer("No reason, just curious.")
-	)
+	).answer("I need to be healed",
+        new Convo("I see thou art on an important mission so I will heal thee free of charge. While on the road, seek thee out the crystals!",
+            null,
+            (arkona) => arkona.heal())
+            .answer("Thanks, now what is it you do here?", "R_SARA_START")
+            .answer("What are the crystals you referred to?",
+                new Convo("In many secluded parts of our world, strange crystals grow. " +
+                    "Though their powers vary, many can heal a weary traveler.")
+                    .answer("Where can I find these crystals?",
+                        new Convo("They mostly appear near ruins or under the earth. I have not seen one in many years, young sir. Thou should try exploring caves to look for them!", "R_CRYSTAL_WHERE")
+                            .answer("Interesting, thanks for the info.")
+                            .answer("What else can the crystals do besides healing?", "R_CRYSTAL_POWER")
+                    )
+                    .answer("What can the crystals do besides healing?",
+                        new Convo("Some claim they make thee a mighty warrior! Or shield thee from thy foe... These are just legend, no one has seen a crystal in many an age!", "R_CRYSTAL_POWER")
+                            .answer("Thanks for the info!")
+                            .answer("Where can I find such a crystal?", "R_CRYSTAL_WHERE")
+                    )
+            )
+            .answer("Thank you and goodbye")
+    )
 
 export const ARTON = Convo.condition((arkona) => arkona.gameState["boots_of_wandering"],
 	new Convo("Thank you again for thy gift of the key to Lord Marisan's Library. " +

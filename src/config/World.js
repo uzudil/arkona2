@@ -116,7 +116,7 @@ export const WORLD = {
     "2,10": {
         npcs: [
             { creature: "man_blue", x: 252, y: 1019, options: { movement: MOVE_ANCHOR, name: "Arton", convo: ELDUN_CONVO.ARTON } },
-            { creature: "woman", x: 256, y: 1036, options: { movement: MOVE_ANCHOR, name: "Sara", convo: ELDUN_CONVO.SARA } },
+            { creature: "woman", x: 256, y: 1036, options: { movement: MOVE_ANCHOR, name: "Sara the Healer", convo: ELDUN_CONVO.SARA } },
         ]
     },
     "3,10": {

@@ -7,10 +7,10 @@ size=272
 ox=7
 oy=4
 
-minx=4
+minx=0
 miny=0
-maxx=11
-maxy=6
+maxx=21
+maxy=21
 
 w=`echo "$maxx*$size" | bc`
 h=`echo "$maxy*$size" | bc`

@@ -4,10 +4,10 @@ import Transition from "../ui/Transition"
 import Block from "../world/Block"
 import $ from "jquery"
 
-const MINX=4
+const MINX=0
 const MINY=0
-const MAXX=11
-const MAXY=6
+const MAXX=21
+const MAXY=21
 
 const ZOOM = 0.25
 

@@ -107,11 +107,10 @@ export default class extends Phaser.State {
 
         this.fx.update()
 
+        this.damages.update()
+
         if(!this.paused && !this.updateUI()) {
             this.positionMovementCursor()
-
-            // show damage texts
-            this.damages.update()
 
             // assemble the actions
             let npcs = []
