@@ -74,7 +74,6 @@ export default class {
 
     setSprite(arkona, sprite) {
         this.sprite = sprite
-        this.setMode(arkona, sprite)
         return this
     }
 

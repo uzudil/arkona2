@@ -19,7 +19,7 @@ export default class {
 	check(arkona) {
 		this.action = null
 		if(this.sprite && arkona.player.canReach(this.sprite)) {
-			if(this.useObject.isValid(arkona, this.sprite)) {
+			if(this.useObject.setMode(arkona, this.sprite)) {
 				this.action = this.useObject
 			}
 		}

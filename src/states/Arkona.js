@@ -52,6 +52,7 @@ export default class extends Phaser.State {
         this.space = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
         this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
         this.esc = this.game.input.keyboard.addKey(Phaser.Keyboard.ESC)
+        this.w_key = this.game.input.keyboard.addKey(Phaser.Keyboard.W)
 
         // ui (order matters)
         this.blocks = new Block(this)
@@ -117,12 +118,19 @@ export default class extends Phaser.State {
             if(npcs.length > 0) this.actionQueue.add(Queue.MOVE_NPC, npcs)
             if(generators.length > 0) this.actionQueue.add(Queue.GENERATORS, generators)
 
-            let moving = this.isCursorKeyDown()
-            if (moving) {
-                let dir = this.getDirFromCursorKeys()
-                if (dir != null) {
-                    this.actionQueue.add(Queue.MOVE_PLAYER, dir)
-                    this.playerSpeed = 1
+            let moving = false
+            if(this.w_key.isDown && this.movementCursor.visible) {
+                this.actionQueue.add(Queue.MOVE_PLAYER, this.movementCursor.dir)
+                this.playerSpeed = (this.movementCursor.scale.y/3)
+                moving = true
+            } else {
+                moving = this.isCursorKeyDown()
+                if (moving) {
+                    let dir = this.getDirFromCursorKeys()
+                    if (dir != null) {
+                        this.actionQueue.add(Queue.MOVE_PLAYER, dir)
+                        this.playerSpeed = 1
+                    }
                 }
             }
 
