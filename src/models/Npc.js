@@ -44,7 +44,7 @@ export default class {
 
     onDamage(amount, type) {
         this.arkona.fx.run("damages", this.animatedSprite.sprite, { amount: amount, isPlayerDamage: false })
-        if(type) this.arkona.fx.run(type, this.animatedSprite.sprite)
+        if(type) this.arkona.fx.run(type, this.animatedSprite.sprite, { amount: amount })
     }
 
     onDeath() {

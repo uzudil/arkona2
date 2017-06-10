@@ -1,6 +1,9 @@
 import * as Config from "../config/Config"
 import {BLOCKS} from "../config/Blocks"
 
+const LONG_TTL = 1500
+const SHORT_TTL = 250
+
 class Effect {
     constructor(arkona, sprite) {
         this.arkona = arkona
@@ -27,7 +30,7 @@ class RainEffect extends Effect {
         // this.gfx.angle = Math.random() * 60 - 30
         this.gfx.renderable = false // skip in sorting
 
-        this.ttl = Date.now() + 250
+        this.ttl = Date.now() + SHORT_TTL
     }
 
     update() {
@@ -61,7 +64,7 @@ class SlashEffect extends Effect {
         this.gfx.scale.setTo(zoom, zoom)
         this.gfx.renderable = false // skip in sorting
 
-        this.ttl = Date.now() + 250
+        this.ttl = Date.now() + SHORT_TTL
     }
 
     update() {
@@ -79,7 +82,52 @@ class SlashEffect extends Effect {
     }
 }
 
-const LIFESPAN = 1500
+class ShadesEffect extends Effect {
+    constructor(color, amount, arkona, sprite) {
+        super(arkona, sprite)
+        this.color = color
+        this.amount = amount
+
+        this.gfx = this.arkona.game.add.graphics(0, 0, this.arkona.blocks.objectLayer.group)
+        this.gfx.renderable = false // skip in sorting
+        this.gfx.anchor.setTo(0.5, 0.5)
+
+        this.ttl = Date.now() + SHORT_TTL
+        // this.lastPercent = 0
+    }
+
+    _updateGfx() {
+        let height = 12 + (this.amount / 10)|0
+        let c = 3
+        let band = height / c
+
+        let percent = (this.ttl - Date.now()) / SHORT_TTL
+        // if(percent - this.lastPercent > 0.1) {
+        //     this.lastPercent = percent
+            this.gfx.clear()
+            this.gfx.beginFill(this.color)
+            for (let i = 0; i < c; i++) {
+                this.gfx.drawRect(Math.random() * 5, band * i, this.amount + (Math.random() * 10 - 5), band * percent)
+            }
+            this.gfx.endFill()
+        // }
+    }
+
+    update() {
+        if(Date.now() < this.ttl) {
+            this._updateGfx();
+            let block = BLOCKS[this.sprite.name]
+            let screenPos = this.arkona.blocks.toScreenCoords(...this.sprite.floatPos, this.sprite.gamePos[2])
+            this.gfx.x = (screenPos[0] - block.size[0] * Config.GRID_SIZE) + (Math.random() * 2 - 1)
+            this.gfx.y = (screenPos[1] - block.size[1] * Config.GRID_SIZE * 2) + (Math.random() * 2 - 1)
+            this.gfx.alpha = 0.25 + Math.random() * 0.25
+            return true
+        } else {
+            this.gfx.destroy()
+            return false
+        }
+    }
+}
 
 class ColumnEffect extends Effect {
     constructor(color, arkona, sprite, lift) {
@@ -104,7 +152,7 @@ class ColumnEffect extends Effect {
         this.gfx.endFill()
         this.gfx.renderable = false // skip in sorting
 
-        this.ttl = Date.now() + LIFESPAN
+        this.ttl = Date.now() + LONG_TTL
     }
 
     update() {
@@ -117,7 +165,7 @@ class ColumnEffect extends Effect {
             this.gfxBack.alpha = 0.25 + Math.random() * 0.25
 
             if(this.lift) {
-                let percent = (this.ttl - Date.now()) / LIFESPAN
+                let percent = (this.ttl - Date.now()) / LONG_TTL
                 let dy = 30 * Math.cos(1.5 * (percent * 2 - 1))
                 this.sprite.y = this.originalY - dy
             }
@@ -135,7 +183,6 @@ class ColumnEffect extends Effect {
 }
 
 const SPEED = 0.1
-const TTL = 1500
 
 class DamagesEffect extends Effect {
     constructor(amount, isPlayerDamage, arkona, sprite) {
@@ -145,7 +192,7 @@ class DamagesEffect extends Effect {
         this.isHeal = amount < 0
 
         let [screenX, screenY] = this.arkona.blocks.toAbsScreenCoords(this.sprite.floatPos[0] - 2, this.sprite.floatPos[1] - 2, this.sprite.gamePos[2])
-        this.ttl = Date.now() + TTL
+        this.ttl = Date.now() + LONG_TTL
         this.sprite = this.arkona.game.add.text(screenX, screenY - 50, "" + Math.abs(amount), this._getStyle());
     }
 
@@ -162,7 +209,7 @@ class DamagesEffect extends Effect {
     }
 
     _getStyle() {
-        let p = (this.ttl - Date.now()) / TTL
+        let p = (this.ttl - Date.now()) / LONG_TTL
         return {font: "bold 32px " + Config.FONT_FAMILY,
             fill: (this.isHeal ? "rgba(32,255,32," + p + ")" : (this.isPlayerDamage ? "rgba(255,64,32," + p + ")" : "rgba(255,255,64," + p + ")")),
             boundsAlignH: "left", boundsAlignV: "top"}
@@ -188,6 +235,7 @@ export default class {
             case "ice": effect = new RainEffect([0x0088ff, 0x0000ff, 0x0022ff], this.arkona, sprite); break
             case "fire": effect = new RainEffect([0xff8800, 0xff0000, 0xffff00, 0xff2200], this.arkona, sprite); break
             case "damages": effect = new DamagesEffect(options.amount, options.isPlayerDamage, this.arkona, sprite); break
+            case "disruptor": effect = new ShadesEffect(0x00ff44, options.amount, this.arkona, sprite); break
             default: throw "Can't create effect of type: " + type
         }
         console.log("Running effect: " + type)

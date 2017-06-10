@@ -17,7 +17,8 @@ export default class {
             strength: 3,
             def: 2,
             attackWait: 300,
-            range: 15
+            range: 15,
+            attack: "disruptor"
         }, this)
 
         this.animatedSprite = null
