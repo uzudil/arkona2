@@ -15,6 +15,7 @@ export default class {
         this.alive = new Alive({
             health: 10,
             strength: 3,
+            def: 2,
             attackWait: 300
         }, this)
 
@@ -71,6 +72,16 @@ export default class {
     onHeal(amount) {
         this.arkona.fx.run("damages", this.animatedSprite.sprite, { amount: -amount, isPlayerDamage: true })
         this.arkona.fx.run("heal", this.animatedSprite.sprite)
+    }
+
+    onAttackInc() {
+        this.animatedSprite.setAnimation("stand", Config.DIR_SE)
+        this.arkona.fx.run("powerup", this.animatedSprite.sprite)
+    }
+
+    onDefInc() {
+        this.animatedSprite.setAnimation("stand", Config.DIR_SE)
+        this.arkona.fx.run("shieldup", this.animatedSprite.sprite)
     }
 
     setAnimation(name) {
@@ -207,6 +218,34 @@ export default class {
             return true
         } else {
             return false
+        }
+    }
+
+    _activateCrystal(sprite) {
+        let key = "crystal-" + sprite.gamePos[0] + "-" + sprite.gamePos[1]
+        if(!this.arkona.gameState[key]) {
+            this.arkona.gameState[key] = true
+            return true
+        } else {
+            return false
+        }
+    }
+
+    redCrystal(sprite) {
+        if(this._activateCrystal(sprite)) this.alive.attackInc()
+        else this.alive.heal()
+    }
+
+    greenCrystal(sprite) {
+        if(this._activateCrystal(sprite)) this.alive.defInc()
+        else this.alive.heal()
+    }
+
+    purpleCrystal(sprite) {
+        if(this._activateCrystal(sprite)) {
+            // do something
+        } else {
+            this.alive.heal()
         }
     }
 }

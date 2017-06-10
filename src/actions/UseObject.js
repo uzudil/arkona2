@@ -6,6 +6,9 @@ const DOOR_MODE = "door"
 const ATTACK_MODE = "attack"
 const ENTER_SHIP_MODE = "enter"
 const EXIT_SHIP_MODE = "exit"
+const RED_CRYSTAL_MODE = "red"
+const GREEN_CRYSTAL_MODE = "green"
+const PURPLE_CRYSTAL_MODE = "purple"
 
 export default class {
     getType() {
@@ -44,8 +47,20 @@ export default class {
             this.mode = EXIT_SHIP_MODE
         } else if(this._canAttack(sprite)) {
             this.mode = ATTACK_MODE
+        } else {
+            // make sure this is the last 'else' block
+            this.mode = this._getCrystalMode(sprite)
         }
         return this.mode != null
+    }
+
+    _getCrystalMode(sprite) {
+        switch(sprite.name) {
+            case "crystal.red": return RED_CRYSTAL_MODE;
+            case "crystal.green": return GREEN_CRYSTAL_MODE;
+            case "crystal.purple": return PURPLE_CRYSTAL_MODE;
+            default: return null;
+        }
     }
 
     _canAttack(sprite) {
@@ -103,6 +118,15 @@ export default class {
                 break
             case ATTACK_MODE:
                 arkona.player.attack(this.sprite.npc)
+                break
+            case RED_CRYSTAL_MODE:
+                arkona.player.redCrystal(this.sprite)
+                break
+            case GREEN_CRYSTAL_MODE:
+                arkona.player.greenCrystal(this.sprite)
+                break
+            case PURPLE_CRYSTAL_MODE:
+                arkona.player.purpleCrystal(this.sprite)
                 break
             default: updated = false
         }

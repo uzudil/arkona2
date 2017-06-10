@@ -7,9 +7,28 @@ export default class {
         this.events = events
         this.startingHealth = this.info["health"] || 10
         this.health = this.startingHealth
+        this.def = this.info["def"] || 6
         this.strength = this.info["strength"] || 10
         this.attackWait = this.info["attackWait"] || 1500
         this.lastAttack = 0
+    }
+
+    getStats() {
+        return {
+            health: this.health,
+            def: this.def,
+            str: this.strength,
+            wait: this.attackWait
+        }
+    }
+
+    setStats(stats) {
+        if(stats) {
+            if(stats["health"]) this.health = stats.health
+            if(stats["def"]) this.def = stats.def
+            if(stats["str"]) this.strength = stats.str
+            if(stats["wait"]) this.attackWait = stats.wait
+        }
     }
 
     attack(other) {
@@ -24,6 +43,16 @@ export default class {
         } else {
             return false
         }
+    }
+
+    attackInc() {
+        this.strength = Math.round(this.strength * 1.5)
+        this.events.onAttackInc()
+    }
+
+    defInc() {
+        this.def = Math.round(this.def * 1.5)
+        this.events.onDefInc()
     }
 
     takeDamage(damage, type) {

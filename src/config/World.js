@@ -97,21 +97,6 @@ export const WORLD = {
         ]
     },
     "2,22": {
-        actions: [
-            {
-                type: "use_object", x: 230, y: 2143, z: 0,
-                // eslint-disable-next-line no-unused-vars
-                allow: (arkona) => true,
-                action: (arkona) => {
-                    if(!arkona.gameState["powerup-230-2143"]) {
-                        arkona.gameState["powerup-230-2143"] = true
-                        arkona.powerup()
-                    } else {
-                        arkona.heal()
-                    }
-                }
-            }
-        ],
     },
     "2,10": {
         npcs: [

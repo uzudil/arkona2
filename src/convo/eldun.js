@@ -172,7 +172,7 @@ export const SARA = new Convo("Welcome to Eldun, young sir. Deliveries for the l
 	).answer("I need to be healed",
         new Convo("I see thou art on an important mission so I will heal thee free of charge. While on the road, seek thee out the crystals!",
             null,
-            (arkona) => arkona.heal())
+            (arkona) => arkona.player.alive.heal())
             .answer("Thanks, now what is it you do here?", "R_SARA_START")
             .answer("What are the crystals you referred to?",
                 new Convo("In many secluded parts of our world, strange crystals grow. " +

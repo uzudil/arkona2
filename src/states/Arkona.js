@@ -350,7 +350,8 @@ export default class extends Phaser.State {
             version: 1,
             pos: this.player.animatedSprite.sprite.gamePos,
             dir: this.player.lastDir,
-            state: this.gameState
+            state: this.gameState,
+            stats: this.player.alive.getStats()
         }));
     }
 
@@ -373,6 +374,7 @@ export default class extends Phaser.State {
                 startZ = obj.pos[2]
                 startDir = obj.dir
                 this.gameState = obj.state
+                this.player.alive.setStats(obj["stats"])
             }
         }
 
@@ -494,14 +496,5 @@ export default class extends Phaser.State {
             this.sections[key].npcs.forEach(npc => npc.animatedSprite.setAnimation("stand", npc.dir))
         }
         if(this.player.animatedSprite) this.player.animatedSprite.setAnimation("stand", this.player.lastDir)
-    }
-
-    heal() {
-        // this.narrate("You feel suddenly energized!")
-        this.player.alive.heal()
-    }
-
-    powerup() {
-        this.narrate("The disruptor glows and buzzes with approval!")
     }
 }

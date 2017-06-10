@@ -79,10 +79,15 @@ class SlashEffect extends Effect {
     }
 }
 
+const LIFESPAN = 1500
+
 class ColumnEffect extends Effect {
-    constructor(color, arkona, sprite) {
+    constructor(color, arkona, sprite, lift) {
         super(arkona, sprite)
         this.color = color
+        this.lift = lift
+        this.originalY = sprite.y
+        this.arkona.paused = this.lift
 
         this.gfxBack = this.arkona.game.add.graphics(0, 0, this.arkona.blocks.group)
         this.gfxBack.beginFill(0xffffff)
@@ -99,7 +104,7 @@ class ColumnEffect extends Effect {
         this.gfx.endFill()
         this.gfx.renderable = false // skip in sorting
 
-        this.ttl = Date.now() + 1500
+        this.ttl = Date.now() + LIFESPAN
     }
 
     update() {
@@ -110,8 +115,18 @@ class ColumnEffect extends Effect {
             this.gfx.y = -(Config.HEIGHT - screenPos[1]) + (Math.random() * 2 - 1)
             this.gfx.alpha = 0.25 + Math.random() * 0.25
             this.gfxBack.alpha = 0.25 + Math.random() * 0.25
+
+            if(this.lift) {
+                let percent = (this.ttl - Date.now()) / LIFESPAN
+                let dy = 30 * Math.cos(1.5 * (percent * 2 - 1))
+                this.sprite.y = this.originalY - dy
+            }
             return true
         } else {
+            if(this.lift) {
+                this.sprite.y = this.originalY
+                this.arkona.paused = false
+            }
             this.gfx.destroy()
             this.gfxBack.destroy()
             return false
@@ -164,6 +179,8 @@ export default class {
         let effect
         switch(type) {
             case "heal": effect = new ColumnEffect(0x0088ff, this.arkona, sprite); break
+            case "powerup": effect = new ColumnEffect(0xffff22, this.arkona, sprite, true); break
+            case "shieldup": effect = new ColumnEffect(0x22ff44, this.arkona, sprite, true); break
             case "slash": effect = new SlashEffect(1, this.arkona, sprite); break
             case "slash_big": effect = new SlashEffect(2.5, this.arkona, sprite); break
             case "ice": effect = new RainEffect([0x0088ff, 0x0000ff, 0x0022ff], this.arkona, sprite); break
