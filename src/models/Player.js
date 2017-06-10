@@ -93,7 +93,7 @@ export default class {
 
     onSpeedInc() {
         this.animatedSprite.setAnimation("stand", Config.DIR_SE)
-        this.arkona.fx.run("speeddup", this.animatedSprite.sprite)
+        this.arkona.fx.run("speedup", this.animatedSprite.sprite)
     }
 
     onRangeInc() {

@@ -314,6 +314,25 @@ export const WORLD = {
         generators: [
             { x: 42, y: 274, z: 0, type: MONSTERS.skeleton, count: 3 }
         ],
+        connect: [
+            {
+                x: 23, y: 252, z: 0,
+                action: (arkona) => arkona.transitionTo(336, 2038, 0, "s")
+            }
+        ]
+    },
+    "3,21": {
+        lamplight: true,
+        connect: [
+            {
+                x: 336, y: 2033, z: 0,
+                action: (arkona) => arkona.transitionTo(26, 248, 0, "e")
+            }
+        ],
+        monsters: [
+            // { monster: MONSTERS.wolf_red, pos: [ [124,2189] ] },
+            // { monster: MONSTERS.wolf, pos: [ [119,2182], [133,2182], [125,2174], [167,2126], [159,2126] ] }
+        ]
     },
 
 }
