@@ -93,7 +93,6 @@ class ShadesEffect extends Effect {
         this.gfx.anchor.setTo(0.5, 0.5)
 
         this.ttl = Date.now() + SHORT_TTL
-        // this.lastPercent = 0
     }
 
     _updateGfx() {
@@ -102,15 +101,12 @@ class ShadesEffect extends Effect {
         let band = height / c
 
         let percent = (this.ttl - Date.now()) / SHORT_TTL
-        // if(percent - this.lastPercent > 0.1) {
-        //     this.lastPercent = percent
-            this.gfx.clear()
-            this.gfx.beginFill(this.color)
-            for (let i = 0; i < c; i++) {
-                this.gfx.drawRect(Math.random() * 5, band * i, this.amount + (Math.random() * 10 - 5), band * percent)
-            }
-            this.gfx.endFill()
-        // }
+        this.gfx.clear()
+        this.gfx.beginFill(this.color)
+        for (let i = 0; i < c; i++) {
+            this.gfx.drawRect(Math.random() * 5, band * i, this.amount + (Math.random() * 10 - 5), band * percent)
+        }
+        this.gfx.endFill()
     }
 
     update() {
@@ -118,7 +114,45 @@ class ShadesEffect extends Effect {
             this._updateGfx();
             let block = BLOCKS[this.sprite.name]
             let screenPos = this.arkona.blocks.toScreenCoords(...this.sprite.floatPos, this.sprite.gamePos[2])
-            this.gfx.x = (screenPos[0] - block.size[0] * Config.GRID_SIZE) + (Math.random() * 2 - 1)
+            this.gfx.x = (screenPos[0]) + (Math.random() * 2 - 1)
+            this.gfx.y = (screenPos[1] - block.size[1] * Config.GRID_SIZE * 2) + (Math.random() * 2 - 1)
+            this.gfx.alpha = 0.25 + Math.random() * 0.25
+            return true
+        } else {
+            this.gfx.destroy()
+            return false
+        }
+    }
+}
+
+class CircleEffect extends Effect {
+    constructor(color, amount, arkona, sprite) {
+        super(arkona, sprite)
+        this.color = color
+        this.amount = amount
+
+        this.gfx = this.arkona.game.add.graphics(0, 0, this.arkona.blocks.objectLayer.group)
+        this.gfx.renderable = false // skip in sorting
+        this.gfx.anchor.setTo(0.5, 0.5)
+
+        this.ttl = Date.now() + SHORT_TTL
+    }
+
+    _updateGfx() {
+        let r = 50
+        let percent = (this.ttl - Date.now()) / SHORT_TTL
+        this.gfx.clear()
+        this.gfx.lineStyle(this.amount * percent, this.color)
+        this.gfx.drawCircle(0, 0, r, r)
+        this.gfx.endFill()
+    }
+
+    update() {
+        if(Date.now() < this.ttl) {
+            this._updateGfx();
+            let block = BLOCKS[this.sprite.name]
+            let screenPos = this.arkona.blocks.toScreenCoords(...this.sprite.floatPos, this.sprite.gamePos[2])
+            this.gfx.x = (screenPos[0]) + (Math.random() * 2 - 1)
             this.gfx.y = (screenPos[1] - block.size[1] * Config.GRID_SIZE * 2) + (Math.random() * 2 - 1)
             this.gfx.alpha = 0.25 + Math.random() * 0.25
             return true
@@ -236,6 +270,7 @@ export default class {
             case "fire": effect = new RainEffect([0xff8800, 0xff0000, 0xffff00, 0xff2200], this.arkona, sprite); break
             case "damages": effect = new DamagesEffect(options.amount, options.isPlayerDamage, this.arkona, sprite); break
             case "disruptor": effect = new ShadesEffect(0x00ff44, options.amount, this.arkona, sprite); break
+            case "disruptorShield": effect = new CircleEffect(0x00ff44, options.amount, this.arkona, sprite); break
             default: throw "Can't create effect of type: " + type
         }
         console.log("Running effect: " + type)

@@ -18,7 +18,8 @@ export default class {
             def: 2,
             attackWait: 300,
             range: 15,
-            attack: "disruptor"
+            attack: "disruptor",
+            shieldType: "disruptorShield"
         }, this)
 
         this.animatedSprite = null
@@ -61,6 +62,10 @@ export default class {
     onDamage(amount, type) {
         this.arkona.fx.run("damages", this.animatedSprite.sprite, { amount: amount, isPlayerDamage: true })
         if(type) this.arkona.fx.run(type, this.animatedSprite.sprite)
+    }
+
+    onDefense(amount, type) {
+        if(type) this.arkona.fx.run(type, this.animatedSprite.sprite, { amount: amount })
     }
 
     onDeath() {

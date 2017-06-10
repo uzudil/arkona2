@@ -7,7 +7,8 @@ export default class {
         this.events = events
         this.startingHealth = this.info["health"] || 10
         this.health = this.startingHealth
-        this.def = this.info["def"] || 6
+        this.def = this.info["def"] || 0
+        this.shieldType = this.info["shieldType"]
         this.strength = this.info["strength"] || 10
         this.attackWait = this.info["attackWait"] || 1500
         this.range = this.info["range"] || 15 // this is an angle of who around the player is affected. Not yet used.
@@ -67,10 +68,17 @@ export default class {
     }
 
     takeDamage(damage, type) {
-        this.health -= damage
-        this.events.onDamage(damage, type)
-        if(this.health <= 0) {
-            this.events.onDeath()
+        let shield = Math.max(0, (Math.random() * this.def * 0.3 + this.def * 0.7)|0)
+        let dam = damage - shield
+        if(dam > 0) {
+            this.health -= dam
+            this.events.onDamage(dam, type)
+            if (this.health <= 0) {
+                this.events.onDeath()
+            }
+        }
+        if(shield > 0) {
+            this.events.onDefense(shield, this.shieldType)
         }
     }
 

@@ -47,6 +47,10 @@ export default class {
         if(type) this.arkona.fx.run(type, this.animatedSprite.sprite, { amount: amount })
     }
 
+    onDefense(amount, type) {
+        if(type) this.arkona.fx.run(type, this.animatedSprite.sprite, { amount: amount })
+    }
+
     onDeath() {
         console.warn(this.getName() + " dies.")
         let section = this.arkona.sectionAt(this.x|0, this.y|0)
