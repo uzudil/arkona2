@@ -179,8 +179,10 @@ export default class {
         let effect
         switch(type) {
             case "heal": effect = new ColumnEffect(0x0088ff, this.arkona, sprite); break
-            case "powerup": effect = new ColumnEffect(0xffff22, this.arkona, sprite, true); break
-            case "shieldup": effect = new ColumnEffect(0x22ff44, this.arkona, sprite, true); break
+            case "powerup": effect = new ColumnEffect(0xff2222, this.arkona, sprite, true); break
+            case "shieldup": effect = new ColumnEffect(0x22ff22, this.arkona, sprite, true); break
+            case "speedup": effect = new ColumnEffect(0xff22ff, this.arkona, sprite, true); break
+            case "rangeup": effect = new ColumnEffect(0xffff22, this.arkona, sprite, true); break
             case "slash": effect = new SlashEffect(1, this.arkona, sprite); break
             case "slash_big": effect = new SlashEffect(2.5, this.arkona, sprite); break
             case "ice": effect = new RainEffect([0x0088ff, 0x0000ff, 0x0022ff], this.arkona, sprite); break

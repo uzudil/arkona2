@@ -16,7 +16,8 @@ export default class {
             health: 10,
             strength: 3,
             def: 2,
-            attackWait: 300
+            attackWait: 300,
+            range: 15
         }, this)
 
         this.animatedSprite = null
@@ -82,6 +83,16 @@ export default class {
     onDefInc() {
         this.animatedSprite.setAnimation("stand", Config.DIR_SE)
         this.arkona.fx.run("shieldup", this.animatedSprite.sprite)
+    }
+
+    onSpeedInc() {
+        this.animatedSprite.setAnimation("stand", Config.DIR_SE)
+        this.arkona.fx.run("speeddup", this.animatedSprite.sprite)
+    }
+
+    onRangeInc() {
+        this.animatedSprite.setAnimation("stand", Config.DIR_SE)
+        this.arkona.fx.run("rangeup", this.animatedSprite.sprite)
     }
 
     setAnimation(name) {
@@ -242,10 +253,12 @@ export default class {
     }
 
     purpleCrystal(sprite) {
-        if(this._activateCrystal(sprite)) {
-            // do something
-        } else {
-            this.alive.heal()
-        }
+        if(this._activateCrystal(sprite)) this.alive.speedInc()
+        else this.alive.heal()
+    }
+
+    yellowCrystal(sprite) {
+        if(this._activateCrystal(sprite)) this.alive.rangeInc()
+        else this.alive.heal()
     }
 }

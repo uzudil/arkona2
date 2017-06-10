@@ -164,6 +164,7 @@ export const BLOCKS = {
 	"crystal.red": { size: [4, 4, 4], pos: [384, 0], dim: [64, 96], options: { sprites: 5 } },
 	"crystal.green": { size: [4, 4, 4], pos: [448, 0], dim: [64, 96], options: { sprites: 5 } },
 	"crystal.purple": { size: [4, 4, 4], pos: [512, 0], dim: [64, 96], options: { sprites: 5 } },
+	"crystal.yellow": { size: [4, 4, 4], pos: [576, 0], dim: [64, 96], options: { sprites: 5 } },
     "barrel": { size: [4, 1, 5], pos: [0, 400], dim: [40, 80], options: { sprites: 2 } },
     "bar": { size: [5, 2, 4], pos: [64, 416], dim: [56, 80], options: { sprites: 2 } },
     "force": { size: [2, 2, 2], pos: [128, 416], dim: [32, 48], options: { sprites: 2 } },

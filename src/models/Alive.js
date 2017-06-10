@@ -10,6 +10,7 @@ export default class {
         this.def = this.info["def"] || 6
         this.strength = this.info["strength"] || 10
         this.attackWait = this.info["attackWait"] || 1500
+        this.range = this.info["range"] || 15 // this is an angle of who around the player is affected. Not yet used.
         this.lastAttack = 0
     }
 
@@ -53,6 +54,16 @@ export default class {
     defInc() {
         this.def = Math.round(this.def * 1.5)
         this.events.onDefInc()
+    }
+
+    speedInc() {
+        this.attackWait = Math.round(this.attackWait * 0.85)
+        this.events.onSpeedInc()
+    }
+
+    rangeInc() {
+        this.range = Math.min(360, this.range + 15)
+        this.events.onRangeInc()
     }
 
     takeDamage(damage, type) {

@@ -9,6 +9,7 @@ const EXIT_SHIP_MODE = "exit"
 const RED_CRYSTAL_MODE = "red"
 const GREEN_CRYSTAL_MODE = "green"
 const PURPLE_CRYSTAL_MODE = "purple"
+const YELLOW_CRYSTAL_MODE = "yellow"
 
 export default class {
     getType() {
@@ -59,6 +60,7 @@ export default class {
             case "crystal.red": return RED_CRYSTAL_MODE;
             case "crystal.green": return GREEN_CRYSTAL_MODE;
             case "crystal.purple": return PURPLE_CRYSTAL_MODE;
+            case "crystal.yellow": return YELLOW_CRYSTAL_MODE;
             default: return null;
         }
     }
@@ -127,6 +129,9 @@ export default class {
                 break
             case PURPLE_CRYSTAL_MODE:
                 arkona.player.purpleCrystal(this.sprite)
+                break
+            case YELLOW_CRYSTAL_MODE:
+                arkona.player.yellowCrystal(this.sprite)
                 break
             default: updated = false
         }
