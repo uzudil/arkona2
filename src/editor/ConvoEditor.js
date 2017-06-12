@@ -1,19 +1,19 @@
 import $ from "jquery"
-import {LEVELS} from "../config/Levels"
+import {WORLD} from "../config/World"
 
 export default class {
     constructor() {
         $("#convo-editor").show()
-        $("#levels").empty().append("<div class='convo-title'>Maps</div>").append(Object.keys(LEVELS).map(name => "<div class='level convo-line' id='" + name + "'>" + name + "</div>").sort())
+        $("#levels").empty().append("<div class='convo-title'>Maps</div>").append(Object.keys(WORLD).map(name => "<div class='level convo-line' id='" + name + "'>" + name + "</div>").sort())
         $(".level").click(event => this.showNpcs(event))
     }
 
     showNpcs(event) {
         let levelId = $(event.currentTarget).attr("id")
         $("#npcs").empty().append("<div class='convo-title'>NPCs with convos in " + levelId + "</div>");
-        if(LEVELS[levelId].npcs) {
-            for(let i = 0; i < LEVELS[levelId].npcs.length; i++) {
-                let npc = LEVELS[levelId].npcs[i]
+        if(WORLD[levelId].npcs) {
+            for(let i = 0; i < WORLD[levelId].npcs.length; i++) {
+                let npc = WORLD[levelId].npcs[i]
                 let name = npc.creature
                 if (npc.options && npc.options.convo) {
                     if (npc.options.name) name += " - " + npc.options.name
@@ -28,7 +28,7 @@ export default class {
         this.levelId = $(event.currentTarget).data("level_id")
         this.npcIndex = $(event.currentTarget).data("npc_index")
         this.depthFirstIndex = 0
-        this.npc = LEVELS[this.levelId].npcs[this.npcIndex]
+        this.npc = WORLD[this.levelId].npcs[this.npcIndex]
 
         let name = this.npc.creature
         if (this.npc.options.name) name += " - " + this.npc.options.name

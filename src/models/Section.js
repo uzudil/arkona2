@@ -147,7 +147,6 @@ export default class {
                 c.action(this.arkona)
             }
         }
-        return
     }
 
     isAllowed(action) {
@@ -171,7 +170,6 @@ export default class {
     }
 
     static isLamplight(mapX, mapY) {
-        let key = "" + mapX + "," + mapY
-        return WORLD[key] && WORLD[key]["lamplight"]
+        return mapX >= Config.MAX_MAP_X || mapY >= Config.MAX_MAP_Y
     }
 }

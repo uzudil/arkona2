@@ -71,7 +71,6 @@ export const WORLD = {
         ],
     },
     "1,21": {
-        lamplight: true,
         connect: [
             {
                 x: 144, y: 2033, z: 0,
@@ -83,14 +82,12 @@ export const WORLD = {
         ]
     },
     "1,22": {
-        lamplight: true,
         monsters: [
             { monster: MONSTERS.wolf_red, pos: [ [124,2189] ] },
             { monster: MONSTERS.wolf, pos: [ [119,2182], [133,2182], [125,2174], [167,2126], [159,2126] ] }
         ]
     },
     "2,21": {
-        lamplight: true,
         monsters: [
             { monster: MONSTERS.wolf_blue, pos: [ [205, 2088], [213, 2092] ] },
             { monster: MONSTERS.wolf, pos: [ [215, 2081], [220, 2087] ] }
@@ -221,7 +218,6 @@ export const WORLD = {
         ]
     },
     "0,21": {
-        lamplight: true,
         connect: [
             {
                 x: 40, y: 2017, z: 0,
@@ -322,7 +318,6 @@ export const WORLD = {
         ]
     },
     "3,21": {
-        lamplight: true,
         connect: [
             {
                 x: 336, y: 2033, z: 0,

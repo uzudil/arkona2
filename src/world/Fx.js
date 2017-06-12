@@ -142,6 +142,9 @@ class CircleEffect extends Effect {
         let r = 50
         let percent = (this.ttl - Date.now()) / SHORT_TTL
         this.gfx.clear()
+        this.gfx.beginFill(this.color, 0.5)
+        this.gfx.drawCircle(0, 0, r, r)
+        this.gfx.endFill()
         this.gfx.lineStyle(this.amount * percent, this.color)
         this.gfx.drawCircle(0, 0, r, r)
         this.gfx.endFill()

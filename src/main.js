@@ -3,7 +3,7 @@ import "p2"
 import Phaser from "phaser"
 import { loadSettings, flatten } from "./utils"
 
-import {LEVELS} from "./config/Levels"
+import {WORLD} from "./config/World"
 import BootState from "./states/Boot"
 import SplashState from "./states/Splash"
 import EditorState from "./states/Editor"
@@ -67,7 +67,7 @@ class Game extends Phaser.Game {
 
     // some basic sanity checking of the convos
     checkConvos() {
-        flatten(Object.keys(LEVELS).map(k => LEVELS[k]).filter(level => level["npcs"]).map(level => level.npcs))
+        flatten(Object.keys(WORLD).map(k => WORLD[k]).filter(level => level["npcs"]).map(level => level.npcs))
             .filter(npc => npc["options"] && npc.options["convo"])
             .map(npc => npc.options.convo)
             .forEach(convo => convo.validate())
