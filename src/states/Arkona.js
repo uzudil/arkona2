@@ -497,4 +497,13 @@ export default class extends Phaser.State {
         }
         if(this.player.animatedSprite) this.player.animatedSprite.setAnimation("stand", this.player.lastDir)
     }
+
+    useDoor(doorSprite) {
+        let newDoor = Config.getOppositeDoor(doorSprite.name)
+        if(this.blocks.objectLayer.canFitByName(newDoor, doorSprite.gamePos[0], doorSprite.gamePos[1], doorSprite.gamePos[2], null, doorSprite)) {
+            this.blocks.replace(doorSprite, newDoor)
+        } else {
+            // todo: play denied sound
+        }
+    }
 }

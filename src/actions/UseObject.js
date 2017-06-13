@@ -98,7 +98,7 @@ export default class {
         let updated = true
         switch(this.mode) {
             case DOOR_MODE:
-                arkona.blocks.replace(this.sprite, Config.getOppositeDoor(this.sprite.name))
+                arkona.useDoor(this.sprite)
                 break
             case ENTER_SHIP_MODE:
                 arkona.player.enterShip(this.sprite)

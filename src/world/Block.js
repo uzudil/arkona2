@@ -330,10 +330,14 @@ class Layer {
     }
 
     canFit(sprite, x, y, z, blockers, ignoreSprite) {
-        return _visit3SS(sprite.name, x, y, z, (xx, yy, zz) => {
+        return this.canFitByName(sprite.name, x, y, z, blockers, ignoreSprite)
+    }
+
+    canFitByName(name, x, y, z, blockers, ignoreSprite) {
+        return _visit3SS(name, x, y, z, (xx, yy, zz) => {
             let info = this.infos[_key(xx, yy, zz)]
             if(!info) return true
-            let blocker = info.imageInfos.find((ii) => ii.image != sprite && ii.image != ignoreSprite && ii.image.visible)
+            let blocker = info.imageInfos.find((ii) => ii.name != name && ii.image != ignoreSprite && ii.image.visible)
             if(!blocker) return true
             if(blockers != null) blockers.push(blocker.image)
             return false
