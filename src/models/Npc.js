@@ -148,18 +148,31 @@ export default class {
         }
         let [px, py, pz] = this.path[this.pathIndex]
         let currPos = this.animatedSprite.sprite.gamePos
-        if(dist3d(currPos[0], currPos[1], currPos[2], px, py, pz) < 0.1) {
+        this.dir = Config.getDirByDelta(px - currPos[0], py - currPos[1])
+
+        // where would the next step take us
+        let [nx, ny, nz] = this.arkona.moveInDir(this.x, this.y, this.z, this.dir, this._speed())
+
+        // // is this position past a waypoint?
+        let dir = Config.getDirByDelta(px - Math.round(nx), py - Math.round(ny))
+        let pastWaypoint = dir != this.dir
+
+        // try to step there
+        let success = this._stepTo(nx, ny, nz)
+
+        if(pastWaypoint) {
+            if(!success) {
+                // try to move to the waypoint if can't get to original destination
+                success = this._stepTo(px, py, pz)
+            }
+
+            // advance to the next waypoint
             this.pathIndex++
             if(this.pathIndex >= this.path.length) {
                 this._clearPath()
             }
-            // force position to waypoint
-            return this._stepTo(px, py, pz)
-        } else {
-            // calculate direction from integers
-            this.dir = Config.getDirByDelta(px - currPos[0], py - currPos[1])
-            return this._takeStep()
         }
+        return success
     }
 
     moveFriendly() {
