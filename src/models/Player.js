@@ -15,7 +15,7 @@ export default class {
         this.alive = new Alive({
             health: 10,
             strength: 3,
-            def: 2,
+            def: 0,
             attackWait: 300,
             range: 15,
             attack: "disruptor",

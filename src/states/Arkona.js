@@ -500,7 +500,7 @@ export default class extends Phaser.State {
 
     useDoor(doorSprite) {
         let newDoor = Config.getOppositeDoor(doorSprite.name)
-        if(this.blocks.objectLayer.canFitByName(newDoor, doorSprite.gamePos[0], doorSprite.gamePos[1], doorSprite.gamePos[2], null, doorSprite)) {
+        if(this.blocks.objectLayer.canFitByName(newDoor, doorSprite.gamePos[0], doorSprite.gamePos[1], doorSprite.gamePos[2], doorSprite)) {
             this.blocks.replace(doorSprite, newDoor)
         } else {
             // todo: play denied sound
