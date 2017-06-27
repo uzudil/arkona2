@@ -325,8 +325,24 @@ export const WORLD = {
             }
         ],
         monsters: [
-            // { monster: MONSTERS.wolf_red, pos: [ [124,2189] ] },
-            // { monster: MONSTERS.wolf, pos: [ [119,2182], [133,2182], [125,2174], [167,2126], [159,2126] ] }
+            { monster: MONSTERS.goblin, pos: [ [363,2079], [333,2079], [303,2077] ] }
+        ]
+    },
+    "3,22": {
+        monsters: [
+            { monster: MONSTERS.goblin, pos: [ [304,2157], [317,2154], [312,2161], [348,2124], [351,2135], [361,2135] ] },
+            { monster: MONSTERS.wolf_red, pos: [ [303,2173], [311,2167] ] }
+        ]
+    },
+    "4,22": {
+        monsters: [
+            { monster: MONSTERS.goblin, pos: [ [428,2171], [428,2159], [418,2180], [423,2152], [453,2137], [453,2130] ] },
+            { monster: MONSTERS.ogre, pos: [ [407,2169,1] ] },
+        ]
+    },
+    "4,21": {
+        monsters: [
+            { monster: MONSTERS.goblin, pos: [ [449,2061], [449,2050], [460,2044], [406,2090], [413,2090], [411,2083] ] }
         ]
     },
 

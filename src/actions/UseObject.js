@@ -11,6 +11,16 @@ const GREEN_CRYSTAL_MODE = "green"
 const PURPLE_CRYSTAL_MODE = "purple"
 const YELLOW_CRYSTAL_MODE = "yellow"
 
+const PRECEDENCE = {}
+PRECEDENCE[ATTACK_MODE] = 1
+PRECEDENCE[USE_MODE] = 2
+PRECEDENCE[DOOR_MODE] = 3
+PRECEDENCE[TALK_MODE] = 4
+PRECEDENCE[ENTER_SHIP_MODE] = 5
+PRECEDENCE[EXIT_SHIP_MODE] = 5
+
+const MAX_PRECEDENCE = 100
+
 export default class {
     getType() {
         return "use_object"
@@ -28,29 +38,57 @@ export default class {
     }
 
     check(arkona) {
-        this.sprite = arkona.blocks.findClosestObject(arkona.player.animatedSprite.sprite, 10,
-            (sprite) => this.setMode(arkona, sprite))
+        let sprites = arkona.blocks.findAllNearby(arkona.player.animatedSprite.sprite, 10, (sprite) => this.getMode(arkona, sprite))
+
+        // find the mode with the lowest precedence
+        let minPrec = MAX_PRECEDENCE
+        this.sprite = null
+        this.mode = null
+        this.action = null
+        for(let obj of sprites) {
+            let sprite = obj.sprite
+            let mode = obj.value[0]
+            let action = obj.value[1]
+            let prec = PRECEDENCE[mode] || MAX_PRECEDENCE
+            if(prec <= minPrec) {
+                minPrec = prec
+                this.sprite = sprite
+                this.mode = mode
+                this.action = action
+            }
+        }
         return this.sprite
     }
 
-    setMode(arkona, sprite) {
-        this.mode = null
-        this.action = this._getAction(arkona, sprite)
+    getMode(arkona, sprite) {
+        let mode = null
+        let action = this._getAction(arkona, sprite)
         if(this._canTalkTo(sprite)) {
-            this.mode = TALK_MODE
+            mode = TALK_MODE
         } else if(this._isDoor(sprite)) {
-            this.mode = DOOR_MODE
-        } else if(this.action) {
-            this.mode = USE_MODE
+            mode = DOOR_MODE
+        } else if(action) {
+            mode = USE_MODE
         } else if(this._canEnterShip(arkona, sprite)) {
-            this.mode = ENTER_SHIP_MODE
+            mode = ENTER_SHIP_MODE
         } else if(this._canExitShip(arkona, sprite)) {
-            this.mode = EXIT_SHIP_MODE
+            mode = EXIT_SHIP_MODE
         } else if(this._canAttack(sprite)) {
-            this.mode = ATTACK_MODE
+            mode = ATTACK_MODE
         } else {
             // make sure this is the last 'else' block
-            this.mode = this._getCrystalMode(sprite)
+            mode = this._getCrystalMode(sprite)
+        }
+        return mode == null ? null : [mode, action]
+    }
+
+    setMode(arkona, sprite) {
+        let obj = this.getMode(arkona, sprite)
+        if(obj) {
+            this.mode = obj[0]
+            this.action = obj[1]
+        } else {
+            this.mode = this.action = null
         }
         return this.mode != null
     }

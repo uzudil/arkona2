@@ -423,6 +423,27 @@ class Layer {
         return found
     }
 
+    findAllNearby(image, range, fx) {
+        let found = []
+        // todo: instead of -1, it should be -width/2
+        _visit3d(image.gamePos[0] - 1 + (range/2)|0, image.gamePos[1] - 1 + (range/2)|0, image.gamePos[2], range, range, range, (xx, yy, zz) => {
+            let info = this.infos[_key(xx, yy, zz)]
+            if (info && info.imageInfos) {
+                info.imageInfos.forEach(ii => {
+                    let value = fx(ii.image)
+                    if(value && found.filter(obj => obj.sprite == ii.image).length == 0) {
+                        found.push({
+                            sprite: ii.image,
+                            value: value
+                        })
+                    }
+                })
+            }
+            return true
+        })
+        return found
+    }
+
     save() {
         let sprites = {}
         Object.keys(this.world).
@@ -1073,6 +1094,10 @@ export default class {
 
     findClosestObject(image, range, fx) {
         return this.objectLayer.findClosest(image, range, fx)
+    }
+
+    findAllNearby(image, range, fx) {
+        return this.objectLayer.findAllNearby(image, range, fx)
     }
 
     destroy() {
