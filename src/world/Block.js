@@ -4,7 +4,7 @@ import ImpreciseSort from "./ImpreciseSort"
 import DAGSort from "./DAGSort"
 import $ from "jquery"
 import * as Filters from "./Filters"
-import {dist3d} from "../utils"
+import {dist3d, mapName} from "../utils"
 
 const aStar = window.require("a-star")
 
@@ -1088,7 +1088,7 @@ export default class {
     }
 
     save(x, y) {
-        let name = this._name(x, y)
+        let name = mapName(x, y)
         let data = JSON.stringify({
             version: Config.MAP_VERSION,
             name: name,
@@ -1104,12 +1104,8 @@ export default class {
         });
     }
 
-    _name(x, y) {
-        return ("00" + x.toString(16)).slice(-2) + ("00" + y.toString(16)).slice(-2)
-    }
-
     loadXY(x, y, onLoad, onError) {
-        let name = this._name(x, y)
+        let name = mapName(x, y)
         if(this.editorMode) {
             if(x < 0 || y < 0 || x >= Config.MAX_MAP_X + 4 || y >= Config.MAX_MAP_Y + 4) {
                 if(onLoad) onLoad()
@@ -1168,7 +1164,7 @@ export default class {
                 if(imageInfo.image.mapX == null || imageInfo.image.mapY == null) {
                     console.warn("No mapXY set on image: " + imageInfo.name + " key=" + key + " map=" + imageInfo.image.mapX + "," + imageInfo.image.mapY)
                 } else {
-                    let name = this._name(imageInfo.image.mapX, imageInfo.image.mapY)
+                    let name = mapName(imageInfo.image.mapX, imageInfo.image.mapY)
                     if (this.cache[name] == null) {
                         throw "Uncached image at " + key + " name=" + imageInfo.name + " map=" + name
                     }
@@ -1192,7 +1188,7 @@ export default class {
                                 if (x + xx < 0 || y + yy < 0) continue;
 
                                 $.ajax({
-                                    url: "assets/maps/" + this._name(x + xx, y + yy) + ".json",
+                                    url: "assets/maps/" + mapName(x + xx, y + yy) + ".json",
                                     dataType: "json",
                                     success: (data) => {
                                         data.layers.forEach(layerInfo =>

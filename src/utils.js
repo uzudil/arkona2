@@ -67,4 +67,6 @@ export function restart(hard) {
 
 export const flatten = list => list.reduce(
 	(a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []
-);
+)
+
+export const mapName = (x, y) => ("00" + x.toString(16)).slice(-2) + ("00" + y.toString(16)).slice(-2)

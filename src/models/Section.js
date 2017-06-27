@@ -3,6 +3,7 @@ import * as Config from "./../config/Config"
 import Generator from "./Generator"
 import Vehicle from "./Vehicle"
 import {WORLD} from "../config/World"
+import {mapName} from "../utils"
 
 /**
  * The model of a runtime map section: npcs, monsters, generators, etc.
@@ -13,42 +14,102 @@ export default class {
         this.mapX = mapX
         this.mapY = mapY
         this.arkona = arkona
-        let key = "" + mapX + "," + mapY
 
         this.npcs = []
         this.generators = []
         this.vehicles = []
 
-        // todo: load from savegame folder if exists, otherwise fallback to WORLD
-        this.info = WORLD[key] || {};
-        (this.info["npcs"] || []).forEach(npcInfo => this.addNpc(npcInfo));
-        (this.info["monsters"] || []).forEach(monsterInfo => this.addMonster(monsterInfo));
-        (this.info["generators"] || []).forEach(generatorInfo => this.addGenerator(generatorInfo));
-        (this.info["vehicles"] || []).forEach(info => this.addVehicle(info));
+        this.load()
+    }
+
+    load() {
+        this.arkona.loadSection(mapName(this.mapX, this.mapY) + ".json", (data) => {
+            this.info = WORLD["" + this.mapX + "," + this.mapY] || {};
+            (this.info["npcs"] || []).forEach(npcInfo => this.addNpc(npcInfo, data ? data.npcs : null));
+            (this.info["monsters"] || []).forEach(monsterInfo => this.addMonster(monsterInfo, data ? data.npcs : null));
+            (this.info["generators"] || []).forEach(generatorInfo => this.addGenerator(generatorInfo));
+            (this.info["vehicles"] || []).forEach(info => this.addVehicle(info, data ? data.vehicles : null));
+        })
+    }
+
+    save(tempSave) {
+        this.arkona.saveSection(mapName(this.mapX, this.mapY) + ".json", tempSave, {
+            version: 1,
+            npcs: this.npcs.filter(npc => npc["generator"] == null).reduce((acc, npc) => {
+                acc[npc.id] = {
+                    x: npc.animatedSprite.sprite.gamePos[0],
+                    y: npc.animatedSprite.sprite.gamePos[1],
+                    z: npc.animatedSprite.sprite.gamePos[2],
+                    alive: npc.alive.getStats()
+                }
+                return acc
+            }, {}),
+            vehicles: this.vehicles.reduce((acc, vehicle) => {
+                acc[vehicle.id] = {
+                    x: vehicle.animatedSprite.sprite.gamePos[0],
+                    y: vehicle.animatedSprite.sprite.gamePos[1],
+                    z: vehicle.animatedSprite.sprite.gamePos[2]
+                }
+                return acc
+            }, {}),
+            doors: {
+                // locked? open?
+            }
+        })
     }
 
     unload() {
-        // todo: save mutated map section
+        // save mutated map section in tmp
+        this.save(true)
 
         // remove npcs (this also removes them from their generator)
         this.npcs.forEach(npc => this.removeNpc(npc))
     }
 
-    addNpc(npcInfo) {
+    addNpc(npcInfo, savedNpcs) {
         let [x, y, z] = [npcInfo.x, npcInfo.y, npcInfo["z"] || 0]
+        let id = "" + x + "," + y + "," + z
+
+        // is the creature killed or in another section?
+        if(savedNpcs && !savedNpcs[id]) {
+            return null
+        }
+
+        if(savedNpcs) {
+            x = savedNpcs[id].x
+            y = savedNpcs[id].y
+            z = savedNpcs[id].z
+        }
+
+        if(id == "72,1177,0") {
+            console.log("Adding Aradun at " + x + "," + y + " saved=", savedNpcs)
+            console.trace()
+        }
+
         let npc = new Npc(this.arkona, x, y, z, npcInfo["options"], npcInfo.creature)
+
+        // update stats
+        if(savedNpcs) {
+            npc.alive.setStats(savedNpcs[id].alive)
+        }
+
         this.addNpcRef(npc)
+
         return npc
     }
 
-    // eslint-disable-next-line no-unused-vars
-    addMonster(monsterInfo) {
+    addMonster(monsterInfo, savedNpcs) {
         for(let pos of monsterInfo.pos) {
-            let npc = new Npc(this.arkona, pos[0], pos[1], pos[2] || 0, {
-                movement: Config.MOVE_ATTACK,
-                monster: monsterInfo.monster
-            }, monsterInfo.monster.creature)
-            this.addNpcRef(npc)
+            this.addNpc({
+                x: pos[0],
+                y: pos[1],
+                z: pos[2] || 0,
+                creature: monsterInfo.monster.creature,
+                options: {
+                    movement: Config.MOVE_ATTACK,
+                    monster: monsterInfo.monster
+                }
+            }, savedNpcs)
         }
     }
 
@@ -63,8 +124,25 @@ export default class {
         return null
     }
 
-    addVehicle(info) {
-        this.vehicles.push(new Vehicle(this.arkona, info))
+    addVehicle(info, savedVehicles) {
+        let x = info.x
+        let y = info.y
+        let z = info.z || 0
+        let id = "" + x + "," + y + "," + z
+
+        // killed or moved to another section
+        if(savedVehicles && !savedVehicles[id]) {
+            return
+        }
+
+        if(savedVehicles) {
+            info.x = savedVehicles[id].x
+            info.y = savedVehicles[id].y
+            info.z = savedVehicles[id].z
+        }
+
+        let vehicle = new Vehicle(this.arkona, info)
+        this.vehicles.push(vehicle)
     }
 
     removeNpcByName(name) {

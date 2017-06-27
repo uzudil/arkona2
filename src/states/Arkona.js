@@ -16,7 +16,7 @@ import { dist3d } from "../utils"
 import Section from "../models/Section"
 import Fx from "../world/Fx"
 
-const fs = window.require("fs")
+const fs = window.require("fs-extra")
 const path = window.require("path")
 const os = window.require("os")
 
@@ -343,9 +343,7 @@ export default class extends Phaser.State {
      */
     saveGame() {
         let dir = path.join(os.homedir(), ".arkona")
-        if(!fs.existsSync(dir)) {
-            fs.mkdirSync(dir)
-        }
+        fs.ensureDirSync(dir)
         fs.writeFileSync(path.join(dir, "state.json"), JSON.stringify({
             version: 1,
             pos: this.player.animatedSprite.sprite.gamePos,
@@ -353,16 +351,76 @@ export default class extends Phaser.State {
             state: this.gameState,
             stats: this.player.alive.getStats()
         }));
+
+        // copy over section data from tmp
+        let tmp = path.join(dir, "tmp")
+        if(fs.existsSync(tmp)) {
+            dir = path.join(dir, "sections")
+            fs.ensureDirSync(dir)
+            fs.readdirSync(tmp).forEach(file => {
+                fs.copySync(path.join(tmp, file), path.join(dir, file))
+            })
+
+            // delete the tmp data
+            this.clearData(true)
+        }
+
+        // save any active sections
+        for(let key in this.sections) {
+            this.sections[key].save(false)
+        }
+    }
+
+    clearData(tempSave) {
+        let dir = path.join(os.homedir(), ".arkona")
+        if(fs.existsSync(dir)) {
+            dir = path.join(dir, tempSave ? "tmp" : "sections")
+            fs.emptydirSync(dir) // empty or create dir
+        }
+    }
+
+    loadSection(name, onLoad) {
+        // look in tmp first
+        let dir = path.join(os.homedir(), ".arkona", "tmp", name)
+        if(!fs.existsSync(dir)) {
+            // if that fails, look in sections
+            dir = path.join(os.homedir(), ".arkona", "sections", name)
+        }
+
+        if(fs.existsSync(dir)) {
+            let data = fs.readFileSync(dir)
+            onLoad(JSON.parse(data))
+        } else {
+            onLoad(null)
+        }
+    }
+
+    saveSection(name, tempSave, sectionData) {
+        let dir = path.join(os.homedir(), ".arkona")
+        fs.ensureDirSync(dir)
+        dir = path.join(dir, tempSave ? "tmp" : "sections")
+        fs.ensureDirSync(dir)
+        fs.writeFileSync(path.join(dir, name), JSON.stringify(sectionData));
     }
 
     /**
-     * Load the game. This currently only loads player state not level state.
+     * Load the game.
      */
     loadGame(startFromSavedGame) {
         let startX = Config.START_X
         let startY = Config.START_Y
         let startZ = 0
         let startDir = Config.DIR_E
+
+        // delete any temporary saved files
+        this.clearData(true)
+
+        // if starting a new game, delete old sections data
+        if(!startFromSavedGame) {
+            this.clearData(false)
+            let dir = path.join(os.homedir(), ".arkona")
+            fs.removeSync(path.join(dir, "state.json"))
+        }
 
         let dir = path.join(os.homedir(), ".arkona")
         if(startFromSavedGame && fs.existsSync(dir)) {

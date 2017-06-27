@@ -7,6 +7,7 @@ export default class {
         this.arkona = arkona
         this.dir = info["dir"] || Config.DIR_N
         this.vehicleDef = Vehicles.VEHICLES[info.name]
+        this.id = "" + info.x + "," + info.y + "," + (info["z"] || 0)
         this.animatedSprite = new AnimatedSprite(arkona.game, info.name, arkona.blocks, info.x, info.y, info["z"] || 0, this.vehicleDef.animations, this.vehicleDef.blockName)
         this.animatedSprite.sprite.vehicle = this
         this.setDir(this.dir)

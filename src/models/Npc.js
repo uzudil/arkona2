@@ -13,6 +13,7 @@ const SPEEDS = {
 export default class {
 
     constructor(arkona, x, y, z, options, creatureName) {
+        this.id = "" + x + "," + y + "," + z
         this.arkona = arkona
         this.x = x
         this.y = y
@@ -36,6 +37,13 @@ export default class {
         this.animatedSprite = new AnimatedSprite(arkona.game, creatureName, arkona.blocks, x, y, z, this.info.animations, this.info.blockName)
         this.animatedSprite.sprite.npc = this
         this.alive = new Alive(this.getMonster() ? this.getMonster()["alive"] : {}, this)
+    }
+
+    moveTo(x, y, z) {
+        this.animatedSprite.moveTo(x, y, z)
+        this.x = x
+        this.y = y
+        this.z = z
     }
 
     isVisible() {
