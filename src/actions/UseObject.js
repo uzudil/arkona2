@@ -47,10 +47,9 @@ export default class {
         this.action = null
         for(let obj of sprites) {
             let sprite = obj.sprite
-            let mode = obj.value[0]
-            let action = obj.value[1]
+            let [mode, action] = obj.value
             let prec = PRECEDENCE[mode] || MAX_PRECEDENCE
-            if(prec <= minPrec) {
+            if(this.mode == null || prec < minPrec) {
                 minPrec = prec
                 this.sprite = sprite
                 this.mode = mode

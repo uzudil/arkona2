@@ -119,7 +119,7 @@ export default class {
             this.playerPosAtPathFind[0] == this.lastPlayerPos[0] &&
             this.playerPosAtPathFind[1] == this.lastPlayerPos[1] &&
             this.playerPosAtPathFind[2] == this.lastPlayerPos[2]
-        if(now - this.lastPathFindTime > 1000 && !playerHasntMoved) {
+        if(now - this.lastPathFindTime > 1500 && !playerHasntMoved) {
             this.lastPathFindTime = now
             this.playerPosAtPathFind[0] = this.lastPlayerPos[0]
             this.playerPosAtPathFind[1] = this.lastPlayerPos[1]

@@ -1271,8 +1271,7 @@ export default class {
     }
 
     isAccessiblePos(sprite, ignoreSprite, worldX, worldY, worldZ) {
-        let floorOk = worldZ > 0 || this.isFloorSafe(worldX, worldY)
-        return floorOk && this.objectLayer.canMoveTo(sprite, worldX, worldY, worldZ, false, null, ignoreSprite)
+        return this.objectLayer.canMoveTo(sprite, worldX, worldY, worldZ, false, null, ignoreSprite)
     }
 
     getPath(sprite, fromX, fromY, fromZ, toX, toY, toZ, ignoreSprite) {
@@ -1296,7 +1295,7 @@ export default class {
             distance: (a, b) => dist3d(...a, ...b),
             heuristic: (node) => dist3d(...node, toX, toY, toZ),
             hash: (node) => "" + node[0] + "," + node[1] + "," + node[2],
-            timeout: 200
+            timeout: 100
         })
         return result.status == "success" ? result.path : null
     }
