@@ -59,8 +59,15 @@ export default class {
         if(type) this.arkona.fx.run(type, this.animatedSprite.sprite, { amount: amount })
     }
 
-    onDeath() {
-        console.warn(this.getName() + " dies.")
+    onDeath(fromDelay) {
+        if(!fromDelay) {
+            console.warn(this.getName() + " dies.")
+            if (this.options["monsterInfo"] && this.options.monsterInfo.onDeath) {
+                this.arkona.delayedDeathNpcs.push(this)
+                this.options.monsterInfo.onDeath(this.arkona, this)
+                return
+            }
+        }
         let section = this.arkona.sectionAt(this.x|0, this.y|0)
         if(section) section.removeNpc(this)
         else throw "Can't remove creature from section at " + this.x + "," + this.y

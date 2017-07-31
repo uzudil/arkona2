@@ -97,10 +97,10 @@ export const BLOCKS = {
 
 	// new mountains
 	"mtn.ctr": { size: [8, 8, 8], pos: [0, 0], dim: [128, 160], options: { sprites: 4 } },
-	"mtn.e": { size: [8, 8, 8], pos: [144, 0], dim: [128, 160], options: { sprites: 4 } },
-	"mtn.s": { size: [8, 8, 8], pos: [272, 0], dim: [128, 160], options: { sprites: 4 } },
-	"mtn.n": { size: [8, 8, 8], pos: [448, 0], dim: [128, 160], options: { sprites: 4 } },
-	"mtn.w": { size: [8, 8, 8], pos: [576, 0], dim: [128, 160], options: { sprites: 4 } },
+	"mtn.e": { size: [8, 8, 8], pos: [160, 576], dim: [128, 160], options: { sprites: 4 } },
+	"mtn.s": { size: [8, 8, 8], pos: [0, 576], dim: [128, 160], options: { sprites: 4 } },
+	"mtn.n": { size: [8, 8, 8], pos: [320, 576], dim: [128, 160], options: { sprites: 4 } },
+	"mtn.w": { size: [8, 8, 8], pos: [464, 576], dim: [128, 160], options: { sprites: 4 } },
 	"mtn.e.2": { size: [3, 8, 8], pos: [128, 192], dim: [88, 120], options: { sprites: 4 } },
 	"mtn.s.2": { size: [8, 4, 8], pos: [0, 192], dim: [96, 128], options: { sprites: 4 } },
 	"mtn.n.2": { size: [8, 3, 8], pos: [256, 192], dim: [88, 152], options: { sprites: 4 } },

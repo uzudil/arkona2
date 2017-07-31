@@ -77,9 +77,9 @@ export default class {
 		this.group.visible = false
 	}
 
-	start(npc) {
+	start(npc, convo) {
 		this.npcName.text = npc.getName() + ":"
-		this.show(npc.options.convo)
+		this.show(convo || npc.options.convo)
 	}
 
 	show(convo) {
@@ -127,5 +127,6 @@ export default class {
 	end() {
 		for(let a of this.pcAnswer) a.visible = false
 		this.group.visible = false
+        this.arkona.uiClosed(this)
 	}
 }

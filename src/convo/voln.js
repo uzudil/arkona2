@@ -191,6 +191,30 @@ export const HERMIT = new Convo("All life is sacred and the woods shelter us in 
 
 export const KAT = new Convo("What'll it be dear? Ale or wine?").answer("Thanks, I'm leaving now.")
 
+export const URGIL = new Convo("Argh, thou hath defeated me, human. A word with thee before I pass on.")
+    .answer("You will speak with the worms only, filthy ogre!",
+        new Convo("I once acted in haste like thee, but learned much of humility during my time. " +
+            "Enjoy thy victory but beware, the mayors of the Circuit are not as they seem.")
+            .answer("I care not for your drivel. Die foe!")
+            .answer("In what way are they not as they seem?",
+                new Convo("The mayors of the Circuit are using thee but they will never let thee claim the title of Champion. " +
+                    "They are too craven to let anyone into the Raighd.")
+                    .answer("You lie Ogre! I am done with this conversation.")
+                    .answer("Tell my why the mayors would lie to me", "R_URGIL_LIE")
+            )
+    )
+    .answer("I will show you a quick death, noble adversary.",
+        new Convo("Thou speaketh like a true champion and for this I will tell thee that the Circuit is a sham. " +
+            "The mayors are using thee but will never agree to send thee into the Raighd.")
+            .answer("I don't believe the words of an Ogre. Now die!")
+            .answer("Why would they lie to me?",
+                new Convo("I haven't much time and nothing to gain by telling thee the truth. The humans fear loosing control " +
+                    "to that sylvan terror and will not let thee in. ...I pass now on from this world.", "R_URGIL_LIE",
+                    (arkona) => arkona.gameState["CIRCUIT_LIE"] = true)
+                    .answer("Die with dignity, mighty ogre.")
+            )
+    )
+
 export const MAYOR = Convo.condition((arkona) => arkona.gameState["QUEST_URGIL"] == true,
     new Convo("Hath thou vanquished Urgil the goblin foe? How doth thy quest?")
         .answer("Still working on it..."),

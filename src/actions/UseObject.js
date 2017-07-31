@@ -35,6 +35,8 @@ export default class {
         this.mode = null
         this.sprite = null
         this.action = null
+        this.ctrlActivate = context
+        this.mouseActivate = false
     }
 
     check(arkona) {
@@ -62,21 +64,28 @@ export default class {
     getMode(arkona, sprite) {
         let mode = null
         let action = this._getAction(arkona, sprite)
-        if(this._canTalkTo(sprite)) {
-            mode = TALK_MODE
-        } else if(this._isDoor(sprite)) {
-            mode = DOOR_MODE
-        } else if(action) {
-            mode = USE_MODE
-        } else if(this._canEnterShip(arkona, sprite)) {
-            mode = ENTER_SHIP_MODE
-        } else if(this._canExitShip(arkona, sprite)) {
-            mode = EXIT_SHIP_MODE
-        } else if(this._canAttack(sprite)) {
-            mode = ATTACK_MODE
+
+        if(this.ctrlActivate) {
+            if(this._canAttack(sprite)) {
+                mode = ATTACK_MODE
+            }
         } else {
-            // make sure this is the last 'else' block
-            mode = this._getCrystalMode(sprite)
+            if (this._canTalkTo(sprite)) {
+                mode = TALK_MODE
+            } else if (this._isDoor(sprite)) {
+                mode = DOOR_MODE
+            } else if (action) {
+                mode = USE_MODE
+            } else if (this._canEnterShip(arkona, sprite)) {
+                mode = ENTER_SHIP_MODE
+            } else if (this._canExitShip(arkona, sprite)) {
+                mode = EXIT_SHIP_MODE
+            } else if(this.mouseActivate && this._canAttack(sprite)) {
+                mode = ATTACK_MODE
+            } else {
+                // make sure this is the last 'else' block
+                mode = this._getCrystalMode(sprite)
+            }
         }
         return mode == null ? null : [mode, action]
     }

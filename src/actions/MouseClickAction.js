@@ -20,6 +20,7 @@ export default class {
 		this.action = null
 		if(this.sprite && arkona.player.canReach(this.sprite)) {
 			if(this.useObject.setMode(arkona, this.sprite)) {
+                this.useObject.mouseActivate = true
 				this.action = this.useObject
 			}
 		}

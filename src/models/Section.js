@@ -107,7 +107,8 @@ export default class {
                 creature: monsterInfo.monster.creature,
                 options: {
                     movement: Config.MOVE_ATTACK,
-                    monster: monsterInfo.monster
+                    monster: monsterInfo.monster,
+                    monsterInfo: monsterInfo
                 }
             }, savedNpcs)
         }

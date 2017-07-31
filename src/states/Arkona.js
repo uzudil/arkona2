@@ -46,10 +46,12 @@ export default class extends Phaser.State {
         this.playerSpeed = 1
         this.mouseClicked = false
         this.fx = new Fx(this)
+        this.delayedDeathNpcs = []
 
         // controls
         this.cursors = this.game.input.keyboard.createCursorKeys()
         this.space = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
+        this.ctrl = this.game.input.keyboard.addKey(Phaser.Keyboard.CONTROL)
         this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
         this.esc = this.game.input.keyboard.addKey(Phaser.Keyboard.ESC)
         this.w_key = this.game.input.keyboard.addKey(Phaser.Keyboard.W)
@@ -134,7 +136,8 @@ export default class extends Phaser.State {
                 }
             }
 
-            if (this.space.justDown) this.actionQueue.add(Queue.USE_OBJECT)
+            let ctrlDown = this.ctrl.isDown
+            if (this.space.justDown || ctrlDown) this.actionQueue.add(Queue.USE_OBJECT, ctrlDown)
 
             let spriteUnderMouse = this.getSpriteUnderMouse()
             this.showMovementCursor(!spriteUnderMouse)
@@ -232,6 +235,7 @@ export default class extends Phaser.State {
             return true
         } else if(this.convoUi.group.visible) {
             if (this.esc.justDown) {
+                this._processDelayedDeaths()
                 this.convoUi.end()
             } else if (this.space.justDown || this.enter.justDown) {
                 this.convoUi.select()
@@ -248,6 +252,16 @@ export default class extends Phaser.State {
             }
             return false
         }
+    }
+
+    uiClosed(ui) {
+        if(ui == this.convoUi) {
+            this._processDelayedDeaths()
+        }
+    }
+
+    _processDelayedDeaths() {
+        this.delayedDeathNpcs.forEach(npc => npc.onDeath(true))
     }
 
     isCursorKeyDown() {

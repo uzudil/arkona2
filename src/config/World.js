@@ -337,7 +337,13 @@ export const WORLD = {
     "4,22": {
         monsters: [
             { monster: MONSTERS.goblin, pos: [ [428,2171], [428,2159], [418,2180], [423,2152], [453,2137], [453,2130] ] },
-            { monster: MONSTERS.ogre, pos: [ [407,2169,1] ] },
+            {
+                monster: MONSTERS.ogre,
+                onDeath: (arkona, npc) => {
+                    arkona.convoUi.start(npc, VOLN_CONVO.URGIL)
+                },
+                pos: [ [407,2169,1 ] ]
+            }
         ]
     },
     "4,21": {
