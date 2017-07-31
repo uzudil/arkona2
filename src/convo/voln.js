@@ -1,4 +1,5 @@
 import Convo from "./Convo"
+import * as ConvoUtils from "./ConvoUtils"
 
 // eslint-disable-next-line no-unused-vars
 export const COMMON = new Convo("Our town of Voln has stood here for near a millennia!", "VOLN_COMMON")
@@ -191,7 +192,7 @@ export const HERMIT = new Convo("All life is sacred and the woods shelter us in 
 
 export const KAT = new Convo("What'll it be dear? Ale or wine?").answer("Thanks, I'm leaving now.")
 
-export const URGIL = new Convo("Argh, thou hath defeated me, human. A word with thee before I pass on.")
+export const URGIL = new Convo("Argh, thou hath defeated me, human. A word with thee before I pass on.", "", (arkona) => arkona.gameState["URGIL_DEAD"] = true)
     .answer("You will speak with the worms only, filthy ogre!",
         new Convo("I once acted in haste like thee, but learned much of humility during my time. " +
             "Enjoy thy victory but beware, the mayors of the Circuit are not as they seem.")
@@ -215,63 +216,92 @@ export const URGIL = new Convo("Argh, thou hath defeated me, human. A word with 
             )
     )
 
-export const MAYOR = Convo.condition((arkona) => arkona.gameState["QUEST_URGIL"] == true,
-    new Convo("Hath thou vanquished Urgil the goblin foe? How doth thy quest?")
-        .answer("Still working on it..."),
-    new Convo("Ah a stranger in our town. Welcome to Voln, traveler, one of the guardian cities of Arkona!")
-    .answer("What exactly do you guard the land from?",
-        new Convo("Our town of Voln has stood here since the magical barriers were erected to keep the Raighd from taking over all of Arkona.")
-            .answer("The Raighd... what is that?",
-                new Convo("Has no one told thee about the vast, primeval tangle of pure Evil just over the magical boundaries? " +
-                    "The Raighd is an untamed land of malevolent energy right here on our doorstep.")
-                    .answer("What would happen if the barrier disappeared?",
-                        new Convo("The barrier was put in place after the last time the forces of the Raighed poured into Arkona, " +
-                            "killing all in sight. Never again do we want to witness that host of horrors pillaging our land.")
-                            .answer("Yes, I'm glad the barrier is in place")
-                            .answer("Is it possible for a traveler to enter the Raighd?", "VOLN_ENTER_RAIGHD")
-                    )
-                    .answer("So there is no way past the magical barriers and into the Raighd?",
-                        new Convo("There is a way in. If I and the other border towns' mayors consider the candidate worthy, the barrier is lifted. " +
-                            "However in my years of service, I've never met such a legend...", "VOLN_ENTER_RAIGHD")
-                            .answer("I wish to pass through the barrier",
-                                new Convo("Then thou must enter the Path of the Circuit: in each boundary town perform a heroic feat! " +
-                                    "Thou should start here in Voln: we have a slight goblin problem.")
-                                    .answer("Tell me about the problem with goblins",
-                                        new Convo("To the west lies the ruined fortress of Thornperil. It stood empty for long, but recently a large " +
-                                            "goblin named Urgil and his forces moved in. From there they raid and harrass our farmers.", "VOLN_GOBLIN_FORT")
-                                            .answer("Wow ok, I have no wish to get killed over some cabbages")
-                                            .answer("I could help solve your goblin problem",
-                                                new Convo("If thou could rid us of the goblins and survive, I'd reward thee with the Badge of Heroism. " +
-                                                    "It is a part of becoming a Hero of the Circuit - a title revered in all of Arkona!", "VOLN_MEDAL")
-                                                    .answer("That sounds great! I'll do it.",
-                                                        new Convo("Thou art valiant indeed! Return to me when the goblins of Thornperil are dead.", "VOLN_TO_QUEST",
-                                                            (arkona) => arkona.gameState["QUEST_URGIL"] = true)
-                                                            .answer("Which way lies their fortress again?", "VOLN_GOBLIN_FORT")
-                                                            .answer("See you soon")
-                                                    )
-                                                    .answer("How about some money instead of a lousy medal?",
-                                                        new Convo("If thou art interested in gold, perhaps speak with Encat the merchant. He's looking to hire " +
-                                                            "an enterprising mercenary.")
-                                                            .answer("I just might! See ya.")
-                                                            .answer("I changed my mind - tell me about the medal again", "VOLN_MEDAL")
-                                                    )
-                                                    .answerIf((arkona) => arkona.gameState["URGIL_PEACE"] == true, "The goblins are peaceful. King Urgil told me personally.",
-                                                        new Convo("Thou cannot believe the lies those monsters spread! I ask thee to reconsider and eliminate the goblins.")
-                                                            .answer("You are right, they're monsters... I'll do it.", "VOLN_TO_QUEST")
-                                                            .answer("I'm sorry but I think the goblins mean well.")
+export const MAYOR = Convo.condition((arkona) => arkona.gameState["VOLN_SUCCESS"] == true,
+    new Convo("Ah the brave traveler returns to the fair city of Voln! Thou art always welcome here, hero of Voln!")
+        .answer("Just passing through, goodbye!")
+        .answer("Have I proved myself to be a Champion of the Circle?", ConvoUtils.AM_I_CHAMPION)
+    ,
+    Convo.condition((arkona) => arkona.gameState["QUEST_URGIL"] == true,
+        Convo.condition((arkona) => arkona.gameState["URGIL_DEAD"],
+            new Convo("Hath thou vanquished Urgil and his goblin host? How doth thy quest?")
+                .answer("The ogre is no more, Voln is safe",
+                    new Convo("In the name of the town of Voln, it is my privilege to thank thee from liberating us from the" +
+                        " fearsome beast. Thy good deed will not be forgotten! ", "R_VOLN_SUCCESS",
+                        (arkona) => {
+                            ConvoUtils.incrementChampion(arkona, "voln")
+                            arkona.gameState["VOLN_SUCCESS"] = true
+                        })
+                        .answer("Have I proved myself to be a Champion of the Circle?", ConvoUtils.AM_I_CHAMPION)
+                        .answerIf((arkona) => arkona.gameState["CIRCUIT_LIE"] == true, "Before dying, Urgil claimed the Circuit was a hoax",
+                            new Convo("I would have suspected such treachery even to the end from an ogre... Thou art wise to disbelieve his lies. " +
+                                "Worry not, thou will get what thou deserves when thy quest is complete.")
+                                .answer("Gee, that's great. Thanks!")
+                                .answer("Hmm, that sounds rather ominous...",
+                                    new Convo("Not at all! Thy reward will be unique and eternal, thou will see...")
+                                        .answer("Ok, that sounds even worse",
+                                            new Convo("...thou will not need to deal with trivialities anymore...")
+                                                .answer("You are freaking...",
+                                                    new Convo("...ever again...")
+                                                        .answer("...me out. Am I not the hero who saved the town?", "R_VOLN_SUCCESS")
+                                                        .answer("I will just let myself out now...")
+                                                )
+                                        )
+                                )
+                        )
+                ),
+            new Convo("Hath thou vanquished Urgil and his goblin host? How doth thy quest?")
+                .answer("Still working on it...")
+        ),
+        new Convo("Ah a stranger in our town. Welcome to Voln, traveler, one of the guardian cities of Arkona!")
+            .answer("What exactly do you guard the land from?",
+                new Convo("Our town of Voln has stood here since the magical barriers were erected to keep the Raighd from taking over all of Arkona.")
+                    .answer("The Raighd... what is that?",
+                        new Convo("Has no one told thee about the vast, primeval tangle of pure Evil just over the magical boundaries? " +
+                            "The Raighd is an untamed land of malevolent energy right here on our doorstep.")
+                            .answer("What would happen if the barrier disappeared?",
+                                new Convo("The barrier was put in place after the last time the forces of the Raighed poured into Arkona, " +
+                                    "killing all in sight. Never again do we want to witness that host of horrors pillaging our land.")
+                                    .answer("Yes, I'm glad the barrier is in place")
+                                    .answer("Is it possible for a traveler to enter the Raighd?", "VOLN_ENTER_RAIGHD")
+                            )
+                            .answer("So there is no way past the magical barriers and into the Raighd?",
+                                new Convo("There is a way in. If I and the other border towns' mayors consider the candidate worthy, the barrier is lifted. " +
+                                    "However in my years of service, I've never met such a legend...", "VOLN_ENTER_RAIGHD")
+                                    .answer("I wish to pass through the barrier",
+                                        new Convo("Then thou must enter the Path of the Circuit: in each boundary town perform a heroic feat! " +
+                                            "Thou should start here in Voln: we have a slight goblin problem.")
+                                            .answer("Tell me about the problem with goblins",
+                                                new Convo("To the northwest lies the ruined fortress of Thornperil. It stood empty for long, but recently an " +
+                                                    "ogre named Urgil and his goblin forces moved in. Thence they raid and harrass our farmers.", "VOLN_GOBLIN_FORT")
+                                                    .answer("Wow ok, I have no wish to get killed over some cabbages")
+                                                    .answer("I could help solve your goblin problem",
+                                                        new Convo("If thou could rid us of the goblins and survive, I'd reward thee with the Badge of Heroism. " +
+                                                            "It is a part of becoming a Hero of the Circuit - a title revered in all of Arkona!", "VOLN_MEDAL")
+                                                            .answer("That sounds great! I'll do it.",
+                                                                new Convo("Thou art valiant indeed! Return to me when the goblins of Thornperil are dead.", "VOLN_TO_QUEST",
+                                                                    (arkona) => arkona.gameState["QUEST_URGIL"] = true)
+                                                                    .answer("Which way lies their fortress again?", "VOLN_GOBLIN_FORT")
+                                                                    .answer("See you soon")
+                                                            )
+                                                            .answer("How about some money instead of a lousy medal?",
+                                                                new Convo("If thou art interested in gold, perhaps speak with Encat the merchant. He's looking to hire " +
+                                                                    "an enterprising mercenary.")
+                                                                    .answer("I just might! See ya.")
+                                                                    .answer("I changed my mind - tell me about the medal again", "VOLN_MEDAL")
+                                                            )
                                                     )
                                             )
+                                            .answer("That sounds scary... maybe next time")
                                     )
-                                    .answer("That sounds scary... maybe next time")
+                                    .answer("I'm not surprised. Why would anyone be stupid enough to enter the Raighd?")
                             )
-                            .answer("I'm not surprised. Why would anyone be stupid enough to enter the Raighd?")
+                    )
+                    .answer("I'm glad for that. So everything has been peaceful lately?",
+                        new Convo("Aye, apart from that accursed goblin fort to the west.")
+                            .answer("Tell me about this fort")
+                            .answer("Interesting... well, I must be going")
                     )
             )
-            .answer("I'm glad for that. So everything has been peaceful lately?",
-                new Convo("Aye, apart from that accursed goblin fort to the west.")
-                    .answer("Tell me about this fort")
-                    .answer("Interesting... well, I must be going")
-            )
+            .answer("Nice place. Do you have any work for an adventuring type?", "VOLN_GOBLIN_FORT")
     )
-    .answer("Nice place. Do you have any work for an adventuring type?", "VOLN_GOBLIN_FORT")
 )

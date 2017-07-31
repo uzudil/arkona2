@@ -19,8 +19,12 @@ export const WORLD = {
             { creature: "man_blue", x: 173, y: 390, options: { movement: MOVE_NEAR_PLAYER, name: "Sgt Travor", convo: VOLN_CONVO.TRAVOR } },
             { creature: "man_yellow", x: 167, y: 398, options: { movement: MOVE_ANCHOR, name: "Prenor", convo: VOLN_CONVO.COMMON } },
             { creature: "woman_brown", x: 150, y: 395, options: { movement: MOVE_ANCHOR, name: "Clanis", convo: VOLN_CONVO.COMMON } },
+        ],
+        vehicles: [
+            { name: "ship", x: 157, y: 464, dir: "se" }
         ]
     },
+
     "0,4": {
         npcs: [
             { creature: "monk_blue", x: 33, y: 424, options: { movement: MOVE_ANCHOR, name: "The hermit", convo: VOLN_CONVO.HERMIT } }
@@ -339,9 +343,7 @@ export const WORLD = {
             { monster: MONSTERS.goblin, pos: [ [428,2171], [428,2159], [418,2180], [423,2152], [453,2137], [453,2130] ] },
             {
                 monster: MONSTERS.ogre,
-                onDeath: (arkona, npc) => {
-                    arkona.convoUi.start(npc, VOLN_CONVO.URGIL)
-                },
+                onDeath: (arkona, npc) => arkona.convoUi.start(npc, VOLN_CONVO.URGIL),
                 pos: [ [407,2169,1 ] ]
             }
         ]
