@@ -81,6 +81,7 @@ export default class extends Phaser.State {
         this.ground9 = this.game.input.keyboard.addKey(Phaser.Keyboard.NINE)
         this.ground0 = this.game.input.keyboard.addKey(Phaser.Keyboard.ZERO)
         this.groundA = this.game.input.keyboard.addKey(Phaser.Keyboard.A)
+        this.groundB = this.game.input.keyboard.addKey(Phaser.Keyboard.B)
         this.tree = this.game.input.keyboard.addKey(Phaser.Keyboard.T)
         this.tree2 = this.game.input.keyboard.addKey(Phaser.Keyboard.Y)
         this.mountain = this.game.input.keyboard.addKey(Phaser.Keyboard.M)
@@ -306,6 +307,8 @@ export default class extends Phaser.State {
                 for(let y = 0; y < Config.MAP_SIZE; y++) {
                     if(this.forest.shiftKey) {
                         this.drawDesertAt(x, y)
+                    } else if(this.forest.ctrlKey) {
+                        this.drawSwampAt(x, y)
                     } else {
                         this.drawForestAt(x, y)
                     }
@@ -340,6 +343,25 @@ export default class extends Phaser.State {
             if(this.blocks.isFree(x, y, 0, ...block.size) && this.blocks.getFloor(x, y) == "sand") {
                 this.blocks.clear(name, x, y, 0)
                 this.blocks.set(name, x, y, 0)
+            }
+        }
+    }
+
+    drawSwampAt(x, y) {
+        let block = BLOCKS["4x4x4.placeholder"]
+        if(this.blocks.isFree(x, y, 0, ...block.size) && (this.blocks.getFloor(x, y) == "swamp1" || this.blocks.getFloor(x, y) == "swamp2")) {
+            if (Math.random() > 0.75) {
+                if (0.7 <= Math.random()) {
+                    this._drawTree(x, y);
+                } else {
+                    let name = getRandom([...Array(2).fill("rock.1"), ...Array(2).fill("rock.2"), ...Array(3).fill("corn"), "trunk.broken", ...Array(3).fill("bush"), "dead"])
+                    let block = BLOCKS[name]
+                    if (this.blocks.isFree(x, y, 0, ...block.size)) {
+                        this.blocks.clear(name, x, y, 0)
+                        this.blocks.set(name, x, y, 0)
+                    }
+
+                }
             }
         }
     }
@@ -397,6 +419,8 @@ export default class extends Phaser.State {
             ground = "dungeon.floor"
         } else if (this.groundA.isDown) {
             ground = "dungeon.floor.black"
+        } else if (this.groundB.isDown) {
+            ground = Math.random() < 0.5 ? "swamp1" : "swamp2"
         }
 
         if (ground) {
@@ -427,6 +451,17 @@ export default class extends Phaser.State {
                 this.blocks.set("trunk.palm", x, y, 0)
                 this.blocks.clear("palm", x + 1, y + 2, 8)
                 this.blocks.set("palm", x + 1, y + 2, 8)
+            } else if(this.blocks.getFloor(x, y, true) == "swamp1" || this.blocks.getFloor(x, y, true) == "swamp2") {
+                this.blocks.clear("trunk", x, y, 0)
+                this.blocks.set("trunk", x, y, 0)
+                if(Math.random() < 0.8) {
+                    this.blocks.clear("willow", x + 2, y + 2, 4)
+                    this.blocks.set("willow", x + 2, y + 2, 4)
+                } else {
+                    let name = getRandom([...Array(1).fill("pine"), ...Array(1).fill("pine2")])
+                    this.blocks.clear(name, x, y, 4)
+                    this.blocks.set(name, x, y, 4)
+                }
             } else {
                 if (unpassable) {
                     this.blocks.clear("trunk.wide", x, y, 0)
