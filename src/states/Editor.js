@@ -47,6 +47,10 @@ export default class extends Phaser.State {
         document.getElementById("fix-edges").onclick = () => {
             this.blocks.fixEdges()
         }
+
+        document.getElementById("editor-info-close").onclick = () => {
+            $("#editor-info").toggle()
+        }
     }
 
     create() {
@@ -87,11 +91,11 @@ export default class extends Phaser.State {
         this.mountain = this.game.input.keyboard.addKey(Phaser.Keyboard.M)
         this.delete = this.game.input.keyboard.addKey(Phaser.Keyboard.D)
         this.shift = this.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT)
-        this.esc = this.game.input.keyboard.addKey(Phaser.Keyboard.ESC)
         this.dungeon = this.game.input.keyboard.addKey(Phaser.Keyboard.N)
         this.undo = this.game.input.keyboard.addKey(Phaser.Keyboard.Z)
         this.flood = this.game.input.keyboard.addKey(Phaser.Keyboard.F)
         this.forest = this.game.input.keyboard.addKey(Phaser.Keyboard.R)
+        this.esc = this.game.input.keyboard.addKey(Phaser.Keyboard.ESC)
     }
 
     render() {
@@ -479,6 +483,15 @@ export default class extends Phaser.State {
         }
     }
 
+    // process esc outside of the usual inputs
+    escPressed() {
+        if (this.activeBlock) {
+            this.setActiveBlock(null)
+        } else {
+            $("#editor-info").toggle()
+        }
+    }
+
     update() {
         this.blocks.update()
 
@@ -494,9 +507,7 @@ export default class extends Phaser.State {
             this.lastBlock = null
         }
 
-        if (this.esc.justDown && this.activeBlock) {
-            this.setActiveBlock(null)
-        }
+        if(this.esc.justDown) this.escPressed()
 
         this.moveMap()
         this.moveCamera()

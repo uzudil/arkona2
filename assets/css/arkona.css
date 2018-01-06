@@ -115,6 +115,11 @@ body {
     margin-top: -200px;
 }
 
+.dialog.tall {
+    height: 400px;
+    margin-top: -200px;
+}
+
 .dialog .title {
     font-weight: bold;
     font-size: 24px;
@@ -133,6 +138,10 @@ body {
 
 .dialog.med .body {
     height: 158px;
+}
+
+.dialog.tall .body {
+    height: 258px;
 }
 
 .dialog .footer {
@@ -262,4 +271,10 @@ body {
 canvas {
     display : block;
     margin : auto;
+}
+
+#editor-info select {
+    width: 100%;
+    background: transparent;
+    color: white;
 }
