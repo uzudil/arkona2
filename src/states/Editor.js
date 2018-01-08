@@ -51,6 +51,7 @@ export default class extends Phaser.State {
         document.getElementById("editor-info-close").onclick = () => {
             $("#editor-info").toggle()
         }
+        
     }
 
     create() {

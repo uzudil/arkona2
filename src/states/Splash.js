@@ -35,7 +35,6 @@ export default class extends Phaser.State {
 
         this.load.image("logo", "./assets/images/logo.png")
         this.load.image("back", "./assets/images/back.png")
-        this.load.image("device", "./assets/images/device.png")
 
         for(let k in Creatures.CREATURES) {
             let c = Creatures.CREATURES[k]
@@ -45,6 +44,68 @@ export default class extends Phaser.State {
             let c = Vehicles.VEHICLES[k]
             this.game.load.spritesheet(k, c.src + "?cb=" + Date.now(), ...c.dim)
         }
+
+        this.load.atlas("device", "assets/images/device.png?cb=" + Date.now(), null, {
+            frames: [
+                {
+                    filename: "device",
+                    frame: { x: 0, y: 0, w: 405, h: 32 },
+                    rotated: false,
+                    trimmed: true,
+                    sourceSize: { w: 405, h: 32 },
+                    spriteSourceSize: {x: 0, y: 0, w: 405, h: 32 }
+                },
+                {
+                    filename: "gem-purple",
+                    frame: { x: 0, y: 40, w: 24, h: 24 },
+                    rotated: false,
+                    trimmed: true,
+                    sourceSize: { w: 24, h: 24 },
+                    spriteSourceSize: {x: 0, y: 0, w: 24, h: 24 }
+                },
+                {
+                    filename: "gem-blue",
+                    frame: { x: 64, y: 40, w: 24, h: 24 },
+                    rotated: false,
+                    trimmed: true,
+                    sourceSize: { w: 24, h: 24 },
+                    spriteSourceSize: {x: 0, y: 0, w: 24, h: 24 }
+                },
+                {
+                    filename: "gem-green",
+                    frame: { x: 128, y: 40, w: 24, h: 24 },
+                    rotated: false,
+                    trimmed: true,
+                    sourceSize: { w: 24, h: 24 },
+                    spriteSourceSize: {x: 0, y: 0, w: 24, h: 24 }
+                },
+                {
+                    filename: "gem-red",
+                    frame: { x: 192, y: 40, w: 24, h: 24 },
+                    rotated: false,
+                    trimmed: true,
+                    sourceSize: { w: 24, h: 24 },
+                    spriteSourceSize: {x: 0, y: 0, w: 24, h: 24 }
+                },
+                {
+                    filename: "gem-yellow",
+                    frame: { x: 256, y: 40, w: 24, h: 24 },
+                    rotated: false,
+                    trimmed: true,
+                    sourceSize: { w: 24, h: 24 },
+                    spriteSourceSize: {x: 0, y: 0, w: 24, h: 24 }
+                },
+            ],
+            meta: {
+                scale: "1",
+                format: "RGBA8888",
+                app: "http://www.codeandweb.com/texturepacker",
+                version: "1.0",
+                smartupdate: "$TexturePacker:SmartUpdate:b6887183d8c9d806808577d524d4a2b9:1e240ffed241fc58aca26b0e5d350d80:71eda69c52f7d9873cb6f00d13e1e2f8$",
+                image: "arkona.png",
+                size: {"h": 1024, "w": 1200}
+            }
+        }, Phaser.Loader.TEXTURE_ATLAS_JSON_HASH);
     }
 
     atlas(n) {

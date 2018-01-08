@@ -74,6 +74,8 @@ export default class extends Phaser.State {
             this.stats = new Stats();
             this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
             this.phaserStatsPanel = this.stats.addPanel( new Stats.Panel( "SP", "#ff8", "#221" ) );
+            this.stats.domElement.style.left = ""
+            this.stats.domElement.style.right = "0px"
             document.body.appendChild(this.stats.dom);
         } else {
             this.stats = null
@@ -168,6 +170,8 @@ export default class extends Phaser.State {
         } else {
             this.showMovementCursor(false)
         }
+
+        this.device.update()
 
         if(this.stats) {
             this.stats.end()

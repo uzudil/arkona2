@@ -33,6 +33,10 @@ export default class {
         }
     }
 
+    getWeaponCooldown() {
+        return Math.max(0, Math.min(1, (Date.now() - this.lastAttack) / this.attackWait))
+    }
+
     attack(other) {
         let now = Date.now()
         if(now - this.lastAttack > this.attackWait) {
