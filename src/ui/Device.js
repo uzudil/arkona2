@@ -1,4 +1,4 @@
-//import * as Config from "../config/Config"
+import * as Config from "../config/Config"
 //import Phaser from "phaser"
 
 const WIDTH = 74
@@ -26,11 +26,21 @@ export default class {
 		this.greenGem = this.arkona.game.add.image(309, 6, "device", "gem-green")
 		this.redGem = this.arkona.game.add.image(341, 6, "device", "gem-red")
 		this.yellowGem = this.arkona.game.add.image(373, 6, "device", "gem-yellow")
-	}
+
+        this.level = this.arkona.game.add.text(86, 3, "", {
+            font: "bold 18px " + Config.FONT_FAMILY,
+            fill: "#fc0",
+            boundsAlignH: "center",
+            boundsAlignV: "center",
+            wordWrap: false
+        })
+        this.level.setShadow(1, 1, "rgba(0,0,0,1)", 2)
+    }
 
 	update() {
 		this.health.scale.x = this.arkona.player.alive.getHealth()
 		this.power.scale.x = this.arkona.player.alive.getWeaponCooldown()
+        this.level.setText("" + this.arkona.player.alive.level)
 	}
 
 

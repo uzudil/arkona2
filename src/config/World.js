@@ -54,8 +54,8 @@ export const WORLD = {
                 action: (arkona) => arkona.showOverlay("sign", "Eldun")
             }
         ],
-        monsters: [
-            { monster: MONSTERS.wolf, pos: [ [152, 1031] ] }
+        generators: [
+            { x: 152, y: 1031, z: 0, type: MONSTERS.wolf, count: 3 }
         ]
     },
     "2,11": {
@@ -133,8 +133,8 @@ export const WORLD = {
                 action: (arkona) => arkona.showOverlay("raighd")
             }
         ],
-        monsters: [
-            { monster: MONSTERS.wolf, pos: [ [375, 1048] ] }
+        generators: [
+            { x: 375, y: 1048, z: 0, type: MONSTERS.wolf, count: 3 }
         ]
     },
     "2,12": {
@@ -166,33 +166,39 @@ export const WORLD = {
         vehicles: [
             { name: "ship", x: 139, y: 892, dir: "se" }
         ],
-        monsters: [
-            { monster: MONSTERS.wolf, pos: [ [169, 942], [164, 907] ] }
+        generators: [
+            { x: 169, y: 942, z: 0, type: MONSTERS.wolf, count: 3 },
+            { x: 164, y: 907, z: 0, type: MONSTERS.wolf, count: 3 }
         ]
     },
     "2,9": {
-        monsters: [
-            { monster: MONSTERS.wolf, pos: [ [237, 906], [244,942] ] }
+        generators: [
+            { x: 237, y: 906, z: 0, type: MONSTERS.wolf, count: 3 },
+            { x: 244, y: 942, z: 0, type: MONSTERS.wolf, count: 3 }
         ]
-    },    
+    },
     "3,9": {
-        monsters: [
-            { monster: MONSTERS.wolf, pos: [ [314,921], [348,924] ] }
+        generators: [
+            { x: 314, y: 921, z: 0, type: MONSTERS.wolf, count: 3 },
+            { x: 348, y: 924, z: 0, type: MONSTERS.wolf, count: 3 }
         ]
-    },    
+    },
     "3,11": {
-        monsters: [
-            { monster: MONSTERS.wolf, pos: [ [330,1069], [364,1110] ] }
+        generators: [
+            { x: 330, y: 1069, z: 0, type: MONSTERS.wolf, count: 3 },
+            { x: 364, y: 1110, z: 0, type: MONSTERS.wolf, count: 3 }
         ]
-    },    
+    },
     "1,12": {
         generators: [
             { x: 153, y: 1205, z: 0, type: MONSTERS.wolf, count: 2 }
-        ],
+        ]
     },
     "1,11": {
         generators: [
-            { x: 180, y: 1096, z: 0, type: MONSTERS.wolf, count: 1 }
+            { x: 180, y: 1096, z: 0, type: MONSTERS.wolf, count: 1 },
+            { x: 155, y: 1090, z: 0, type: MONSTERS.wolf, count: 3 },
+            { x: 177, y: 1094, z: 0, type: MONSTERS.wolf, count: 3 }
         ],
         actions: [
             {
@@ -201,9 +207,6 @@ export const WORLD = {
                 allow: (arkona) => true,
                 action: (arkona) => arkona.showOverlay("sign", "Median")
             }
-       ],
-       monsters: [
-            { monster: MONSTERS.wolf, pos: [ [155, 1090], [177, 1094] ] }
         ]
     },
     "0,12": {

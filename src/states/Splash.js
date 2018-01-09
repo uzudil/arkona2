@@ -49,11 +49,11 @@ export default class extends Phaser.State {
             frames: [
                 {
                     filename: "device",
-                    frame: { x: 0, y: 0, w: 405, h: 32 },
+                    frame: { x: 0, y: 0, w: 418, h: 34 },
                     rotated: false,
                     trimmed: true,
-                    sourceSize: { w: 405, h: 32 },
-                    spriteSourceSize: {x: 0, y: 0, w: 405, h: 32 }
+                    sourceSize: { w: 418, h: 34 },
+                    spriteSourceSize: {x: 0, y: 0, w: 418, h: 34 }
                 },
                 {
                     filename: "gem-purple",
