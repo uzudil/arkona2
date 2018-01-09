@@ -53,6 +53,9 @@ export const WORLD = {
                 allow: (arkona) => true,
                 action: (arkona) => arkona.showOverlay("sign", "Eldun")
             }
+        ],
+        monsters: [
+            { monster: MONSTERS.wolf, pos: [ [152, 1031] ] }
         ]
     },
     "2,11": {
@@ -129,6 +132,9 @@ export const WORLD = {
                 allow: (arkona) => true,
                 action: (arkona) => arkona.showOverlay("raighd")
             }
+        ],
+        monsters: [
+            { monster: MONSTERS.wolf, pos: [ [375, 1048] ] }
         ]
     },
     "2,12": {
@@ -159,8 +165,26 @@ export const WORLD = {
     "1,9": {
         vehicles: [
             { name: "ship", x: 139, y: 892, dir: "se" }
+        ],
+        monsters: [
+            { monster: MONSTERS.wolf, pos: [ [169, 942], [164, 907] ] }
         ]
     },
+    "2,9": {
+        monsters: [
+            { monster: MONSTERS.wolf, pos: [ [237, 906], [244,942] ] }
+        ]
+    },    
+    "3,9": {
+        monsters: [
+            { monster: MONSTERS.wolf, pos: [ [314,921], [348,924] ] }
+        ]
+    },    
+    "3,11": {
+        monsters: [
+            { monster: MONSTERS.wolf, pos: [ [330,1069], [364,1110] ] }
+        ]
+    },    
     "1,12": {
         generators: [
             { x: 153, y: 1205, z: 0, type: MONSTERS.wolf, count: 2 }
@@ -177,7 +201,10 @@ export const WORLD = {
                 allow: (arkona) => true,
                 action: (arkona) => arkona.showOverlay("sign", "Median")
             }
-       ]
+       ],
+       monsters: [
+            { monster: MONSTERS.wolf, pos: [ [155, 1090], [177, 1094] ] }
+        ]
     },
     "0,12": {
         npcs: [
