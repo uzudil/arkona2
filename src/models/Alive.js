@@ -16,6 +16,11 @@ export default class {
         this.level = 1
     }
 
+    levelUp() {
+        this.level++
+        this.health = this.startingHealth * this.level
+    }
+
     getStats() {
         return {
             health: this.health,
@@ -38,6 +43,10 @@ export default class {
 
     getWeaponCooldown() {
         return Math.max(0, Math.min(1, (Date.now() - this.lastAttack) / this.attackWait))
+    }
+
+    getHealth() {
+        return Math.max(0, this.health / (this.startingHealth * this.level))
     }
 
     attack(other) {
@@ -93,9 +102,9 @@ export default class {
 
     heal(amount) {
         if(amount == null) {
-            amount = this.startingHealth - this.health
+            amount = this.startingHealth * this.level - this.health
         } else {
-            amount = Math.min(amount, this.startingHealth - this.health)
+            amount = Math.min(amount, this.startingHealth * this.level - this.health)
         }
         if(amount > 0) {
             this.health += amount

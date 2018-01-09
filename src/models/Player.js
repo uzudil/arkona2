@@ -76,6 +76,20 @@ export default class {
         }
     }
 
+    incKillCount(monsterLevel) {
+        if(monsterLevel >= this.alive.level) {
+            if(this.arkona.gameState["killCount"] != null) {
+                this.arkona.gameState["killCount"]++
+            } else {
+                this.arkona.gameState["killCount"] = 1
+            }
+            if(this.arkona.gameState.killCount >= 40) {
+                this.arkona.gameState.killCount = 0
+                this.arkona.levelUp()
+            }
+        }
+    }
+
     onHeal(amount) {
         this.arkona.fx.run("damages", this.animatedSprite.sprite, { amount: -amount, isPlayerDamage: true })
         this.arkona.fx.run("heal", this.animatedSprite.sprite)

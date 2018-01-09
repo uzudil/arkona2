@@ -4,6 +4,7 @@ export const MONSTERS = {
 	goblin: {
 		creature: "goblin",
 		movement: MOVE_ATTACK,
+        monsterLevel: 1,
 		alive: {
 			health: 10,
 			strength: 2,
@@ -13,6 +14,7 @@ export const MONSTERS = {
 	ogre: {
 		creature: "ogre",
 		movement: MOVE_ATTACK,
+        monsterLevel: 3,
 		alive: {
 			health: 30,
 			strength: 8,
@@ -22,6 +24,7 @@ export const MONSTERS = {
 	scorpion: {
 		creature: "scorpion",
 		movement: MOVE_ATTACK,
+        monsterLevel: 2,
 		alive: {
 			health: 20,
 			strength: 4,
@@ -31,6 +34,7 @@ export const MONSTERS = {
 	scorpion_large: {
 		creature: "scorpion_large",
 		movement: MOVE_ATTACK,
+        monsterLevel: 3,
 		alive: {
 			health: 30,
 			strength: 8,
@@ -40,6 +44,7 @@ export const MONSTERS = {
 	drake: {
 		creature: "drake",
 		movement: MOVE_ATTACK,
+        monsterLevel: 5,
 		alive: {
 			health: 200,
 			strength: 45,
@@ -49,6 +54,7 @@ export const MONSTERS = {
 	drake_blue: {
 		creature: "drake_blue",
 		movement: MOVE_ATTACK,
+        monsterLevel: 6,
 		alive: {
 			health: 200,
 			strength: 45,
@@ -58,6 +64,7 @@ export const MONSTERS = {
 	drake_green: {
 		creature: "drake_green",
 		movement: MOVE_ATTACK,
+        monsterLevel: 7,
 		alive: {
 			health: 200,
 			strength: 45,
@@ -67,6 +74,7 @@ export const MONSTERS = {
     skeleton: {
         creature: "skeleton",
         movement: MOVE_ATTACK,
+        monsterLevel: 3,
         alive: {
             health: 25,
             strength: 4,
@@ -77,6 +85,7 @@ export const MONSTERS = {
     skeleton_blue: {
         creature: "skeleton_blue",
         movement: MOVE_ATTACK,
+        monsterLevel: 4,
         alive: {
             health: 10,
             strength: 6,
@@ -87,6 +96,7 @@ export const MONSTERS = {
     skeleton_red: {
         creature: "skeleton_red",
         movement: MOVE_ATTACK,
+        monsterLevel: 5,
         alive: {
             health: 10,
             strength: 8,
@@ -97,6 +107,7 @@ export const MONSTERS = {
     wolf: {
         creature: "wolf",
         movement: MOVE_ATTACK,
+        monsterLevel: 1,
         alive: {
             health: 12,
             strength: 2,
@@ -107,6 +118,7 @@ export const MONSTERS = {
     wolf_blue: {
         creature: "wolf_blue",
         movement: MOVE_ATTACK,
+        monsterLevel: 2,
         alive: {
             health: 20,
             strength: 5,
@@ -117,6 +129,7 @@ export const MONSTERS = {
     wolf_red: {
         creature: "wolf_red",
         movement: MOVE_ATTACK,
+        monsterLevel: 3,
         alive: {
             health: 40,
             strength: 8,

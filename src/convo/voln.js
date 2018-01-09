@@ -192,7 +192,11 @@ export const HERMIT = new Convo("All life is sacred and the woods shelter us in 
 
 export const KAT = new Convo("What'll it be dear? Ale or wine?").answer("Thanks, I'm leaving now.")
 
-export const URGIL = new Convo("Argh, thou hath defeated me, human. A word with thee before I pass on.", "", (arkona) => arkona.gameState["URGIL_DEAD"] = true)
+export const URGIL = new Convo("Argh, thou hath defeated me, human. A word with thee before I pass on.", "",
+    (arkona) => {
+        arkona.levelUp()
+        arkona.gameState["URGIL_DEAD"] = true
+    })
     .answer("You will speak with the worms only, filthy ogre!",
         new Convo("I once acted in haste like thee, but learned much of humility during my time. " +
             "Enjoy thy victory but beware, the mayors of the Circuit are not as they seem.")

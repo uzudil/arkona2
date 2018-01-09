@@ -29,8 +29,7 @@ export default class {
 	}
 
 	update() {
-		this.health.scale.x = Math.max(0, this.arkona.player.alive.health
-			/ this.arkona.player.alive.startingHealth)
+		this.health.scale.x = this.arkona.player.alive.getHealth()
 		this.power.scale.x = this.arkona.player.alive.getWeaponCooldown()
 	}
 

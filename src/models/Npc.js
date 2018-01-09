@@ -62,6 +62,9 @@ export default class {
     onDeath(fromDelay) {
         if(!fromDelay) {
             console.warn(this.getName() + " dies.")
+            if(this.getMonster()) {
+                this.arkona.player.incKillCount(this.getMonster()["monsterLevel"] || 1)
+            }
             if (this.options["monsterInfo"] && this.options.monsterInfo.onDeath) {
                 this.arkona.delayedDeathNpcs.push(this)
                 this.options.monsterInfo.onDeath(this.arkona, this)

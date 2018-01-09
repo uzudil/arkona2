@@ -589,6 +589,6 @@ export default class extends Phaser.State {
         levelUp.show()
         levelUp.animate({ fontSize: "64px" }, 1000);
         levelUp.fadeOut()
-        this.player.alive.level++
+        this.player.alive.levelUp()
     }
 }
