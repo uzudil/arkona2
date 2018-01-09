@@ -45,7 +45,10 @@ export const MARISAN =
 							.answer("I've heard all about it already. Tell me of this creature.",
 								new Convo("Aye, it was one of the old horrors, last seen 500 years ago. A champion of darkness, it is a large " +
 									"winged demon called the Gramnor. Why it attacked Pazu, I know not.", "",
-									(arkona) => arkona.gameState["gramnor_research"] = true)
+									(arkona) => {
+										arkona.gameState["gramnor_research"] = true
+                                        arkona.levelUp()
+                                    })
 									.answer("I will tell the monks of Median of this.")
 									.answer("How does the Gramnor attack its victim?",
 										new Convo("It wields old magic straight from the heart of the Raighd. Its ability to summon a conflagration is well known. " +

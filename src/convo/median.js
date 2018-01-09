@@ -17,6 +17,7 @@ export const ARADUN = Convo.condition((arkona) => arkona.gameState["archives_ope
 							(arkona)=> {
 								if(!arkona.gameState["archives_open"]) {
 									arkona.gameState["archives_open"] = true
+									arkona.levelUp()
 								}
 							})
 							.answer("Thank you I will be on my way.")
@@ -34,7 +35,10 @@ export const ARADUN = Convo.condition((arkona) => arkona.gameState["archives_ope
 									.answer("The creature's feathers were found around Pazu's hut.",
 										new Convo("Thou should take one of the feathers to Marisan of Eldun. He is a master of " +
 											"all natural lore and will give thee more information.", "R_MARISAN",
-											(arkona) => arkona.gameState["visit_eldun"] = true)
+											(arkona) => {
+												arkona.gameState["visit_eldun"] = true
+                                                arkona.levelUp()
+                                            })
 											.answer("No. I solved the murder and now you must tell me how I can get home.", "R_MORE_SERIOUSLY")
 											.answer("Yes... ok... and how do I get to Eldun?",
 												new Convo("Walk back whence thou came. In the woods, take the road heading north. " +

@@ -582,4 +582,13 @@ export default class extends Phaser.State {
             // todo: play denied sound
         }
     }
+
+    levelUp() {
+        let levelUp = $("#level-up")
+        levelUp.css("font-size", "20px")
+        levelUp.show()
+        levelUp.animate({ fontSize: "64px" }, 1000);
+        levelUp.fadeOut()
+        this.player.alive.level++
+    }
 }

@@ -20,6 +20,7 @@ export default class {
         this.power.drawRect(0, 0, WIDTH, HEIGHT)
         this.power.endFill()
 
+		// these should be shown/hidden as found?
 		this.purpleGem = this.arkona.game.add.image(245, 6, "device", "gem-purple")
 		this.blueGem = this.arkona.game.add.image(277, 6, "device", "gem-blue")
 		this.greenGem = this.arkona.game.add.image(309, 6, "device", "gem-green")

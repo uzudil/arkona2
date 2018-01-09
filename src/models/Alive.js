@@ -13,6 +13,7 @@ export default class {
         this.attackWait = this.info["attackWait"] || 1500
         this.range = this.info["range"] || 15 // this is an angle of who around the player is affected. Not yet used.
         this.lastAttack = 0
+        this.level = 1
     }
 
     getStats() {
@@ -20,7 +21,8 @@ export default class {
             health: this.health,
             def: this.def,
             str: this.strength,
-            wait: this.attackWait
+            wait: this.attackWait,
+            level: this.level
         }
     }
 
@@ -30,6 +32,7 @@ export default class {
             if(stats["def"]) this.def = stats.def
             if(stats["str"]) this.strength = stats.str
             if(stats["wait"]) this.attackWait = stats.wait
+            if(stats["level"]) this.level = stats.level
         }
     }
 
@@ -41,8 +44,9 @@ export default class {
         let now = Date.now()
         if(now - this.lastAttack > this.attackWait) {
             this.lastAttack = now
+            let str = this.level * this.strength
             other.takeDamage(
-                Math.max(1, (Math.random() * this.strength * 0.3 + this.strength * 0.7)|0),
+                Math.max(1, (Math.random() * str * 0.3 + str * 0.7)|0),
                 this.info["attack"]
             )
             return true
@@ -72,7 +76,8 @@ export default class {
     }
 
     takeDamage(damage, type) {
-        let shield = Math.max(0, (Math.random() * this.def * 0.3 + this.def * 0.7)|0)
+        let def = this.level * this.def
+        let shield = Math.max(0, (Math.random() * def * 0.3 + def * 0.7)|0)
         let dam = damage - shield
         if(dam > 0) {
             this.health -= dam
