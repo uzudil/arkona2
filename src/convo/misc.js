@@ -2,7 +2,8 @@ import Convo from "./Convo"
 
 export const ARINDOL = new Convo("The wielder of Azan approaches as foretold by the Illumis. Make thyself at home, stranger!")
     .answer("Who are you? Do you live alone on this island?",
-        new Convo("My name is Arindol. I live here in seclusion and study teachings of old... The Illumnis for example.")
+        new Convo("My name is Arindol. I live here in peaceful seclusion to study the teachings of the ancient world... " +
+            "The Illumnis for example.")
             .answer("Tell me about this Illumnis", "R_ILLUMIS_STUDY")
             .answer("Can you get me off this planet?",
                 new Convo("I believe that thee arrived from another world. Thus the Illumis spake. " +
@@ -15,17 +16,17 @@ export const ARINDOL = new Convo("The wielder of Azan approaches as foretold by 
     .answer("What is Azan?",
         new Convo("More like who than what... Why, thou carries Azan on thy arm. " +
             "She may appear as a weapon from another world, but she is much more than that...", "R_AZAN")
-            .answer("Ah you mean the disruptor? I didn't know it was a 'she'...",
+            .answer("Ah, you mean the disruptor? I didn't know it was a 'she'...",
                 new Convo("Know thou that wielding Azan is a great honor, for she chooses her partner. " +
                     "Azan and thou will grow and learn together.", "R_AZAN_WORKS")
                     .answer("Uh-huh. Well, I must be going...")
                     .answer("And what sort of things will we learn?",
                         new Convo("Azan is a broken aspect of the Illumis. " +
-                            "When she is complete again, she will be more powerful and perhaps aid thee in they quest.")
+                            "When she is complete again, she will be more powerful and perhaps aid thee in thy quest.")
                             .answer("What is the Illumis?", "R_ILLUMIS_STUDY")
                             .answer("How can I make her whole again?",
                                 new Convo("Seek thee out the lost fragments of Mirtul. Long ago, the mage Mirtul " +
-                                    "crafted smaller aspects of the Illumis.", "R_AZAN_FIX")
+                                    "crafted smaller aspects of the Illumis. Alas, none now know their location.", "R_AZAN_FIX")
                                     .answer("Where should I start the search for the fragments?",
                                         new Convo("Thou should investigate the lightless reaches of Arkona. " +
                                             "I believe they have passed from human hands and are now lost to the depths.", "R_WHERE_FRAGMENT")
@@ -70,6 +71,7 @@ export const ARINDOL = new Convo("The wielder of Azan approaches as foretold by 
             .answer("How did you know I would come here?",
                 new Convo("Thy arrival was foretold to me while I meditated on the energies of the Illumis. And here thou art!")
                     .answer("Eeenteresting. I must go now.")
+                    .answer("What is the Illumis?", "R_ILLUMIS_STUDY")
                     .answer("Tell me what the Azan is", "R_AZAN")
             )
             .answer("And what is Azan?", "R_AZAN")

@@ -123,7 +123,7 @@ export default class extends Phaser.State {
             if(generators.length > 0) this.actionQueue.add(Queue.GENERATORS, generators)
 
             let moving = false
-            if(this.w_key.isDown && this.movementCursor.visible) {
+            if(this.w_key.isDown && this.movementCursor.visible && !this.isCursorKeyDown()) {
                 this.actionQueue.add(Queue.MOVE_PLAYER, this.movementCursor.dir)
                 this.playerSpeed = (this.movementCursor.scale.y/3)
                 moving = true
@@ -148,7 +148,7 @@ export default class extends Phaser.State {
                     this.mouseClicked = false // consume click
                     this.actionQueue.add(Queue.CLICK, spriteUnderMouse)
                 }
-            } else if(this.game.input.activePointer.isDown && this.movementCursor.visible) {
+            } else if(this.game.input.activePointer.isDown && this.movementCursor.visible && !this.isCursorKeyDown()) {
                 this.actionQueue.add(Queue.MOVE_PLAYER, this.movementCursor.dir)
                 this.playerSpeed = (this.movementCursor.scale.y/3)
                 moving = true
@@ -186,7 +186,7 @@ export default class extends Phaser.State {
 
         // size
         let d = dist3d(Config.WIDTH/2, Config.HEIGHT/2, 0, this.game.input.x, Config.HEIGHT - this.game.input.y, 0)
-        this.movementCursor.scale.setTo(1, 1 + (d / (Config.HEIGHT / 2)))
+        this.movementCursor.scale.setTo(1, 1 + 2 * Math.sin((d / (Config.HEIGHT / 2)) * Math.PI/2))
 
         // angle
         let rot = Config.getRotation(
