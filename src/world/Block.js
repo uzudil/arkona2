@@ -126,6 +126,7 @@ class Layer {
         this.sorted = sorted
         this.sortingStrategy = sortingStrategy || new ImpreciseSort()
 
+        this.updated = false
         this.filterGroup = game.add.group(parentGroup)
         this.group = game.add.group(parentGroup)
         this.infos = {} // 3d space
@@ -133,6 +134,7 @@ class Layer {
     }
 
     destroy() {
+        this.updated = false
         this.infos = {} // 3d space
         this.world = {} // origin space
         let toDestroy = []
@@ -146,6 +148,7 @@ class Layer {
     }
 
     reset() {
+        this.updated = false
         this.infos = {}
         this.world = {}
         while(this.filterGroup.children.length > 0) this.filterGroup.children[0].destroy()
@@ -210,6 +213,7 @@ class Layer {
         if (info) {
             for (let imageInfo of info.imageInfos) imageInfo.image.destroy()
             delete this.world[key]
+            this.updated = true
         }
 
         let block = BLOCKS[name]
@@ -219,6 +223,7 @@ class Layer {
                 let info = this.infos[key]
                 if (info) {
                     delete this.infos[key]
+                    this.updated = true
                 }
             })
         }
@@ -237,6 +242,7 @@ class Layer {
             if (infoWorld) {
                 for (let imageInfo of infoWorld.imageInfos) imageInfo.image.destroy()
                 delete this.world[keyWorld]
+                this.updated = true
             }
 
             // update infos
@@ -246,6 +252,7 @@ class Layer {
                     let infoInfo = this.infos[keyInfo]
                     if (infoInfo) {
                         delete this.infos[keyInfo]
+                        this.updated = true
                     }
                 })
             }
@@ -256,6 +263,7 @@ class Layer {
     }
 
     updateInfo(name, x, y, z, image) {
+        this.updated = true
         let key = _key(x, y, z)
         let info = this.world[key]
         if (info == null) {
@@ -289,6 +297,7 @@ class Layer {
 
     removeFromCurrentPos(image, destroyImage) {
         if(image && image.gamePos) {
+            this.updated = true
             let key = _key(image.gamePos[0], image.gamePos[1], image.gamePos[2])
             let info = this.world[key]
             if (info && info.removeImage(image, destroyImage)) delete this.world[key]
@@ -456,6 +465,7 @@ class Layer {
                 else sprites[ii.name] = [pos]
             }
         })
+        this.updated = false
         return { name: this.name, world: sprites }
     }
 
@@ -1112,6 +1122,14 @@ export default class {
         for(let layer of this.layers) layer.completeDestroy()
     }
 
+    isUpdated() {
+        return this.layers.filter(layer => layer.updated == true).length > 0;
+    }
+
+    resetUpdated() {
+        this.layers.forEach(layer => layer.updated = false)
+    }
+
     save(x, y) {
         let name = mapName(x, y)
         let data = JSON.stringify({
@@ -1218,6 +1236,9 @@ export default class {
                                     success: (data) => {
                                         data.layers.forEach(layerInfo =>
                                             this.layersByName[layerInfo.name].loadPerimeter(data.version, layerInfo, this, xx, yy))
+
+                                        // mark the layers unedited
+                                        this.resetUpdated()
                                     }
                                 })
                             }
@@ -1227,6 +1248,9 @@ export default class {
                 } else {
                     data.layers.forEach(layerInfo => this.layersByName[layerInfo.name].load(data.version, layerInfo, this, x, y))
                 }
+
+                // mark the layers unedited
+                this.resetUpdated()
 
                 if (onLoad) onLoad()
             },
@@ -1239,7 +1263,6 @@ export default class {
                 }
             }
         })
-
     }
 
     update() {

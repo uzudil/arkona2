@@ -141,9 +141,11 @@ export default class extends Phaser.State {
         }
 
         if((x >= 0 && x != this.x && x < Config.MAX_MAP_X + 4) || (y >= 0 && y != this.y && y < Config.MAX_MAP_Y + 4)) {
-            console.warn("Saving map: " + this.x + "," + this.y)
-            this.blocks.fixEdges()
-            this.blocks.save(this.x, this.y)
+            if(this.blocks.isUpdated()) {
+                console.warn("Saving map: " + this.x + "," + this.y)
+                this.blocks.fixEdges()
+                this.blocks.save(this.x, this.y)
+            }
             this.blocks.destroy()
             this.blocks.checkWorld()
             this.x = x
