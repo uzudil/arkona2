@@ -72,6 +72,7 @@ export default class {
 
         // is the creature killed or in another section?
         if(savedNpcs && !savedNpcs[id]) {
+            console.log("Not displaying npc at " + id)
             return null
         }
 
@@ -79,11 +80,6 @@ export default class {
             x = savedNpcs[id].x
             y = savedNpcs[id].y
             z = savedNpcs[id].z
-        }
-
-        if(id == "72,1177,0") {
-            console.log("Adding Aradun at " + x + "," + y + " saved=", savedNpcs)
-            console.trace()
         }
 
         let npc = new Npc(this.arkona, x, y, z, npcInfo["options"], npcInfo.creature)

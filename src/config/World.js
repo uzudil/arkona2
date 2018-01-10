@@ -5,6 +5,7 @@ import * as ELDUN_CONVO from "../convo/eldun"
 import * as ARCHIVES_CONVO from "../convo/archives"
 import * as DRAGONS_CONVO from "../convo/dragons"
 import * as VOLN_CONVO from "../convo/voln"
+import * as MISC_CONVO from "../convo/misc"
 import {MONSTERS} from "./Monsters"
 
 export const WORLD = {
@@ -161,6 +162,12 @@ export const WORLD = {
                     "Perhaps you should ask someone for help?")
             }
         }
+    },
+    "1,8": {
+        // eslint-disable-next-line no-unused-vars
+        npcs: [
+            { creature: "man_yellow", x: 113, y: 781, options: {movement: MOVE_ANCHOR, name: "Arindol", convo: MISC_CONVO.ARINDOL} }
+        ]
     },
     "1,9": {
         vehicles: [
