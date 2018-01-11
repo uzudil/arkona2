@@ -6,6 +6,7 @@ import * as ARCHIVES_CONVO from "../convo/archives"
 import * as DRAGONS_CONVO from "../convo/dragons"
 import * as VOLN_CONVO from "../convo/voln"
 import * as MISC_CONVO from "../convo/misc"
+import * as VARHOLM from "../convo/varholm"
 import {MONSTERS} from "./Monsters"
 
 export const WORLD = {
@@ -57,6 +58,57 @@ export const WORLD = {
         ],
         generators: [
             { x: 152, y: 1031, z: 0, type: MONSTERS.wolf, count: 3 }
+        ]
+    },
+    "1,16": {
+        connect: [
+            {
+                x: 116, y: 1600, z: 0,
+                action: (arkona) => arkona.transitionTo(534, 2050, 0, "s")
+            }
+        ]
+    },
+    "5,21": {
+        connect: [
+            {
+                x: 536, y: 2045, z: 0,
+                action: (arkona) => arkona.transitionTo(118, 1605, 0, "n")
+            }
+
+        ]
+    },
+    "6,22": {
+        connect: [
+            {
+                x: 588, y: 2125, z: 0,
+                action: (arkona) => arkona.transitionTo(791, 2085, 0, "n")
+            }
+
+        ]
+    },
+    "2,16": {
+        connect: [
+            {
+                x: 205, y: 1566, z: 0,
+                action: (arkona) => arkona.transitionTo(785, 2042, 0, "e")
+            }
+        ]
+    },
+    "8,21": {
+        connect: [
+            {
+                x: 791, y: 2080, z: 0,
+                action: (arkona) => arkona.transitionTo(588, 2130, 0, "s")
+            },
+            {
+                x: 780, y: 2044, z: 0,
+                action: (arkona) => arkona.transitionTo(210, 1564, 0, "e")
+            }
+        ],
+        npcs: [
+            { creature: "monk_red", x: 845, y: 2074, options: { movement: MOVE_ANCHOR, name: "Varholm Acolyte", convo: VARHOLM.ACOLYTE } },
+            { creature: "monk_red", x: 801, y: 2062, options: { movement: MOVE_ANCHOR, name: "Varholm Acolyte", convo: VARHOLM.ACOLYTE } },
+            { creature: "monk_red", x: 820, y: 2042, options: { movement: MOVE_ANCHOR, name: "Varholm Acolyte", convo: VARHOLM.ACOLYTE } }
         ]
     },
     "2,11": {

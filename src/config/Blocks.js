@@ -85,6 +85,8 @@ export const BLOCKS = {
 	"brick.wall.y": { size: [1, 4, 6], pos: [1088, 0], dim: [40, 96] },
 	"adobe.wall.y": { size: [1, 4, 6], pos: [384, 120], dim: [40, 96], options: { sprites: 5 } },
     "adobe.wall.x": { size: [4, 1, 6], pos: [448, 120], dim: [40, 96], options: { sprites: 5 } },
+	"stone.gate.down": { size: [1, 4, 6], pos: [1152, 0], dim: [40, 96] },
+    "stone.gate.up": { size: [1, 4, 6], pos: [1216, 0], dim: [40, 96] },
 
 	// new doors
 	"regular.door.x": { size: [1, 3, 6], pos: [192, 306], dim: [32, 80] },
