@@ -1,5 +1,5 @@
 import Phaser from "phaser"
-import * as Config from "../config/Config"
+// import * as Config from "../config/Config"
 import Transition from "../ui/Transition"
 import Block from "../world/Block"
 import $ from "jquery"
@@ -25,7 +25,7 @@ export default class extends Phaser.State {
         this.x = MINX
         this.y = MINY
         this.seen = {}
-        this.game.world.rotation = Math.PI/-4
+        // this.game.world.rotation = Math.PI/-4
         window.game = this.game
 
         this.transition.fadeOut(() => {
@@ -49,13 +49,18 @@ export default class extends Phaser.State {
     }
 
     mapLoaded() {
-        this.blocks.moveToPos(Config.GRID_SIZE * Config.MAP_SIZE * ZOOM * -2, Config.GRID_SIZE * Config.MAP_SIZE * ZOOM / 2)
-        this.blocks.group.position.set(-30, -20)
+        // this.blocks.moveToPos(Config.GRID_SIZE * Config.MAP_SIZE * ZOOM * -2, Config.GRID_SIZE * Config.MAP_SIZE * ZOOM / 2)
+        // this.blocks.group.position.set(-30, -20)
+        this.blocks.group.position.set(64, 0)
         this.ready = true
     }
 
+    toHex(n) {
+        return ("00" + (n).toString(16)).substr(-2)
+    }
+
     savePicture() {
-        let mapName = this.blocks._name(this.x, this.y)
+        let mapName = this.toHex(this.x) + this.toHex(this.y)
 
         // take picture
         let canvas = $("canvas").get(0)

@@ -3,9 +3,9 @@
 # to run this, you'll need imagemagick:
 # brew install imagemagick
 
-size=272
-ox=7
-oy=4
+size=384
+ox=0
+oy=3
 
 minx=0
 miny=0
@@ -14,6 +14,7 @@ maxy=21
 
 w=`echo "$maxx*$size" | bc`
 h=`echo "$maxy*$size" | bc`
+sx=`echo "($w-$size)/2" | bc`
 
 if [ -z map.png ]; then
     echo "image size=$w x $h"
@@ -23,10 +24,10 @@ fi
 for ((x=$minx; x < $maxx; x++)); do
     for ((y=$miny; y < $maxy; y++)); do
         name=`printf "%02x%02x" $x $y`
-        px=`echo "$x*$size" | bc`
-        py=`echo "$y*$size" | bc`
+        px=`echo "$sx+(($x-$y)*$size)/2" | bc`
+        py=`echo "(($x+$y)*$size)/2" | bc`
         echo "name=$name pos=$px,$py"
-        `convert assets/world/$name.png -crop ${size}x${size}+${ox}+${oy} out.png`
+        `convert assets/world/$name.png -transparent black -crop ${size}x${size}+${ox}+${oy} out.png`
         `composite -geometry +$px+$py out.png map.png map.png`
     done
 done
