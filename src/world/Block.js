@@ -438,7 +438,9 @@ class Layer {
         _visit3d(image.gamePos[0] - 1 + (range/2)|0, image.gamePos[1] - 1 + (range/2)|0, image.gamePos[2], range, range, range, (xx, yy, zz) => {
             let info = this.infos[_key(xx, yy, zz)]
             if (info && info.imageInfos) {
-                info.imageInfos.forEach(ii => {
+                // todo: instead of filtering on visible, maybe it should be z-ranger per building level?
+                // but then how to handle standing on stairs? This works for now.
+                info.imageInfos.filter(ii => ii.image.visible).forEach(ii => {
                     let value = fx(ii.image)
                     if(value && found.filter(obj => obj.sprite == ii.image).length == 0) {
                         found.push({
