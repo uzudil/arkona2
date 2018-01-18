@@ -795,6 +795,10 @@ export default class {
             if(block.options && block.options.filter && Filters.FILTERS[block.options.filter]) {
                 sprite.filters = [ Filters.FILTERS[block.options.filter] ]
             }
+            if(block.options && block.options.sequence) {
+                sprite.animations.add("anim", block.options.sequence, block.options.sequence.length, true)
+                sprite.animations.play("anim")
+            }
         }
 
         this._saveInSprite(sprite, name, x, y, z)

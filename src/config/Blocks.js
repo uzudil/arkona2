@@ -30,14 +30,18 @@ export const BLOCKS = {
 	"sand": { size: [4, 4, 0], pos: [128, 192], dim: [64, 64], options: { blendLevel: 1 } },
 	"moss": { size: [4, 4, 0], pos: [336, 128], dim: [64, 64], options: { blendLevel: 1 } },
 	"bramble": { size: [4, 4, 0], pos: [336, 288], dim: [64, 64], options: { blendLevel: 1 } },
-	"water": { size: [4, 4, 0], pos: [416, 128], dim: [64, 64], options: { blendLevel: 1, filter: "water" } },
+	"water": { size: [4, 4, 0], pos: [416, 128], dim: [64, 64], options: { blendLevel: 1, filter: "water", sequence: ["water2", "water", "water3", "water"] } },
+	"water2": { size: [4, 4, 0], pos: [0, 272], dim: [64, 64], options: { blendLevel: 1, filter: "water", hideInEditor: true } },
+	"water3": { size: [4, 4, 0], pos: [96, 272], dim: [64, 64], options: { blendLevel: 1, filter: "water", hideInEditor: true } },
 	"road": { size: [4, 4, 0], pos: [368, 208], dim: [64, 64], options: { blendLevel: 1 } },
 	"scree": { size: [4, 4, 0], pos: [448, 0], dim: [64, 64], options: { blendLevel: 1, sprites: 2 } },
-	"lava": { size: [4, 4, 0], pos: [416, 192], dim: [64, 64], options: { blendLevel: 2, sprites: 2, filter: "lava"  } },
+	"lava": { size: [4, 4, 0], pos: [416, 192], dim: [64, 64], options: { blendLevel: 2, sprites: 2, filter: "lava", sequence: ["lava2", "lava", "lava3", "lava"] }  },
+	"lava2": { size: [4, 4, 0], pos: [336, 384], dim: [64, 64], options: { blendLevel: 2, sprites: 2, filter: "lava", hideInEditor: true  } },
+	"lava3": { size: [4, 4, 0], pos: [416, 384], dim: [64, 64], options: { blendLevel: 2, sprites: 2, filter: "lava", hideInEditor: true  } },
 	"swamp1": { size: [4, 4, 0], pos: [896, 128], dim: [64, 64], options: { blendLevel: 1 } },
 	"swamp2": { size: [4, 4, 0], pos: [976, 128], dim: [64, 64], options: { blendLevel: 1 } },
-    "cursor.arrow": { size: [2, 2, 0], pos: [512, 192], dim: [32, 32], options: { sprites: 2 } },
-    "cursor.arrow2": { size: [2, 2, 0], pos: [544, 192], dim: [32, 32], options: { sprites: 2 } },
+    "cursor.arrow": { size: [2, 2, 0], pos: [512, 192], dim: [32, 32], options: { sprites: 2, hideInEditor: true } },
+    "cursor.arrow2": { size: [2, 2, 0], pos: [544, 192], dim: [32, 32], options: { sprites: 2, hideInEditor: true } },
 	"room.floor.stone": { size: [4, 4, 0], pos: [288, 208], dim: [64, 64], options: { blendLevel: 0 } },
 
 	// edges
@@ -183,6 +187,7 @@ export const BLOCKS = {
 	"roof.ew": { size: [10, 10, 6], pos: [688, 0], dim: [164, 172], options: { roof: true } },
 	"roof.ns.brown": { size: [10, 10, 3], pos: [448, 192], dim: [164, 164], options: { roof: true } },
 	"roof.ew.brown": { size: [10, 10, 3], pos: [640, 192], dim: [160, 164], options: { roof: true } },
+	"roof.lattice": { size: [10, 10, 1], pos: [1088, 128], dim: [160, 164] },
 
 	// dungeon
 	"dungeon.s.4": { size: [4, 1, 6], pos: [0, 0], dim: [40, 88], options: { sprites: 3 } },

@@ -7,6 +7,7 @@ export default class {
 		this.el = $("#palette")
 		this.el.empty()
 		for(let key in BLOCKS) {
+			if(!(BLOCKS[key].options && BLOCKS[key].options.hideInEditor))
 			this.el.append("<div id='" + key + "' class='block' style='" + toCss(key) + "'></div>")
 		}
 		$("#palette .block").click((event) => {
