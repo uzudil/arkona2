@@ -60,14 +60,6 @@ export const WORLD = {
             { x: 152, y: 1031, z: 0, type: MONSTERS.wolf, count: 3 }
         ]
     },
-    "1,16": {
-        connect: [
-            {
-                x: 116, y: 1600, z: 0,
-                action: (arkona) => arkona.transitionTo(534, 2050, 0, "s")
-            }
-        ]
-    },
     "5,21": {
         connect: [
             {
@@ -84,14 +76,6 @@ export const WORLD = {
                 action: (arkona) => arkona.transitionTo(791, 2085, 0, "n")
             }
 
-        ]
-    },
-    "2,16": {
-        connect: [
-            {
-                x: 205, y: 1566, z: 0,
-                action: (arkona) => arkona.transitionTo(785, 2042, 0, "e")
-            }
         ]
     },
     "8,21": {
@@ -440,6 +424,108 @@ export const WORLD = {
     "4,21": {
         monsters: [
             { monster: MONSTERS.goblin, pos: [ [449,2061], [449,2050], [460,2044], [406,2090], [413,2090], [411,2083] ] }
+        ]
+    },
+
+    // varholm
+    "0,16": {
+        generators: [
+            { x: 80, y: 1587, z: 0, type: MONSTERS.aligator, count: 1 },
+        ]
+    },
+    "0,17": {
+        generators: [
+            { x: 80, y: 1666, z: 0, type: MONSTERS.aligator, count: 1 },
+        ]
+    },
+    "1,16": {
+        connect: [
+            {
+                x: 116, y: 1600, z: 0,
+                action: (arkona) => arkona.transitionTo(534, 2050, 0, "s")
+            }
+        ],
+        generators: [
+            { x: 143, y: 1556, z: 0, type: MONSTERS.snake, count: 3 },
+        ]
+    },
+    // varholm castle
+    "2,16": {
+        connect: [
+            {
+                x: 205, y: 1566, z: 0,
+                action: (arkona) => arkona.transitionTo(785, 2042, 0, "e")
+            }
+        ],
+        npcs: [
+            { creature: "soldier", x: 202, y: 1574, z: 7, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.COMMON } },
+            { creature: "soldier", x: 230, y: 1550, z: 7, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.COMMON } },
+            { creature: "soldier", x: 230, y: 1606, z: 7, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.COMMON } },
+            { creature: "soldier", x: 258, y: 1578, z: 7, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.COMMON } },
+            { creature: "soldier", x: 244, y: 1573, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.COMMON } },
+            { creature: "soldier", x: 228, y: 1592, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.COMMON } },
+            { creature: "soldier", x: 229, y: 1557, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.COMMON } },
+
+            { creature: "man_blue", x: 238, y: 1575, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.COMMON } },
+            { creature: "man_yellow", x: 262, y: 1610, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.COMMON } },
+            { creature: "woman", x: 201, y: 1610, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.COMMON } },
+            { creature: "man_yellow", x: 253, y: 1558, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.COMMON } },
+            { creature: "man_blue", x: 210, y: 1558, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.COMMON } },
+
+            { creature: "man_yellow", x: 230, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.COMMON } },
+            { creature: "woman", x: 221, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.COMMON } },
+            { creature: "woman_brown", x: 213, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.COMMON } },
+
+            { creature: "man_yellow", x: 209, y: 1575, z: 2, options: { movement: MOVE_ANCHOR, name: "King", convo: VARHOLM.COMMON } },
+        ]
+    },
+    "1,17": {
+        generators: [
+            { x: 131, y: 1662, z: 0, type: MONSTERS.aligator, count: 1 },
+            { x: 168, y: 1691, z: 0, type: MONSTERS.snake, count: 3 },
+            { x: 173, y: 1649, z: 0, type: MONSTERS.aligator, count: 2 },
+        ]
+    },
+    "2,17": {
+        npcs: [
+            { creature: "woman_brown", x: 255, y: 1668, options: { movement: MOVE_ANCHOR, name: "Woodcutter", convo: VARHOLM.COMMON } },
+        ]
+    },
+    "3,17": {
+        npcs: [
+            { creature: "woman_brown", x: 349, y: 1699, options: { movement: MOVE_ANCHOR, name: "Villager", convo: VARHOLM.COMMON } },
+            { creature: "man_yellow", x: 358, y: 1699, options: { movement: MOVE_ANCHOR, name: "Villager", convo: VARHOLM.COMMON } },
+            { creature: "woman", x: 349, y: 1689, options: { movement: MOVE_ANCHOR, name: "Bartender", convo: VARHOLM.COMMON } },
+            { creature: "man_blue", x: 323, y: 1698, options: { movement: MOVE_ANCHOR, name: "Host", convo: VARHOLM.COMMON } },
+            { creature: "man_blue", x: 316, y: 1719, options: { movement: MOVE_ANCHOR, name: "Guest", convo: VARHOLM.COMMON } },
+            { creature: "man_yellow", x: 314, y: 1708, options: { movement: MOVE_ANCHOR, name: "Guest", convo: VARHOLM.COMMON } },
+            { creature: "man_blue", x: 316, y: 1668, options: { movement: MOVE_ANCHOR, name: "Farmer", convo: VARHOLM.COMMON } },
+            { creature: "cow", x: 313, y: 1644, options: { convo: FARM_CONVO.COW } },
+            { creature: "cow", x: 300, y: 1646, options: { convo: FARM_CONVO.COW } },
+        ]
+    },
+    "3,18": {
+        npcs: [
+            { creature: "woman_brown", x: 325, y: 1742, options: { movement: MOVE_ANCHOR, name: "Villager", convo: VARHOLM.COMMON } },
+            { creature: "man_blue", x: 347, y: 1745, options: { movement: MOVE_ANCHOR, name: "Villager", convo: VARHOLM.COMMON } },
+        ]
+    },
+    "4,16": {
+        npcs: [
+            { creature: "man_blue", x: 403, y: 1621, options: { movement: MOVE_ANCHOR, name: "Farmer", convo: VARHOLM.COMMON } },
+        ]
+    },
+    "3,15": {
+        npcs: [
+            { creature: "monk_red", x: 314, y: 1492, options: { movement: MOVE_ANCHOR, name: "Hermit", convo: VARHOLM.COMMON } },
+        ]
+    },
+    "3,16": {
+        npcs: [
+            { creature: "woman", x: 355, y: 1611, options: { movement: MOVE_ANCHOR, name: "Farmer's wife", convo: VARHOLM.COMMON } },
+            { creature: "man_yellow", x: 319, y: 1598, options: { movement: MOVE_ANCHOR, name: "Zoo keeper", convo: VARHOLM.COMMON } },
+            { creature: "wolf_blue", x: 307, y: 1595, options: { convo: FARM_CONVO.COW } },
+            { creature: "wolf_red", x: 297, y: 1603, options: { convo: FARM_CONVO.COW } },
         ]
     },
 }

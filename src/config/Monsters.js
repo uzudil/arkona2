@@ -137,4 +137,26 @@ export const MONSTERS = {
             attack: "fire"
         }
     },
+    aligator: {
+        creature: "aligator",
+        movement: MOVE_ATTACK,
+        monsterLevel: 3,
+        alive: {
+            health: 24,
+            strength: 3,
+            attackWait: 1250,
+            attack: "slash"
+        }
+    },
+    snake: {
+        creature: "snake", // fixme, add poison
+        movement: MOVE_ATTACK,
+        monsterLevel: 1,
+        alive: {
+            health: 10,
+            strength: 1,
+            attackWait: 1250,
+            attack: "slash"
+        }
+    },
 }

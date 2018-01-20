@@ -218,4 +218,36 @@ export const CREATURES = {
         ],
         speed: "fast"
     },
+    aligator: { //fixme
+        src: "assets/creatures/wolf.png",
+        dim: [64, 64],
+        blockName: "2x2x4.placeholder",
+        animations: [
+            { name: "walk", frameCount: 4, dirs: dirsFrom("e") },
+            { name: "stand", frameCount: 1, dirs: dirsFrom("e") },
+            { name: "attack", frameCount: 2, dirs: dirsFrom("e") },
+        ],
+        speed: "fast"
+    },
+    snake: { //fixme
+        src: "assets/creatures/wolf.png",
+        dim: [64, 64],
+        blockName: "2x2x4.placeholder",
+        animations: [
+            { name: "walk", frameCount: 4, dirs: dirsFrom("e") },
+            { name: "stand", frameCount: 1, dirs: dirsFrom("e") },
+            { name: "attack", frameCount: 2, dirs: dirsFrom("e") },
+        ],
+        speed: "fast"
+    },
+    soldier: { //fixme
+        src: "assets/creatures/man.png",
+        dim: [64, 64],
+        blockName: "2x2x4.placeholder",
+        animations: [
+            { name: "walk", frameCount: 4, dirs: dirsFrom("e") },
+            { name: "stand", frameCount: 1, dirs: dirsFrom("se") },
+            { name: "attack", frameCount: 1, dirs: dirsFrom("e") },
+        ]
+    },
 }
