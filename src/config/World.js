@@ -458,25 +458,25 @@ export const WORLD = {
             }
         ],
         npcs: [
-            { creature: "soldier", x: 202, y: 1574, z: 7, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.COMMON } },
-            { creature: "soldier", x: 230, y: 1550, z: 7, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.COMMON } },
-            { creature: "soldier", x: 230, y: 1606, z: 7, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.COMMON } },
-            { creature: "soldier", x: 258, y: 1578, z: 7, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.COMMON } },
-            { creature: "soldier", x: 244, y: 1573, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.COMMON } },
-            { creature: "soldier", x: 228, y: 1592, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.COMMON } },
-            { creature: "soldier", x: 229, y: 1557, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.COMMON } },
+            { creature: "guard", x: 202, y: 1574, z: 7, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.GUARD } },
+            { creature: "guard", x: 230, y: 1550, z: 7, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.GUARD } },
+            { creature: "guard", x: 230, y: 1606, z: 7, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.GUARD } },
+            { creature: "guard", x: 258, y: 1578, z: 7, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.GUARD } },
+            { creature: "guard", x: 244, y: 1573, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.GUARD } },
+            { creature: "guard", x: 228, y: 1592, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.GUARD } },
+            { creature: "guard", x: 229, y: 1557, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.GUARD } },
 
-            { creature: "man_blue", x: 238, y: 1575, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.COMMON } },
-            { creature: "man_yellow", x: 262, y: 1610, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.COMMON } },
-            { creature: "woman", x: 201, y: 1610, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.COMMON } },
-            { creature: "man_yellow", x: 253, y: 1558, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.COMMON } },
-            { creature: "man_blue", x: 210, y: 1558, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.COMMON } },
+            { creature: "man_blue", x: 238, y: 1575, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.NOBLE } },
+            { creature: "man_yellow", x: 262, y: 1610, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.NOBLE } },
+            { creature: "woman", x: 201, y: 1610, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.NOBLE } },
+            { creature: "man_yellow", x: 253, y: 1558, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.NOBLE } },
+            { creature: "man_blue", x: 210, y: 1558, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.NOBLE } },
 
-            { creature: "man_yellow", x: 230, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.COMMON } },
-            { creature: "woman", x: 221, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.COMMON } },
-            { creature: "woman_brown", x: 213, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.COMMON } },
+            { creature: "man_yellow", x: 230, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.NOBLE } },
+            { creature: "woman", x: 221, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.NOBLE } },
+            { creature: "woman_brown", x: 213, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.NOBLE } },
 
-            { creature: "man_yellow", x: 209, y: 1575, z: 2, options: { movement: MOVE_ANCHOR, name: "King", convo: VARHOLM.COMMON } },
+            { creature: "man_yellow", x: 209, y: 1575, z: 2, options: { movement: MOVE_ANCHOR, name: "Chief Mezalka", convo: VARHOLM.KING } },
         ]
     },
     "1,17": {

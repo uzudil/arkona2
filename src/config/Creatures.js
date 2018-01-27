@@ -240,14 +240,13 @@ export const CREATURES = {
         ],
         speed: "fast"
     },
-    soldier: { //fixme
-        src: "assets/creatures/man.png",
+    guard: {
+        src: "assets/creatures/guard.png",
         dim: [64, 64],
         blockName: "2x2x4.placeholder",
         animations: [
             { name: "walk", frameCount: 4, dirs: dirsFrom("e") },
-            { name: "stand", frameCount: 1, dirs: dirsFrom("se") },
-            { name: "attack", frameCount: 1, dirs: dirsFrom("e") },
+            { name: "stand", frameCount: 1, dirs: dirsFrom("e") }
         ]
     },
 }
