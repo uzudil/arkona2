@@ -21,3 +21,4 @@ export const COMMON = new Convo("Welcome to Varholm island. Thou hath arrived on
     .answer("Who is in charge here?",
         new Convo("", "R_VARHOLM_RULER")
     )
+
