@@ -224,9 +224,11 @@ export const CREATURES = {
         blockName: "4x4x4.placeholder",
         animations: [
             { name: "walk", frameCount: 4, dirs: dirsFrom("e") },
-            { name: "stand", frameCount: 1, dirs: dirsFrom("e") }
+            { name: "stand", frameCount: 1, dirs: dirsFrom("e") },
+            { name: "attack", frameCount: 2, dirs: dirsFrom("e") },
         ],
     },
+
     snake: { //fixme
         src: "assets/creatures/wolf.png",
         dim: [64, 64],
