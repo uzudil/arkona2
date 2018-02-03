@@ -229,16 +229,15 @@ export const CREATURES = {
         ],
     },
 
-    snake: { //fixme
-        src: "assets/creatures/wolf.png",
+    snake: {
+        src: "assets/creatures/snake.png",
         dim: [64, 64],
         blockName: "2x2x4.placeholder",
         animations: [
             { name: "walk", frameCount: 4, dirs: dirsFrom("e") },
             { name: "stand", frameCount: 1, dirs: dirsFrom("e") },
             { name: "attack", frameCount: 2, dirs: dirsFrom("e") },
-        ],
-        speed: "fast"
+        ]
     },
     guard: {
         src: "assets/creatures/guard.png",
