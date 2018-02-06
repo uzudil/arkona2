@@ -457,6 +457,14 @@ export const WORLD = {
                 action: (arkona) => arkona.transitionTo(785, 2042, 0, "e")
             }
         ],
+        actions: [
+            {
+                type: "use_object", x: 276, y: 1575, z: 0,
+                // eslint-disable-next-line no-unused-vars
+                allow: (arkona) => true,
+                action: (arkona) => arkona.showOverlay("sign", "Varholm Castle")
+            }
+        ],
         npcs: [
             { creature: "guard", x: 202, y: 1574, z: 7, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.GUARD } },
             { creature: "guard", x: 230, y: 1550, z: 7, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.GUARD } },
@@ -466,15 +474,15 @@ export const WORLD = {
             { creature: "guard", x: 228, y: 1592, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.GUARD } },
             { creature: "guard", x: 229, y: 1557, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.GUARD } },
 
-            { creature: "man_blue", x: 238, y: 1575, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.NOBLE } },
-            { creature: "man_yellow", x: 262, y: 1610, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.NOBLE } },
-            { creature: "woman", x: 201, y: 1610, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.NOBLE } },
-            { creature: "man_yellow", x: 253, y: 1558, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.NOBLE } },
-            { creature: "man_blue", x: 210, y: 1558, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.NOBLE } },
+            { creature: "man_blue", x: 238, y: 1575, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble Aghan", convo: VARHOLM.NOBLE } },
+            { creature: "man_yellow", x: 262, y: 1610, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble Venin", convo: VARHOLM.NOBLE } },
+            { creature: "woman", x: 201, y: 1610, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble Mal", convo: VARHOLM.NOBLE } },
+            { creature: "man_yellow", x: 253, y: 1558, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble Ignar", convo: VARHOLM.NOBLE } },
+            { creature: "man_blue", x: 210, y: 1558, z: 7, options: { movement: MOVE_ANCHOR, name: "Advisor Oren", convo: VARHOLM.NOBLE } },
 
-            { creature: "man_yellow", x: 230, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.NOBLE } },
-            { creature: "woman", x: 221, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.NOBLE } },
-            { creature: "woman_brown", x: 213, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble", convo: VARHOLM.NOBLE } },
+            { creature: "man_yellow", x: 230, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble Anam", convo: VARHOLM.NOBLE } },
+            { creature: "woman", x: 221, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble Ayrth", convo: VARHOLM.NOBLE } },
+            { creature: "woman_brown", x: 213, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble Extal", convo: VARHOLM.NOBLE } },
 
             { creature: "man_yellow", x: 209, y: 1575, z: 2, options: { movement: MOVE_ANCHOR, name: "Chief Mezalka", convo: VARHOLM.KING } },
         ]
@@ -488,7 +496,7 @@ export const WORLD = {
     },
     "2,17": {
         npcs: [
-            { creature: "woman_brown", x: 255, y: 1668, options: { movement: MOVE_ANCHOR, name: "Woodcutter", convo: VARHOLM.COMMON } },
+            { creature: "woman_brown", x: 255, y: 1668, options: { movement: MOVE_ANCHOR, name: "Wilda the Woodcutter", convo: VARHOLM.WOODCUTTER } },
         ]
     },
     "3,17": {
@@ -515,9 +523,19 @@ export const WORLD = {
             { creature: "man_blue", x: 403, y: 1621, options: { movement: MOVE_ANCHOR, name: "Farmer", convo: VARHOLM.COMMON } },
         ]
     },
+    "4,17": {
+        actions: [
+            {
+                type: "use_object", x: 443, y: 1675, z: 0,
+                // eslint-disable-next-line no-unused-vars
+                allow: (arkona) => true,
+                action: (arkona) => arkona.showOverlay("sign", "Varholm")
+            }
+        ]
+    },
     "3,15": {
         npcs: [
-            { creature: "monk_red", x: 314, y: 1492, options: { movement: MOVE_ANCHOR, name: "Hermit", convo: VARHOLM.COMMON } },
+            { creature: "monk_red", x: 314, y: 1492, options: { movement: MOVE_ANCHOR, name: "Marten the Hermit", convo: VARHOLM.HERMIT } },
         ]
     },
     "3,16": {

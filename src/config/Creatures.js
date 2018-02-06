@@ -228,7 +228,6 @@ export const CREATURES = {
             { name: "attack", frameCount: 2, dirs: dirsFrom("e") },
         ],
     },
-
     snake: {
         src: "assets/creatures/snake.png",
         dim: [64, 64],
