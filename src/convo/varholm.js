@@ -18,12 +18,17 @@ export const ACOLYTE = new Convo("What art thou doing here down here? I will sum
     )
     .answer("I was just leaving...")
 
-export const GUARD = new Convo("Move along citizen.")
-    .answer("I'm looking for Chief Mezalka",
-        new Convo("Thou can find him in the large center building of Varholm Castle.")
-            .answer("Thanks. I'll be going now.")
+export const GUARD =
+    Convo.condition((arkona) => arkona.gameState["mezalka_dead"],
+        new Convo("Move along citizen.")
+            .answer("I'm looking for Chief Mezalka",
+                new Convo("Thou can find him in the large center building of Varholm Castle.")
+                    .answer("Thanks. I'll be going now.")
+            )
+            .answer("Didn't mean to bother you, sorry."),
+        new Convo("Shoulds't thou be here? Methinks 'haps a dungeon cell awaits thee.")
+            .answer("Um, I was just leaving anyway.")
     )
-    .answer("Didn't mean to bother you, sorry.")
 
 export const NOBLE = new Convo("Thy uncouth smell offends me. Away from me beggar else I call for the guards!")
     .answer("What is it you do here?",
@@ -57,9 +62,9 @@ export const HERMIT = new Convo("The heavens burn with liquid contempt for thee!
                                             "Not only complicit is he, but a direct beneficiary of these evil powers.")
                                             .answer("This is beyond my pay-grade... I out.")
                                             .answer("How do you know this Hermit?",
-                                                new Convo("If thou need more proof, talk to Wilda the Woodcutter. He can tell thee more about this grave situation. " +
-                                                    "He live to the west of the Harbor Inn.", "", (arkona) => arkona.gameState["info_wilda"] = true)
-                                                    .answer("I will go and see him at once.")
+                                                new Convo("If thou need more proof, talk to Wilda the Woodcutter. She can tell thee more about this grave situation. " +
+                                                    "She lives to the west of the Harbor Inn.", "", (arkona) => arkona.gameState["info_wilda"] = true)
+                                                    .answer("I will go and see her at once.")
                                                     .answer("Tell me again about the caves.", "R_DONT_ENTER_CAVES")
                                                     .answer("Been smoking your herb, Hermit? I don't believe any of this.")
                                             )
@@ -86,7 +91,7 @@ export const HERMIT = new Convo("The heavens burn with liquid contempt for thee!
 export const WOODCUTTER = new Convo("Logs? Branches? Firewood? I got them all. If thou need felling, I'm all yours for the labor.")
     .answer("What is it you do here?",
         new Convo("Thou must have wood for a brain... Look around thee! I ply my trade as a woodcutter. Fell, clear and haul. Now if thou hath no " +
-            "business for me, I suggest thou move on and maybe pester someone at the Blue Boar.")
+            "business for me, get thee to pester someone else at the Blue Boar.")
             .answer("The Blue Boar? What is that?", "R_BLUE_BOAR")
     )
     .answer("Could you tell me about the island?", "R_VARHOLM")
@@ -110,20 +115,20 @@ export const WOODCUTTER = new Convo("Logs? Branches? Firewood? I got them all. I
                                     .answer("What happened?",
                                         new Convo("One day I accidentally saw the cost of our easy life. Hath thou heard in town of the disappearances?")
                                             .answer("Yes, people get lost in the swamp and die of snake venom...",
-                                                new Convo("The swamp and snakes is a ruse. Young people are lured to the swamp so the Acolytes can sacrifice them in the cave. " +
+                                                new Convo("The swamp and snakes is a ruse. Young people are lured to the swamp so the Acolytes can sacrifice them. " +
                                                     "Their souls fuel their necromantic rituals to summon creatures of the Raighd.")
                                                     .answer("And you saw this first-hand?",
                                                         new Convo("Aye, I did, as did Marten. Thou must decide if thou will help us. Even if not, Chief Mezalka and the Acolytes must be stopped.")
                                                             .answer("I will certainly stay away from all this.", "R_NO_HERO")
                                                             .answer("I would help if I can",
-                                                                new Convo("I am relieved to hear it! Thou will find thy entry into the Castle barred. Even if thou could enter, confronting the " +
+                                                                new Convo("Great! Thou will find thy entry into the Castle barred. Even if thou could enter, confronting the " +
                                                                     "Chief or a Noble will only land thee in the dungeons. But there is another... a dangerous way...")
                                                                     .answer("What do you have in mind?",
                                                                         new Convo("Thou must enter the caves. Through the caves, enter the castle proper. Be sure to avoid the guards and find Advisor Oren. " +
                                                                             "He is a fast friend who believes as Marten and I.")
                                                                             .answer("Ok, and once I find him?",
                                                                                 new Convo("Tell Oren that I sent thee and he will know what to do. Oren will have to kill Chief Mezalka's human shell at the " +
-                                                                                    "same time thou participates in and interrupts the Acolytes' ritual. It is dangerous but it is the only way.")
+                                                                                    "same time thou participates in and interrupts the Acolytes' ritual.")
                                                                                     .answer("Participate in the ritual? Surely you don't mean...",
                                                                                         new Convo("Chief Mezalka has grown powerful over the centuries. He is only slightly weaker during the ritual when his human shell is " +
                                                                                             "recharged with necromantic power. This is the only time he can be killed.", "R_MEZALKA_SHELL")
@@ -186,7 +191,7 @@ export const COMMON = new Convo("Welcome to Varholm island visitor.")
                     )
             )
             .answer("Who is in charge here?",
-                new Convo("Varhol island is under the perpetual leadership of Chief Mezalka. He is a kind and noble ruler " +
+                new Convo("Varholm island is under the perpetual leadership of Chief Mezalka. He is a kind and noble ruler " +
                     "and has been as far back as anyone can remember.", "R_MEZALKA")
                     .answer("So are you saying he lives forever?", new Convo("Thou art joking... and yet... I don't " +
                         "remember when his rule began. Strange!")

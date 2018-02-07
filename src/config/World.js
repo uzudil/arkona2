@@ -66,7 +66,14 @@ export const WORLD = {
                 x: 536, y: 2045, z: 0,
                 action: (arkona) => arkona.transitionTo(118, 1605, 0, "n")
             }
-
+        ],
+        monsters: [
+            { monster: MONSTERS.snake, pos: [ [495, 2040], [496, 2092], [512, 2075], [556, 2032] ] }
+        ]
+    },
+    "6,21": {
+        monsters: [
+            { monster: MONSTERS.snake, pos: [ [627, 2067], [636, 2030] ] }
         ]
     },
     "6,22": {
@@ -75,7 +82,10 @@ export const WORLD = {
                 x: 588, y: 2125, z: 0,
                 action: (arkona) => arkona.transitionTo(791, 2085, 0, "n")
             }
-
+        ],
+        monsters: [
+            { monster: MONSTERS.scorpion, pos: [ [644, 2135], [646, 2125], [629, 2160], [627, 2168] ] },
+            { monster: MONSTERS.ogre, pos: [ [583, 2135], [584, 2143] ] },
         ]
     },
     "8,21": {
@@ -463,7 +473,13 @@ export const WORLD = {
                 // eslint-disable-next-line no-unused-vars
                 allow: (arkona) => true,
                 action: (arkona) => arkona.showOverlay("sign", "Varholm Castle")
-            }
+            },
+            {
+                type: "use_object", x: 261, y: 1581, z: 0, allow: (arkona) => arkona.gameState["mezalka_dead"] == true
+            },
+            {
+                type: "use_object", x: 261, y: 1578, z: 0, allow: (arkona) => arkona.gameState["mezalka_dead"] == true
+            },
         ],
         npcs: [
             { creature: "guard", x: 202, y: 1574, z: 7, options: { movement: MOVE_ANCHOR, name: "Guard", convo: VARHOLM.GUARD } },
