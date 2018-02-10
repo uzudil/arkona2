@@ -76,6 +76,7 @@ export const BLOCKS = {
 	"rug.bear": { size: [4, 4, 0], pos: [0, 256], dim: [64, 62], options: { sprites: 2, stamp: true } },
 	"rug.round": { size: [4, 4, 0], pos: [64, 256], dim: [64, 62], options: { sprites: 2, stamp: true } },
 	"corpse": { size: [4, 4, 0], pos: [192, 192], dim: [56, 56], options: { sprites: 2, stamp: true } },
+    "pentagram": { size: [16, 16, 0], pos: [256, 192], dim: [128, 128], options: { sprites: 3, stamp: true } },
 
     // walls
 	"wood.column": { size: [1, 1, 6], pos: [176, 0], dim: [16, 64] },
@@ -95,6 +96,8 @@ export const BLOCKS = {
 	// new doors
 	"regular.door.x": { size: [1, 3, 6], pos: [192, 306], dim: [32, 80] },
 	"regular.door.y": { size: [3, 1, 6], pos: [256, 306], dim: [32, 80] },
+	"bars.door.x": { size: [1, 3, 6], pos: [512, 192], dim: [32, 80], options: { sprites: 3 } },
+	"bars.door.y": { size: [3, 1, 6], pos: [576, 192], dim: [32, 80], options: { sprites: 3 } },
 
 	// old mountains
 	"mountain1": { size: [4, 4, 8], pos: [0, 256], dim: [64, 96] },
@@ -125,6 +128,8 @@ export const BLOCKS = {
 	"fence.ns": { size: [1, 4, 4], pos: [112, 384], dim: [40, 64] },
 	"fence.sm.ew": { size: [1, 4, 2], pos: [386, 322], dim: [40, 44], options: { sprites: 2 } },
 	"fence.sm.ns": { size: [4, 1, 2], pos: [430, 322], dim: [40, 44], options: { sprites: 2 } },
+    "bars.fence.x": { size: [1, 3, 4], pos: [512, 320], dim: [32, 60], options: { sprites: 3 } },
+    "bars.fence.y": { size: [3, 1, 4], pos: [576, 320], dim: [32, 60], options: { sprites: 3 } },
 
 	// placeholder for creatures
 	"2x2x4.placeholder": { size: [2, 2, 4], pos: [400, 0], dim: [32, 64] },
@@ -181,6 +186,13 @@ export const BLOCKS = {
     "barrel": { size: [4, 1, 5], pos: [0, 400], dim: [40, 80], options: { sprites: 2 } },
     "bar": { size: [5, 2, 4], pos: [64, 416], dim: [56, 80], options: { sprites: 2 } },
     "force": { size: [2, 2, 2], pos: [128, 416], dim: [32, 48], options: { sprites: 2 } },
+    "raighd.flag.ns": { size: [3, 1, 7], pos: [192, 192], dim: [28, 68], options: { sprites: 3 } },
+    "raighd.flag.ew": { size: [1, 3, 7], pos: [224, 192], dim: [28, 68], options: { sprites: 3 } },
+    "altar": { size: [2, 4, 4], pos: [384, 192], dim: [56, 72], options: { sprites: 3 } },
+    "candle.1": { size: [1, 1, 2], pos: [448, 192], dim: [16, 32], options: { sprites: 3, sequence: ["candle.1", "candle.2", "candle.1", "candle.3","candle.1", "candle.2", "candle.1", "candle.3"] } },
+    "candle.2": { size: [1, 1, 2], pos: [464, 192], dim: [16, 32], options: { sprites: 3, hideInEditor: true } },
+    "candle.3": { size: [1, 1, 2], pos: [480, 192], dim: [16, 32], options: { sprites: 3, hideInEditor: true } },
+
 
 	// roofs
 	"roof.ns": { size: [10, 10, 6], pos: [496, 0], dim: [164, 172], options: { roof: true } },

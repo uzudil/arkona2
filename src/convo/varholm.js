@@ -18,13 +18,63 @@ export const ACOLYTE = new Convo("What art thou doing here down here? I will sum
     )
     .answer("I was just leaving...")
 
+export const OREN = Convo.condition((arkona) => arkona.gameState["mezalka_dead"],
+    new Convo("Thou hath done a great deed. The citizens of Varholm will remember thy bravery forever.")
+        .answer("It was the right thing to do."),
+    new Convo("Thou hath the look of a visitor from a foreign land. How can I aid thee in thy travels?")
+        .answer("You don't know the half of it... I'm from another planet",
+            new Convo("Tho doth tell a good pun! There is no life in the skies? If that were true, our keepers of " +
+                "knowledge would know of it. Tell me truly, why art thou here?")
+                .answer("I'm sightseeing.", "R_VARHOLM")
+                .answer("I' just visiting... See you later!")
+                .answerIf((arkona) => arkona.gameState["kill_mezalka"] == true, "Wilda told me to find you", "R_OREN_START")
+        )
+        .answer("Who lives in this castle?", "R_MEZALKA")
+        .answerIf((arkona) => arkona.gameState["kill_mezalka"] == true, "The woodcutter Wilda sent me...",
+            new Convo("Keep thy voice down! If the nobles or the guard hear us, we're done for. How many nights I prayed " +
+                "that this time would come. Dost thou know what thou must do?", "R_OREN_START")
+                .answer("I will go and directly confront Mezalka",
+                    new Convo("Nay, thou must not do that. Go talk to Wilda again and make sure thou knoweth thy role.")
+                        .answer("I will do that. See you again soon!")
+                )
+                .answer("No... what should I do?",
+                    new Convo("Thou must go and talk to Wilda again to learn thy part in this. Come back why thy mission is clear.")
+                        .answer("I will do that. See you again soon!")
+                )
+                .answer("I will volunteer to be a part of the rituals in the caves",
+                    new Convo("Aye that is correct. The accursed Acolytes doth chant and read from a horrid tome during the ritual. " +
+                        "When it is thy turn, thou must utter the phrase 'Mezalca Exilium Lux'.", "R_PHRASE")
+                        .answer("From a book you say?",
+                            new Convo("According to legend, the rise of all Raighd-cults can be traced back to single treatise on Necrotic magic. Over the years " +
+                                "many copies were made but I believe this one is the original.")
+                                .answer("Is the book valuable?",
+                                    new Convo("It might be to collectors, or other Raighd-spawn. Thou can do with it as thou likes once this is over.")
+                                        .answer("Could you repeat the phrase I need to remember?", "R_PHRASE")
+                                        .answer("I think I will destroy it", "R_DESTROY_BOOK")
+                                    )
+                                )
+                                .answer("Should the book be destroyed?",
+                                    new Convo("Books on magic cannot be destroyed. Thou should keep it, maybe in thy travels thou finds one capable of its desposal.", "R_DESTROY_BOOK")
+                                        .answer("Could you repeat the phrase I need to remember?", "R_PHRASE")
+                                        .answer("What will happen after I utter the phrase?", "R_AFTER_PHRASE")
+                                )
+                        )
+                        .answer("What will that accomplish?",
+                            new Convo("When the ritual starts I will be near Mezalka. When thou sayeth the phrase, it will disrupt the " +
+                                "ritual and temporarily weaker the chief. That is the time I will kill him.", "R_AFTER_PHRASE",
+                                (arkona) => arkona.gameState["start_ritual"] = true)
+                                .answer("Is there not a way without bloodshed?",
+                                    new Convo("Nay, this is the only way. Mezalka is deeply corrupted from decades of Raighd energy - he must be killed.")
+                                        .answer("I understand. See you after this is done.")
+                                )
+                                .answer("Got it. I will find you afterwards.")
+                        )
+                )
+    )
+
 export const GUARD =
     Convo.condition((arkona) => arkona.gameState["mezalka_dead"],
         new Convo("Move along citizen.")
-            .answer("I'm looking for Chief Mezalka",
-                new Convo("Thou can find him in the large center building of Varholm Castle.")
-                    .answer("Thanks. I'll be going now.")
-            )
             .answer("Didn't mean to bother you, sorry."),
         new Convo("Shoulds't thou be here? Methinks 'haps a dungeon cell awaits thee.")
             .answer("Um, I was just leaving anyway.")
@@ -39,6 +89,25 @@ export const NOBLE = new Convo("Thy uncouth smell offends me. Away from me begga
 
 export const KING = new Convo("Ah a citizen comes before me. What is it you wish of your ruler, pawn?")
     .answer("Could you tell me where I am?", "R_VARHOLM")
+    .answerIf((arkona) => arkona.gameState["info_wilda"] == true, "I know what's happening in the caves!",
+        new Convo("Humor me commoner. What dost thou think is happening in the caves?", "R_CAVE_PURPOSE")
+            .answer("They're home to interesting stone formations!",
+                new Convo("Thou art right commoner. The caves of Varholm are indeed a natural wonder. They are a dangerous place to " +
+                    "visit however, and I recommend thee to stay away, lest thou face unfortunate peril!", "R_CAVE_PERIL")
+                    .answer("Thank you for the warning.")
+                    .answer("I was just kidding, I know what you're up to.", "R_CAVE_PURPOSE")
+            )
+            .answer("They're a natural beauty of this island.", "R_CAVE_PERIL")
+            .answer("Young people are sacrificed by Raighd-worshipping cult!",
+                new Convo("Thou bring a serious accusation. How came thee by this knowledge? Answer me, pawn!")
+                    .answer("It's what they say in town...",
+                        new Convo("I see that thou will not diverge the name of the slanderer. Perhaps a visit to the dungeons will jog thy memory. GUARDS!", "",
+                            (arkona) => alert("move player to dungeon: " + arkona)
+                        ).answer("")
+                    )
+                    .answer("I was joking. The caves make for a great hike.", "R_CAVE_PERIL")
+            )
+    )
 
 export const HERMIT = new Convo("The heavens burn with liquid contempt for thee! Hot eyes of fire blaze forth and vaporize thy soul intruder. " +
     "Thou wilt not take me back!")

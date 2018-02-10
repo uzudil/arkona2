@@ -494,7 +494,7 @@ export const WORLD = {
             { creature: "man_yellow", x: 262, y: 1610, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble Venin", convo: VARHOLM.NOBLE } },
             { creature: "woman", x: 201, y: 1610, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble Mal", convo: VARHOLM.NOBLE } },
             { creature: "man_yellow", x: 253, y: 1558, z: 7, options: { movement: MOVE_ANCHOR, name: "Noble Ignar", convo: VARHOLM.NOBLE } },
-            { creature: "man_blue", x: 210, y: 1558, z: 7, options: { movement: MOVE_ANCHOR, name: "Advisor Oren", convo: VARHOLM.NOBLE } },
+            { creature: "man_blue", x: 210, y: 1558, z: 7, options: { movement: MOVE_ANCHOR, name: "Advisor Oren", convo: VARHOLM.OREN } },
 
             { creature: "man_yellow", x: 230, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble Anam", convo: VARHOLM.NOBLE } },
             { creature: "woman", x: 221, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble Ayrth", convo: VARHOLM.NOBLE } },
