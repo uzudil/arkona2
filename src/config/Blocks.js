@@ -189,10 +189,11 @@ export const BLOCKS = {
     "raighd.flag.ns": { size: [3, 1, 7], pos: [192, 192], dim: [28, 68], options: { sprites: 3 } },
     "raighd.flag.ew": { size: [1, 3, 7], pos: [224, 192], dim: [28, 68], options: { sprites: 3 } },
     "altar": { size: [2, 4, 4], pos: [384, 192], dim: [56, 72], options: { sprites: 3 } },
+    "column.short": { size: [2, 2, 2], pos: [384, 272], dim: [32, 44], options: { sprites: 3 } },
+    "column.tall": { size: [2, 2, 6], pos: [416, 272], dim: [32, 80], options: { sprites: 3 } },
     "candle.1": { size: [1, 1, 2], pos: [448, 192], dim: [16, 32], options: { sprites: 3, sequence: ["candle.1", "candle.2", "candle.1", "candle.3","candle.1", "candle.2", "candle.1", "candle.3"] } },
     "candle.2": { size: [1, 1, 2], pos: [464, 192], dim: [16, 32], options: { sprites: 3, hideInEditor: true } },
     "candle.3": { size: [1, 1, 2], pos: [480, 192], dim: [16, 32], options: { sprites: 3, hideInEditor: true } },
-
 
 	// roofs
 	"roof.ns": { size: [10, 10, 6], pos: [496, 0], dim: [164, 172], options: { roof: true } },
