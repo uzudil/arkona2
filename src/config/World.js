@@ -501,7 +501,12 @@ export const WORLD = {
             { creature: "woman_brown", x: 213, y: 1577, options: { movement: MOVE_ANCHOR, name: "Noble Extal", convo: VARHOLM.NOBLE } },
 
             { creature: "man_yellow", x: 209, y: 1575, z: 2, options: { movement: MOVE_ANCHOR, name: "Chief Mezalka", convo: VARHOLM.KING } },
-        ]
+        ],
+        onLoad: function(arkona, section) {
+            if(arkona.gameState["mezalka_dead"]) {
+                section.removeNpcByName("Chief Mezalka")
+            }
+        },
     },
     "1,17": {
         generators: [
@@ -562,4 +567,11 @@ export const WORLD = {
             { creature: "wolf_red", x: 297, y: 1603, options: { convo: FARM_CONVO.COW } },
         ]
     },
+    "9,21": {
+        npcs: [
+            { creature: "monk", x: 903, y: 2050, options: { movement: MOVE_ANCHOR, name: "Grandmaster Zaren", convo: VARHOLM.ZAREN } },
+            { creature: "monk_red", x: 914, y: 2050, options: { movement: MOVE_ANCHOR, name: "Acolyte Mohk", convo: VARHOLM.ACOLYTE_RITUAL } },
+            { creature: "monk_red", x: 917, y: 2061, options: { movement: MOVE_ANCHOR, name: "Acolyte Hanem", convo: VARHOLM.ACOLYTE_RITUAL } },
+        ]
+    }
 }

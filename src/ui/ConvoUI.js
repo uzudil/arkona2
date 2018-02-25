@@ -86,24 +86,28 @@ export default class {
 		if(convo == null || !convo.isComplete()) this.end()
 		else {
 			this.convo = convo.eval(this.arkona)
-			this.activeIndex = 0
-			this.npcMessage.text = this.convo.getQuestion(this.arkona)
-			for(let a of this.pcAnswer) a.visible = false
-			let y = 115
-			let index = 0
-			for (let i = 0; i < this.convo.answers.length; i++) {
-				if(this.convo.answers[i].eval(this.arkona)) {
-					this.pcAnswer[index].text = " " + this.convo.answers[i].answer
-					this.pcAnswer[index].visible = true
-					this.pcAnswer[index].y = y
-					this.pcAnswer[index].answerIndex = i
-					y += 30
-					index++
-				}
-			}
-			this.answerCount = index
-			this.showActiveAnswer()
-			this.group.visible = true
+			if(this.convo == null) {
+				this.end()
+            } else {
+                this.activeIndex = 0
+                this.npcMessage.text = this.convo.getQuestion(this.arkona)
+                for (let a of this.pcAnswer) a.visible = false
+                let y = 115
+                let index = 0
+                for (let i = 0; i < this.convo.answers.length; i++) {
+                    if (this.convo.answers[i].eval(this.arkona)) {
+                        this.pcAnswer[index].text = " " + this.convo.answers[i].answer
+                        this.pcAnswer[index].visible = true
+                        this.pcAnswer[index].y = y
+                        this.pcAnswer[index].answerIndex = i
+                        y += 30
+                        index++
+                    }
+                }
+                this.answerCount = index
+                this.showActiveAnswer()
+                this.group.visible = true
+            }
 		}
 	}
 

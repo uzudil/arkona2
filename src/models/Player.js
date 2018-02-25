@@ -4,10 +4,12 @@ import AnimatedSprite from "../world/Animation"
 import Alive from "./Alive"
 import * as Utils from "../utils"
 import $ from "jquery"
+import Pathable from "./Pathable"
 
-export default class {
+export default class extends Pathable {
     constructor(arkona) {
-        this.arkona = arkona
+        super(arkona)
+
         this.ship = null
         this.lastDir = null
         this.attacking = null
@@ -26,11 +28,24 @@ export default class {
     }
 
     update(moving) {
-        if(this.isAttacking()) {
-            this.setAnimation("attack")
-        } else if (!moving) {
-            this.setAnimation("stand")
+        // follow the path
+        if(this.path != null) {
+            if(!this._followPath()) {
+                // couldn't move
+                console.warn("Abandoning path")
+                this._clearPath()
+            }
+        } else {
+            if(this.isAttacking()) {
+                this.setAnimation("attack")
+            } else if (!moving) {
+                this.setAnimation("stand")
+            }
         }
+    }
+
+    _speed() {
+        return this.arkona.getPlayerSpeed()
     }
 
     onLevelStart(startX, startY, startZ, startDir) {
@@ -141,6 +156,14 @@ export default class {
         return this.attacking != null
     }
 
+    _moveToNextStep(nx, ny, nz, dir) {
+        let b = this.arkona.blocks.moveTo(this.animatedSprite.sprite, nx, ny, nz, false, true)
+
+        this._moved(dir, true)
+
+        return b
+    }
+
     move(dir) {
         if(this.animatedSprite) {
             if(this.ship) {
@@ -196,12 +219,12 @@ export default class {
      *
      * @param dir the direction of the player's last step
      */
-    _moved(dir) {
+    _moved(dir, skipAnimation) {
         let [px, py, pz] = this.animatedSprite.sprite.gamePos
         this.arkona.blocks.checkRoof(px, py, pz, this.animatedSprite.sprite.name)
         if (dir != null) {
             this.setDir(dir)
-            this.setAnimation("walk")
+            if(!skipAnimation) this.setAnimation("walk")
         }
         this.arkona.checkMapBoundary(px, py)
     }

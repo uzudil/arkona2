@@ -15,6 +15,7 @@ import Device from "../ui/Device"
 import { dist3d } from "../utils"
 import Section from "../models/Section"
 import Fx from "../world/Fx"
+import * as Movies from "../config/Movies"
 
 const fs = window.require("fs-extra")
 const path = window.require("path")
@@ -41,12 +42,17 @@ export default class extends Phaser.State {
         this.mouseClickAction = new MouseClickAction()
         this.player = new Player(this)
         this.paused = false
+        this.npcPaused = false
         this.lastPos = null
         this.sections = {}
         this.playerSpeed = 1
         this.mouseClicked = false
         this.fx = new Fx(this)
         this.delayedDeathNpcs = []
+        this.movie = null
+        this.movieSceneIndex = 0
+        this.movieContext = {}
+        this.checkpoint = Date.now()
 
         // controls
         this.cursors = this.game.input.keyboard.createCursorKeys()
@@ -109,49 +115,25 @@ export default class extends Phaser.State {
         this.fx.update()
 
         if(!this.paused && !this.updateUI()) {
-            this.positionMovementCursor()
 
             // assemble the actions
-            let npcs = []
-            let generators = []
-            for(let key in this.sections) {
-                let section = this.sections[key]
-                if(section.npcs) section.npcs.filter(npc => npc.isVisible()).forEach(npc => npcs.push(npc))
-                if(section.generators) section.generators.forEach(g => generators.push(g))
+            if(!this.npcPaused) {
+                let npcs = []
+                let generators = []
+                for (let key in this.sections) {
+                    let section = this.sections[key]
+                    if (section.npcs) section.npcs.filter(npc => npc.isVisible()).forEach(npc => npcs.push(npc))
+                    if (section.generators) section.generators.forEach(g => generators.push(g))
+                }
+                if (npcs.length > 0) this.actionQueue.add(Queue.MOVE_NPC, npcs)
+                if (generators.length > 0) this.actionQueue.add(Queue.GENERATORS, generators)
             }
-            if(npcs.length > 0) this.actionQueue.add(Queue.MOVE_NPC, npcs)
-            if(generators.length > 0) this.actionQueue.add(Queue.GENERATORS, generators)
+
+            this.positionMovementCursor()
 
             let moving = false
-            if(this.w_key.isDown && this.movementCursor.visible && !this.isCursorKeyDown()) {
-                this.actionQueue.add(Queue.MOVE_PLAYER, this.movementCursor.dir)
-                this.playerSpeed = (this.movementCursor.scale.y/2)
-                moving = true
-            } else {
-                moving = this.isCursorKeyDown()
-                if (moving) {
-                    let dir = this.getDirFromCursorKeys()
-                    if (dir != null) {
-                        this.actionQueue.add(Queue.MOVE_PLAYER, dir)
-                        this.playerSpeed = 1
-                    }
-                }
-            }
-
-            let ctrlDown = this.ctrl.isDown
-            if (this.space.justDown || ctrlDown) this.actionQueue.add(Queue.USE_OBJECT, ctrlDown)
-
-            let spriteUnderMouse = this.getSpriteUnderMouse()
-            this.showMovementCursor(!spriteUnderMouse)
-            if(this.mouseClicked) {
-                if (spriteUnderMouse) {
-                    this.mouseClicked = false // consume click
-                    this.actionQueue.add(Queue.CLICK, spriteUnderMouse)
-                }
-            } else if(this.game.input.activePointer.isDown && this.movementCursor.visible && !this.isCursorKeyDown()) {
-                this.actionQueue.add(Queue.MOVE_PLAYER, this.movementCursor.dir)
-                this.playerSpeed = (this.movementCursor.scale.y/2)
-                moving = true
+            if(!this.updateMovie()) {
+                moving = this.playerInput()
             }
 
             // run the actions
@@ -166,7 +148,7 @@ export default class extends Phaser.State {
                 section.onLoad()
             }
 
-            this.player.update(moving)
+            this.player.update(moving || this.player.path != null)
         } else {
             this.showMovementCursor(false)
         }
@@ -177,6 +159,46 @@ export default class extends Phaser.State {
             this.stats.end()
             this.phaserStatsPanel.update(this.world.camera.totalInView, this.stage.currentRenderOrderID)
         }
+    }
+
+    playerInput() {
+        let moving = false
+        if (this.w_key.isDown && this.movementCursor.visible && !this.isCursorKeyDown()) {
+            this.actionQueue.add(Queue.MOVE_PLAYER, this.movementCursor.dir)
+            this.playerSpeed = (this.movementCursor.scale.y / 2)
+            moving = true
+        } else {
+            moving = this.isCursorKeyDown()
+            if (moving) {
+                let dir = this.getDirFromCursorKeys()
+                if (dir != null) {
+                    this.actionQueue.add(Queue.MOVE_PLAYER, dir)
+                    this.playerSpeed = 1
+                }
+            }
+        }
+
+        let ctrlDown = this.ctrl.isDown
+        if (this.space.justDown || ctrlDown) this.actionQueue.add(Queue.USE_OBJECT, ctrlDown)
+
+        let spriteUnderMouse = this.getSpriteUnderMouse()
+        this.showMovementCursor(!spriteUnderMouse)
+        if (this.mouseClicked) {
+            if (spriteUnderMouse) {
+                this.mouseClicked = false // consume click
+                this.actionQueue.add(Queue.CLICK, spriteUnderMouse)
+            } else {
+                // move player here
+                let worldCoords = this.blocks.toWorldCoords(this.game.input.x / this.blocks.zoom, this.game.input.y / this.blocks.zoom)
+                this.actionQueue.add(Queue.MOVE_PLAYER, worldCoords)
+                this.mouseClicked = false // consume click
+            }
+        } else if (this.game.input.activePointer.isDown && this.movementCursor.visible && !this.isCursorKeyDown()) {
+            this.actionQueue.add(Queue.MOVE_PLAYER, this.movementCursor.dir)
+            this.playerSpeed = (this.movementCursor.scale.y / 2)
+            moving = true
+        }
+        return moving
     }
 
     positionMovementCursor() {
@@ -587,8 +609,57 @@ export default class extends Phaser.State {
         let levelUp = $("#level-up")
         levelUp.css("font-size", "20px")
         levelUp.show()
-        levelUp.animate({ fontSize: "64px" }, 1000);
+        levelUp.animate({ fontSize: "64px" }, 1000)
         levelUp.fadeOut()
         this.player.alive.levelUp()
+    }
+
+    startMovie(name) {
+        this.movie = Movies.MOVIES[name]
+        this.movieSceneIndex = 0
+        this.movie[this.movieSceneIndex].scene(this)
+        console.log("Starting movie " + name + " index=" + this.movieSceneIndex + "/" + this.movie.length)
+    }
+
+    updateMovie() {
+        if(this.movie && this.movie[this.movieSceneIndex].endCondition(this)) {
+            this.movieSceneIndex++
+            console.log("Next scene=" + this.movieSceneIndex + "/" + this.movie.length)
+            if(this.movieSceneIndex >= this.movie.length) {
+                this.movie = null
+            } else {
+                this.movie[this.movieSceneIndex].scene(this)
+            }
+        }
+        return this.movie != null
+    }
+
+    getNpcByName(name) {
+        for (let key in this.sections) {
+            let section = this.sections[key]
+            let npc = section.getNpcByName(name)
+            if(npc) return npc
+        }
+        return null
+    }
+
+    setCheckpoint() {
+        this.checkpoint = Date.now()
+    }
+
+    addMonster(monster, worldX, worldY, worldZ) {
+        let monsterInfo = { monster: monster, pos: [ [worldX, worldY, worldZ] ] }
+        let section = this.sectionAt(worldX, worldY)
+        return section.addNpc({
+            x: worldX,
+            y: worldY,
+            z: worldZ,
+            creature: monster.creature,
+            options: {
+                movement: Config.MOVE_ATTACK,
+                monster: monster,
+                monsterInfo: monsterInfo
+            }
+        })
     }
 }

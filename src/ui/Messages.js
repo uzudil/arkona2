@@ -24,17 +24,19 @@ export default class {
 		this.group.visible = false
 	}
 
-	showFirstLine(message) {
+	showFirstLine(message, onComplete) {
 		this.sentences = this.getSentences(message)
 		this.sentenceIndex = 0
 		this.showCurrentSentence()
 		this.group.visible = true
+		this.onComplete = onComplete
 	}
 
 	showNextLine() {
 		this.sentenceIndex++
 		if(this.sentenceIndex >= this.sentences.length) {
 			this.group.visible = false
+			if(this.onComplete) this.onComplete()
 		} else {
 			this.showCurrentSentence()
 		}

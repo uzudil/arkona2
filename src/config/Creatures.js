@@ -247,4 +247,14 @@ export const CREATURES = {
             { name: "stand", frameCount: 1, dirs: dirsFrom("e") }
         ]
     },
+    demon: {
+        src: "assets/creatures/demon.png",
+        dim: [96, 96],
+        blockName: "4x4x4.placeholder",
+        animations: [
+            { name: "walk", frameCount: 4, dirs: dirsFrom("e") },
+            { name: "stand", frameCount: 1, dirs: dirsFrom("e") },
+            { name: "attack", frameCount: 2, dirs: dirsFrom("e") },
+        ]
+    },
 }

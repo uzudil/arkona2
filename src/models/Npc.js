@@ -3,6 +3,7 @@ import { dist3d } from "../utils"
 import * as Creatures from "../config/Creatures"
 import AnimatedSprite from "../world/Animation"
 import Alive from "./Alive"
+import Pathable from "./Pathable"
 
 const SPEEDS = {
     "slow": 0.01,
@@ -10,21 +11,15 @@ const SPEEDS = {
     "fast": 0.1
 }
 
-export default class {
+export default class extends Pathable {
 
     constructor(arkona, x, y, z, options, creatureName) {
+        super(arkona)
+
         this.id = "" + x + "," + y + "," + z
-        this.arkona = arkona
         this.x = x
         this.y = y
         this.z = z
-        this.pathIndex = 0
-        this.path = null
-        this.lastPathFindTime = 0
-        this.lastPlayerPos = [0, 0, 0]
-        this.playerPosAtPathFind = [0, 0, 0]
-        this.lastPathCheck = 0
-        this.playerMoved = false
         this.anchorX = x
         this.anchorY = y
         this.anchorZ = z
@@ -80,11 +75,6 @@ export default class {
         // precalculate some stuff
         this.distToPlayer = this.arkona.getDistanceToPlayer(this.x, this.y, this.z)
         this.dirToPlayer = this.getDirToPlayer()
-        let playerPos = this.arkona.player.animatedSprite.sprite.gamePos
-        this.playerMoved = !(this.lastPlayerPos[0] == playerPos[0] && this.lastPlayerPos[1] == playerPos[1] && this.lastPlayerPos[2] == playerPos[2])
-        this.lastPlayerPos[0] = playerPos[0]
-        this.lastPlayerPos[1] = playerPos[1]
-        this.lastPlayerPos[2] = playerPos[2]
 
         if(this.options["movement"] == Config.MOVE_ATTACK) {
             this.moveAttack()
@@ -106,7 +96,7 @@ export default class {
                 }
             } else if(this.distToPlayer <= Config.FAR_DIST) {
                 if(this.path == null) {
-                    this._findPathToPlayer()
+                    this.findPathToSprite(this.arkona.player.animatedSprite)
                 } else {
                     if(!this._followPath()) {
                         // couldn't move
@@ -121,85 +111,22 @@ export default class {
             this.animatedSprite.setAnimation("stand", this.dir)
         }
     }
-    
-    _findPathToPlayer() {
-        let now = Date.now()
-        // if the player hasn't moved since the last path find, don't bother
-        let playerHasntMoved =
-            this.playerPosAtPathFind[0] == this.lastPlayerPos[0] &&
-            this.playerPosAtPathFind[1] == this.lastPlayerPos[1] &&
-            this.playerPosAtPathFind[2] == this.lastPlayerPos[2]
-        if(now - this.lastPathFindTime > 1500 && !playerHasntMoved) {
-            this.lastPathFindTime = now
-            this.playerPosAtPathFind[0] = this.lastPlayerPos[0]
-            this.playerPosAtPathFind[1] = this.lastPlayerPos[1]
-            this.playerPosAtPathFind[2] = this.lastPlayerPos[2]
-            this._findPathTo(...this.arkona.player.animatedSprite.sprite.gamePos)
-        }
-    }
-
-    _findPathTo(toX, toY, toZ) {
-        console.warn("Finding path")
-        let currPos = this.animatedSprite.sprite.gamePos
-        let p = this.arkona.blocks.getPath(this.animatedSprite.sprite, currPos[0], currPos[1], currPos[2], toX, toY, toZ, this.arkona.player.animatedSprite.sprite)
-        if(p) {
-            this._setPath(p)
-        }
-    }
-
-    _setPath(path) {
-        this.path = path
-        this.pathIndex = 0
-    }
-
-    _clearPath() {
-        this.path = null
-        this.pathIndex = 0
-    }
-
-    _followPath() {
-        let now = Date.now()
-        if(this.playerMoved && now - this.lastPathCheck > 1000) {
-            this.lastPathCheck = now
-            this._findPathToPlayer()
-            return true
-        }
-        let [px, py, pz] = this.path[this.pathIndex]
-        let currPos = this.animatedSprite.sprite.gamePos
-        this.dir = Config.getDirByDelta(px - currPos[0], py - currPos[1])
-
-        // where would the next step take us
-        let [nx, ny, nz] = this.arkona.moveInDir(this.x, this.y, this.z, this.dir, this._speed())
-
-        // // is this position past a waypoint?
-        let dir = Config.getDirByDelta(px - Math.round(nx), py - Math.round(ny))
-        let pastWaypoint = dir != this.dir
-
-        // try to step there
-        let success = this._stepTo(nx, ny, nz)
-
-        if(pastWaypoint) {
-            if(!success) {
-                // try to move to the waypoint if can't get to original destination
-                success = this._stepTo(px, py, pz)
-            }
-
-            // advance to the next waypoint
-            this.pathIndex++
-            if(this.pathIndex >= this.path.length) {
-                this._clearPath()
-            }
-        }
-        return success
-    }
 
     moveFriendly() {
-        if (this._willStop()) {
-            this._stop()
-        } else if(this._isStopped()) {
-            this._turnToPlayer()
-        } else if (!this._takeStep()) {
-            this._changeDir()
+        if(this.path != null) {
+            if (!this._followPath()) {
+                // couldn't move
+                console.warn("Abandoning path")
+                this._clearPath()
+            }
+        } else {
+            if (this._willStop()) {
+                this._stop()
+            } else if (this._isStopped()) {
+                this._turnToPlayer()
+            } else if (!this._takeStep()) {
+                this._changeDir()
+            }
         }
     }
 
@@ -257,21 +184,8 @@ export default class {
         return this._stepTo(nx, ny, nz)
     }
 
-    _stepTo(nx, ny, nz) {
-        if(this.x == nx && this.y == ny) {
-            this.animatedSprite.setAnimation("stand", this.dir)
-            return true
-        } else if(this._moveToNextStep(nx, ny, nz)) {
-            [this.x, this.y, this.z] = [nx, ny, nz]
-            this.animatedSprite.setAnimation("walk", this.dir)
-            return true
-        } else {
-            this.animatedSprite.setAnimation("stand", this.dir)
-            return false
-        }
-    }
-
-    _moveToNextStep(nx, ny, nz) {
+    // eslint-disable-next-line no-unused-vars
+    _moveToNextStep(nx, ny, nz, dir) {
         if(this.options.movement == Config.MOVE_NEAR_PLAYER && this.distToPlayer < Config.NEAR_DIST) {
             return false
         } else if(this.options.movement == Config.MOVE_NEAR_PLAYER && this.distToPlayer < Config.MID_DIST && this.dir != this.dirToPlayer) {

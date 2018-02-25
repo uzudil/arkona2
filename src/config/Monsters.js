@@ -159,4 +159,14 @@ export const MONSTERS = {
             attack: "slash"
         }
     },
+    demon: {
+        creature: "demon",
+        movement: MOVE_ATTACK,
+        monsterLevel: 6,
+        alive: {
+            health: 250,
+            strength: 50,
+            attack: "fire"
+        }
+    },
 }

@@ -3,7 +3,6 @@ import {BLOCKS} from "../config/Blocks"
 import ImpreciseSort from "./ImpreciseSort"
 import DAGSort from "./DAGSort"
 import $ from "jquery"
-import * as Filters from "./Filters"
 import {dist3d, mapName} from "../utils"
 
 const aStar = window.require("a-star")
@@ -578,8 +577,6 @@ export default class {
         this.cacheOrder = []
         this.loadPerimeter = editorMode && !mapperMode
 
-        Filters.create(game)
-
         // cursor
         if(editorMode && !mapperMode) {
             this.anchorDebug = this.game.add.graphics(0, 0)
@@ -792,9 +789,6 @@ export default class {
             sprite.events.onEnterBounds.add((sprite) => {
                 sprite.renderable = sprite.alive = true
             }, this)
-            if(block.options && block.options.filter && Filters.FILTERS[block.options.filter]) {
-                sprite.filters = [ Filters.FILTERS[block.options.filter] ]
-            }
             if(block.options && block.options.sequence) {
                 sprite.animations.add("anim", block.options.sequence, block.options.sequence.length, true)
                 sprite.animations.play("anim")
@@ -1272,7 +1266,6 @@ export default class {
     }
 
     update() {
-        Filters.update()
     }
 
     getTopSpriteAt(screenX, screenY) {

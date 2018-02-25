@@ -183,6 +183,15 @@ export default class {
         this.npcs.push(npc)
     }
 
+    getNpcByName(name) {
+        for(let npc of this.npcs) {
+            if (npc.getName() == name) {
+                return npc
+            }
+        }
+        return null
+    }
+
     checkBounds(px, py) {
         for(let conn of this.info.connect || []) {
             let found = false

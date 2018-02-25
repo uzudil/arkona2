@@ -6,11 +6,11 @@ export const ACOLYTE = new Convo("What art thou doing here down here? I will sum
             "Yes, there will be a parade. Dost thou like parades?")
             .answer("I am showing myself out. Later creep!")
             .answer("A parade?! Wow! How do I join?",
-                new Convo("A volunteer, very good. Follow the corridors and keep going north-east. To the chapel and thou will " +
-                    "reach a large open space beyond. When there, be sure thou stands on one of the marks on the floor.")
-                    .answer("Marks on the floor, got it. What happens next?",
-                        new Convo("Thou should wait until the ritu... I mean, until the festivities start. It may take a few minutes. Stay on the mark, no " +
-                            "matter what and do not move.")
+                new Convo("A volunteer, very good. Follow the corridors and keep going north-east. After the chapel and thou will " +
+                    "reach a cave. I will unlock the grate and thou can proceed beyond...")
+                    .answer("Cave, grate, got it. What happens next?",
+                        new Convo("Beyond the grate lies the hall of the ritu... er, I mean where the parade takes place. Thou should report to " +
+                            "Grandmaster Zaren. He will instruct thee on the proceedings.")
                             .answer("This will be fun!")
                     )
                     .answer("Um, I changed my mind. Adios.")
@@ -18,9 +18,57 @@ export const ACOLYTE = new Convo("What art thou doing here down here? I will sum
     )
     .answer("I was just leaving...")
 
+export const ACOLYTE_RITUAL = new Convo("All hail nature's power! All hail the Raighd!", "R_RITUAL_START")
+    .answer("What is happening here?",
+        new Convo("Talk to Grandmaster Zaren when you're ready to begin!")
+            .answer("Begin what?", "R_RITUAL_START")
+            .answer("Ok I will do that")
+    )
+    .answer("Well, ok then...")
+
+export const ZAREN = Convo.condition(arkona => arkona.gameState["mezalka_dead"] == true,
+    new Convo("After what I have seen, the world has shifted.")
+        .answer("What was that thing?", "R_ZAREN_MAD")
+        .answer("Um, you're not making sense",
+            new Convo("Thou hath seen it as well! In my dreams, she comes to me again and again! I cannot escape her grasp... I can only, Nooooo!", "R_ZAREN_MAD")
+                .answer("I'll be leaving now...")
+        )
+    ,
+    new Convo("My acolytes tell me thou hath volunteered to serve in our little ...celebration. Art thou ready to begin?", "R_ZAREN")
+    .answer("I changed my mind and I won't be part of this")
+    .answer("What do I need know before we start?",
+        new Convo("Oh it will be FUN! Thou doth help a good cause, one that is of personal interest to the ruler of Varholm island.")
+            .answer("I'm not sure about this...", "R_ZAREN")
+            .answer("why do I feel like you're not telling me everything?",
+                new Convo("Our religious order aims to preserve and celebrate life. ALL life! Think thee of a vast and endless forest. " +
+                    "Does it not fill thy spirit with power?")
+                    .answer("Heck yeah! Let's do this!", "R_ZAREN")
+                    .answer("A vast forest, do you mean the Raighd?",
+                        new Convo("Thee should not focus on trivial details. I meant it as a metaphor only... " +
+                            "Think thee instead of how limitless power could be used to help all of Arkona!")
+                            .answer("When you put it that way...", "R_ZAREN")
+                            .answer("Limitless power can also destroy all of Arkona",
+                                new Convo("Our power comes from love. The love of growing and tending green things. Vast trees, home to many a song bird. " +
+                                    "The power of nature will only do good!")
+                                    .answer("Ok, I'm in.", "R_ZAREN")
+                                    .answer("I love nature - count me in.", "R_ZAREN")
+                            )
+                    )
+            )
+    )
+    .answer("Yes, let's begin!",
+        new Convo((arkona) => arkona.startMovie("ritual"))
+    )
+)
+
 export const OREN = Convo.condition((arkona) => arkona.gameState["mezalka_dead"],
-    new Convo("Thou hath done a great deed. The citizens of Varholm will remember thy bravery forever.")
-        .answer("It was the right thing to do."),
+    new Convo("When thou disrupted the accursed ritual in the caverns below, Chief Mezalka was in a vulnerable state. " +
+        "I was able to destroy his human shell, thanks to thee.", "", (arkona) => arkona.levelUp())
+        .answer("It was the right thing to do.",
+            new Convo("Thou hath done a great deed. The citizens of Varholm will remember thy bravery forever.")
+                .answer("It was nothing")
+                .answer("Thanks Oren, I'm leaving now")
+        ),
     new Convo("Thou hath the look of a visitor from a foreign land. How can I aid thee in thy travels?")
         .answer("You don't know the half of it... I'm from another planet",
             new Convo("Tho doth tell a good pun! There is no life in the skies? If that were true, our keepers of " +
@@ -80,12 +128,16 @@ export const GUARD =
             .answer("Um, I was just leaving anyway.")
     )
 
-export const NOBLE = new Convo("Thy uncouth smell offends me. Away from me beggar else I call for the guards!")
+export const NOBLE = Convo.condition((arkona) => arkona.gameState["mezalka_dead"],
+    new Convo("Our hero! Thou art valiant, indeed.")
+        .answer("You sure changed your tune, noble..."),
+    new Convo("Thy uncouth smell offends me. Away from me beggar else I call for the guards!")
     .answer("What is it you do here?",
         new Convo("GUARDS! Take this pest to the dungeons...", "R_CALL_GUARDS")
             .answer("I am on my way, see you later")
     )
     .answer("Why you pompous cretin...", "R_CALL_GUARDS")
+)
 
 export const KING = new Convo("Ah a citizen comes before me. What is it you wish of your ruler, pawn?")
     .answer("Could you tell me where I am?", "R_VARHOLM")
@@ -157,7 +209,13 @@ export const HERMIT = new Convo("The heavens burn with liquid contempt for thee!
             )
     )
 
-export const WOODCUTTER = new Convo("Logs? Branches? Firewood? I got them all. If thou need felling, I'm all yours for the labor.")
+export const WOODCUTTER = Convo.condition(arkona => arkona.gameState["mezalka_dead"] == true,
+    new Convo("I heard thou hath disrupted the ritual so Oren was able to destroy Chief Mezalka. Varholm owes thee much gratitude for thy valiant deed!")
+        .answer("It was a piece of cake")
+        .answer("Yeah I'm pretty awesome")
+        .answer("I'm off to my next adventure")
+    ,
+    new Convo("Logs? Branches? Firewood? I got them all. If thou need felling, I'm all yours for the labor.")
     .answer("What is it you do here?",
         new Convo("Thou must have wood for a brain... Look around thee! I ply my trade as a woodcutter. Fell, clear and haul. Now if thou hath no " +
             "business for me, get thee to pester someone else at the Blue Boar.")
@@ -233,6 +291,7 @@ export const WOODCUTTER = new Convo("Logs? Branches? Firewood? I got them all. I
                     )
             )
     )
+)
 
 export const COMMON = new Convo("Welcome to Varholm island visitor.")
     .answer("Tell me about the island",
