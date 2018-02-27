@@ -505,9 +505,9 @@ export default class extends Phaser.State {
         })
     }
 
-    narrate(message) {
+    narrate(message, color) {
         this.allCreaturesStop()
-        this.messages.showFirstLine(message)
+        this.messages.showFirstLine(message, color)
     }
 
     showOverlay(image, message) {

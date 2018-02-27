@@ -2,19 +2,24 @@ import Convo from "./Convo"
 
 export const ACOLYTE = new Convo("What art thou doing here down here? I will summon the guard at once!")
     .answer("I uh... just visiting? How about... you?",
-        new Convo("Visiting? Hmm, thou may prove useful for the ritua... Er that is, I meant to say, ...Parade. " +
-            "Yes, there will be a parade. Dost thou like parades?")
-            .answer("I am showing myself out. Later creep!")
-            .answer("A parade?! Wow! How do I join?",
-                new Convo("A volunteer, very good. Follow the corridors and keep going north-east. After the chapel and thou will " +
-                    "reach a cave. I will unlock the grate and thou can proceed beyond...")
-                    .answer("Cave, grate, got it. What happens next?",
-                        new Convo("Beyond the grate lies the hall of the ritu... er, I mean where the parade takes place. Thou should report to " +
-                            "Grandmaster Zaren. He will instruct thee on the proceedings.")
-                            .answer("This will be fun!")
-                    )
-                    .answer("Um, I changed my mind. Adios.")
-            )
+        Convo.condition(arkona => arkona.gameState["start_ritual"] == true,
+            new Convo("Visiting? Hmm, thou may prove useful for the ritua... Er that is, I meant to say, ...Parade. " +
+                "Yes, there will be a parade. Dost thou like parades?")
+                .answer("I am showing myself out. Later creep!")
+                .answer("A parade?! Wow! How do I join?",
+                    new Convo("A volunteer, very good. Follow the corridors and keep going north-east. After the chapel and thou will " +
+                        "reach a cave. I will unlock the grate and thou can proceed beyond...", "", arkona => arkona.gameState["ritual_gate_open"] = true)
+                        .answer("Cave, grate, got it. What happens next?",
+                            new Convo("Beyond the grate lies the hall of the ritu... er, I mean where the parade takes place. Thou should report to " +
+                                "Grandmaster Zaren. He will instruct thee on the proceedings.")
+                                .answer("This will be fun!")
+                        )
+                        .answer("Um, I changed my mind. Adios.")
+                )
+            ,
+            new Convo("This is no place for thee, unbeliever. Get thee gone!")
+                .answer("Sure, I'm out of here.")
+        )
     )
     .answer("I was just leaving...")
 
@@ -100,7 +105,6 @@ export const OREN = Convo.condition((arkona) => arkona.gameState["mezalka_dead"]
                                         .answer("Could you repeat the phrase I need to remember?", "R_PHRASE")
                                         .answer("I think I will destroy it", "R_DESTROY_BOOK")
                                     )
-                                )
                                 .answer("Should the book be destroyed?",
                                     new Convo("Books on magic cannot be destroyed. Thou should keep it, maybe in thy travels thou finds one capable of its desposal.", "R_DESTROY_BOOK")
                                         .answer("Could you repeat the phrase I need to remember?", "R_PHRASE")
@@ -119,6 +123,7 @@ export const OREN = Convo.condition((arkona) => arkona.gameState["mezalka_dead"]
                         )
                 )
     )
+)
 
 export const GUARD =
     Convo.condition((arkona) => arkona.gameState["mezalka_dead"],

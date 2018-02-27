@@ -572,6 +572,11 @@ export const WORLD = {
             { creature: "monk", x: 903, y: 2050, options: { movement: MOVE_ANCHOR, name: "Grandmaster Zaren", convo: VARHOLM.ZAREN } },
             { creature: "monk_red", x: 914, y: 2050, options: { movement: MOVE_ANCHOR, name: "Acolyte Mohk", convo: VARHOLM.ACOLYTE_RITUAL } },
             { creature: "monk_red", x: 917, y: 2061, options: { movement: MOVE_ANCHOR, name: "Acolyte Hanem", convo: VARHOLM.ACOLYTE_RITUAL } },
-        ]
+        ],
+        actions: [
+            {
+                type: "use_object", x: 882, y: 2042, z: 0, allow: (arkona) => arkona.gameState["ritual_gate_open"] == true
+            }
+        ],
     }
 }

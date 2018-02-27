@@ -9,7 +9,7 @@ export default class {
 		this.narratorTextBackground.drawRect(0, 0, Config.WIDTH, Config.NARRATE_HEIGHT)
 		this.narratorTextBackground.endFill()
 
-		var style = {
+		this.style = {
 			font: "bold 32px " + Config.FONT_FAMILY_NAME,
 			fill: "#ccc",
 			boundsAlignH: "left",
@@ -17,26 +17,25 @@ export default class {
 			wordWrap: true,
 			wordWrapWidth: Config.WIDTH
 		}
-		this.narratorMessage = arkona.game.add.text(5, 5, "Pos: ", style, this.group)
+		this.narratorMessage = arkona.game.add.text(5, 5, "Pos: ", this.style, this.group)
 		this.narratorMessage.setShadow(1, 1, "rgba(0,0,0,1)", 2)
 		this.narratorMessage.setTextBounds(5, 5, Config.WIDTH - 10, Config.NARRATE_HEIGHT - 10)
 
 		this.group.visible = false
 	}
 
-	showFirstLine(message, onComplete) {
+	showFirstLine(message, color) {
 		this.sentences = this.getSentences(message)
 		this.sentenceIndex = 0
 		this.showCurrentSentence()
 		this.group.visible = true
-		this.onComplete = onComplete
+		this.narratorMessage.addColor(color || "#ffffff", 0)
 	}
 
 	showNextLine() {
 		this.sentenceIndex++
 		if(this.sentenceIndex >= this.sentences.length) {
 			this.group.visible = false
-			if(this.onComplete) this.onComplete()
 		} else {
 			this.showCurrentSentence()
 		}

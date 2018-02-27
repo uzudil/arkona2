@@ -11,7 +11,7 @@ export const MOVIES = {
         {
             scene: (arkona) => {
                 arkona.player.findPathTo(904, 2060, 0)
-                arkona.getNpcByName("Grandmaster Zaren").findPathTo(905, 2053, 0)
+                arkona.getNpcByName("Grandmaster Zaren").findPathTo(905, 2051, 0)
                 arkona.getNpcByName("Acolyte Hanem").findPathTo(911, 2053, 0)
                 arkona.getNpcByName("Acolyte Mohk").findPathTo(913, 2060, 0)
             },
@@ -26,7 +26,20 @@ export const MOVIES = {
                 arkona.narrate("All hail Mgguarthan, spirit of the Raighd!" +
                     "Lord Mgguarthan, join us!" +
                     "Lord Mgguarthan, come to us!" +
-                    "We bask in your... Something is not right!" +
+                    "We bask in your... ")
+                arkona.npcPaused = true
+            },
+            endCondition: (arkona) => !arkona.messages.group.visible
+        },
+        {
+            scene: (arkona) => {
+                arkona.narrate("Mezalca Exilium Lux!!!", "#ffff00")
+            },
+            endCondition: (arkona) => !arkona.messages.group.visible
+        },
+        {
+            scene: (arkona) => {
+                arkona.narrate("Something is not right!" +
                     "Thy presence has disrupted the ritual, traveler!" +
                     "We are great dan... Noo! She is coming!")
                 arkona.npcPaused = true
@@ -61,7 +74,7 @@ export const MOVIES = {
                 arkona.narrate("WHO DARES SUMMON MGGUARTHAN?" +
                     "WHERE IS THE SCENT OF ROTTING?" +
                     "WHOSO SPAKE THE ILLUMIS?" +
-                    "THOU WILT ALL PAY IN SUFFERING!")
+                    "THOU WILT ALL PAY IN SUFFERING!", "#ff0000")
             },
             endCondition: (arkona) => !arkona.messages.group.visible
         },
