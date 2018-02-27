@@ -288,6 +288,7 @@ export default class extends Phaser.State {
 
     _processDelayedDeaths() {
         this.delayedDeathNpcs.forEach(npc => npc.onDeath(true))
+        this.delayedDeathNpcs = []
     }
 
     isCursorKeyDown() {
@@ -647,8 +648,8 @@ export default class extends Phaser.State {
         this.checkpoint = Date.now()
     }
 
-    addMonster(monster, worldX, worldY, worldZ) {
-        let monsterInfo = { monster: monster, pos: [ [worldX, worldY, worldZ] ] }
+    addMonster(monster, worldX, worldY, worldZ, onDeath) {
+        let monsterInfo = { monster: monster, pos: [ [worldX, worldY, worldZ] ], onDeath: onDeath }
         let section = this.sectionAt(worldX, worldY)
         return section.addNpc({
             x: worldX,
@@ -661,5 +662,12 @@ export default class extends Phaser.State {
                 monsterInfo: monsterInfo
             }
         })
+    }
+
+    closeDoor(x, y, z, closeDir) {
+        let sprite = this.blocks.getObjectAtAnchor(x, y, z)
+        if(sprite && Config.DOORS.indexOf(sprite.name) >= 0 && sprite.name.indexOf(closeDir) < 0) {
+            this.useDoor(sprite)
+        }
     }
 }

@@ -505,6 +505,10 @@ export const WORLD = {
         onLoad: function(arkona, section) {
             if(arkona.gameState["mezalka_dead"]) {
                 section.removeNpcByName("Chief Mezalka")
+                arkona.blocks.set("corpse", 215, 1580, 0)
+                arkona.blocks.set("blood.small", 218, 1578, 0)
+                arkona.blocks.set("blood.small", 220, 1582, 0)
+                arkona.blocks.set("blood.small", 217, 1576, 0)
             }
         },
     },
@@ -575,7 +579,7 @@ export const WORLD = {
         ],
         actions: [
             {
-                type: "use_object", x: 882, y: 2042, z: 0, allow: (arkona) => arkona.gameState["ritual_gate_open"] == true
+                type: "use_object", x: 882, y: 2042, z: 0, allow: (arkona) => arkona.gameState["ritual_gate_open"] == true && !arkona.gameState["ritual_demon_lives"]
             }
         ],
     }

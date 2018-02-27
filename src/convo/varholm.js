@@ -1,6 +1,10 @@
 import Convo from "./Convo"
 
-export const ACOLYTE = new Convo("What art thou doing here down here? I will summon the guard at once!")
+export const ACOLYTE = Convo.condition((arkona) => arkona.gameState["mezalka_dead"],
+    new Convo("The Raighd will remember thy treachery, intruder!")
+        .answer("You don't frighten me. Out of my way!")
+    ,
+    new Convo("What art thou doing here down here? I will summon the guard at once!")
     .answer("I uh... just visiting? How about... you?",
         Convo.condition(arkona => arkona.gameState["start_ritual"] == true,
             new Convo("Visiting? Hmm, thou may prove useful for the ritua... Er that is, I meant to say, ...Parade. " +
@@ -22,6 +26,8 @@ export const ACOLYTE = new Convo("What art thou doing here down here? I will sum
         )
     )
     .answer("I was just leaving...")
+)
+
 
 export const ACOLYTE_RITUAL = new Convo("All hail nature's power! All hail the Raighd!", "R_RITUAL_START")
     .answer("What is happening here?",
@@ -45,7 +51,7 @@ export const ZAREN = Convo.condition(arkona => arkona.gameState["mezalka_dead"] 
         new Convo("Oh it will be FUN! Thou doth help a good cause, one that is of personal interest to the ruler of Varholm island.")
             .answer("I'm not sure about this...", "R_ZAREN")
             .answer("why do I feel like you're not telling me everything?",
-                new Convo("Our religious order aims to preserve and celebrate life. ALL life! Think thee of a vast and endless forest. " +
+                new Convo("Our religious order aims to preserve and celebrate life. ALL life! Think thou of a vast and endless forest. " +
                     "Does it not fill thy spirit with power?")
                     .answer("Heck yeah! Let's do this!", "R_ZAREN")
                     .answer("A vast forest, do you mean the Raighd?",

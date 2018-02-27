@@ -1401,4 +1401,9 @@ export default class {
     tint(color) {
         this.layers.forEach(layer => layer.tint(color))
     }
+
+    getObjectAtAnchor(worldX, worldY, worldZ) {
+        let info = this.objectLayer.world[_key(worldX, worldY, worldZ)]
+        return info && info["imageInfos"] && info.imageInfos.length > 0 ? info.imageInfos[0].image : null
+    }
 }
