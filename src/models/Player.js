@@ -138,6 +138,10 @@ export default class extends Pathable {
         this.lastDir = dir
     }
 
+    getName() {
+        return "player"
+    }
+
     attack(npc) {
         console.warn("Attacking: ", npc.getName())
         let dir = Config.getDirToLocation(
@@ -147,6 +151,7 @@ export default class extends Pathable {
         this.setDir(dir)
         this.attacking = Date.now()
         this.alive.attack(npc.alive)
+        npc.target = this
     }
 
     isAttacking() {

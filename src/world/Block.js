@@ -337,11 +337,16 @@ class Layer {
         return maxZ
     }
 
-    canFit(sprite, x, y, z, blockers, ignoreSprite) {
+    canFit(sprite, x, y, z, blockers, ignoreSprite, ignoreCreatures) {
         return _visit3SS(sprite.name, x, y, z, (xx, yy, zz) => {
             let info = this.infos[_key(xx, yy, zz)]
             if(!info) return true
-            let blocker = info.imageInfos.find((ii) => ii.image != sprite && ii.image != ignoreSprite && ii.image.visible)
+            let blocker = info.imageInfos
+                .find((ii) => ii.image != sprite
+                && ii.image != ignoreSprite
+                && (ignoreCreatures == null || ii.image.npc == null)
+                && ii.image.visible)
+            // if(blocker) console.log(sprite.name + " blocked by " + blocker.name)
             if(!blocker) return true
             if(blockers != null) blockers.push(blocker.image)
             return false
@@ -357,8 +362,8 @@ class Layer {
         })
     }
 
-    canMoveTo(sprite, x, y, z, skipSupportCheck, blockers, ignoreSprite) {
-        let fits = this.canFit(sprite, x, y, z, blockers, ignoreSprite)
+    canMoveTo(sprite, x, y, z, skipSupportCheck, blockers, ignoreSprite, ignoreCreatures) {
+        let fits = this.canFit(sprite, x, y, z, blockers, ignoreSprite, ignoreCreatures)
         // if it fits, make sure we're standing on something
         if(fits && z > 0 && !skipSupportCheck) {
             // tricky: we want to test that at least one shape below the player can be stood on
@@ -1292,8 +1297,8 @@ export default class {
         return null
     }
 
-    isAccessiblePos(sprite, ignoreSprite, worldX, worldY, worldZ) {
-        return this.objectLayer.canMoveTo(sprite, worldX, worldY, worldZ, false, null, ignoreSprite)
+    isAccessiblePos(sprite, ignoreSprite, worldX, worldY, worldZ, ignoreCreatures) {
+        return this.objectLayer.canMoveTo(sprite, worldX, worldY, worldZ, false, null, ignoreSprite, ignoreCreatures)
     }
 
     getPath(sprite, fromX, fromY, fromZ, toX, toY, toZ, ignoreSprite) {
@@ -1308,7 +1313,8 @@ export default class {
                             if(dx == 0 && dy == 0 && dz == 0) continue
                             if(node[2] + dz < 0) continue
                             let newNode = [node[0] + dx, node[1] + dy, node[2] + dz]
-                            if(this.isAccessiblePos(sprite, ignoreSprite, ...newNode)) n.push(newNode)
+                            // ignore creatures on the path... they'll move out of the way
+                            if(this.isAccessiblePos(sprite, ignoreSprite, ...newNode, true)) n.push(newNode)
                         }
                     }
                 }

@@ -32,6 +32,8 @@ export default class extends Pathable {
         this.animatedSprite = new AnimatedSprite(arkona.game, creatureName, arkona.blocks, x, y, z, this.info.animations, this.info.blockName)
         this.animatedSprite.sprite.npc = this
         this.alive = new Alive(this.getMonster() ? this.getMonster()["alive"] : {}, this)
+        this.target = null
+        this.lastTargetFind = 0
     }
 
     moveTo(x, y, z) {
@@ -60,10 +62,15 @@ export default class extends Pathable {
             if(this.getMonster()) {
                 this.arkona.player.incKillCount(this.getMonster()["monsterLevel"] || 1)
             }
+            // onDeath shows the creature until a ui is closed
             if (this.options["monsterInfo"] && this.options.monsterInfo.onDeath) {
                 this.arkona.delayedDeathNpcs.push(this)
                 this.options.monsterInfo.onDeath(this.arkona, this)
                 return
+            }
+            // afterDeath removes the creature immediately
+            if (this.options["monsterInfo"] && this.options.monsterInfo.afterDeath) {
+                this.options.monsterInfo.afterDeath(this.arkona, this)
             }
         }
         let section = this.arkona.sectionAt(this.x|0, this.y|0)
@@ -88,28 +95,63 @@ export default class extends Pathable {
     }
 
     moveAttack() {
-        if(this.arkona.player.animatedSprite) {
-            if(this.distToPlayer <= Config.NEAR_DIST) {
-                // todo: attack instead
-                if(this.alive.attack(this.arkona.player.alive)) {
+        if(!this.target) this._findAttackTarget()
+
+        if(this.target && this.target.alive) {
+            let dist = dist3d(this.x, this.y, this.z, ...this.target.animatedSprite.sprite.gamePos)
+            if(this.target.alive.health <= 0 || dist > Config.FAR_DIST) {
+                this._clearPathAndTarget()
+            } else if (dist <= Config.NEAR_DIST) {
+                if (this.alive.attack(this.target.alive)) {
                     this.animatedSprite.setAnimation("attack", this.dir)
                 }
-            } else if(this.distToPlayer <= Config.FAR_DIST) {
-                if(this.path == null) {
-                    this.findPathToSprite(this.arkona.player.animatedSprite)
+            } else if (dist <= Config.FAR_DIST) {
+                if (this.path == null) {
+                    let now = Date.now()
+                    if(now - this.lastTargetFind > 1500) {
+                        this.lastTargetFind = now
+                        this.findPathToSprite(this.target.animatedSprite)
+                        // console.log(this.getName() + " path to " + this.getTargetName() + ":", this.path)
+                    }
                 } else {
-                    if(!this._followPath()) {
+                    if (!this._followPath()) {
                         // couldn't move
-                        console.warn("Abandoning path")
-                        this._clearPath()
+                        console.warn(this.getName() + " Abandoning path")
+                        this._clearPathAndTarget()
                     }
                 }
-            } else {
-                this.moveFriendly()
             }
-        } else {
-            this.animatedSprite.setAnimation("stand", this.dir)
         }
+
+        if(!this.target) {
+            this.moveFriendly()
+        }
+    }
+
+    getTargetName() {
+        return this.target == null ? "null" : this.target.getName()
+    }
+
+    _clearPathAndTarget() {
+        this.target = null
+        this._clearPath()
+    }
+
+    _findAttackTarget() {
+        let minDist = 0
+        this._clearPathAndTarget()
+        this.arkona.forEachNonMonsterNpc(creature => {
+            if(creature && creature.animatedSprite) {
+                let dist = dist3d(this.x, this.y, this.z, ...creature.animatedSprite.sprite.gamePos)
+                if ((this.target == null || dist < minDist) && dist <= Config.FAR_DIST) {
+                    minDist = dist
+                    this.target = creature
+                }
+            }
+        })
+        // console.log(this.getName() + " targeting " + this.getTargetName())
+        let dir = this.target ? Config.getDirToLocation(this.x, this.y, ...this.target.animatedSprite.sprite.gamePos) : null
+        return [this.target, dir, minDist]
     }
 
     moveFriendly() {
@@ -117,7 +159,7 @@ export default class extends Pathable {
             if (!this._followPath()) {
                 // couldn't move
                 console.warn("Abandoning path")
-                this._clearPath()
+                this._clearPathAndTarget()
             }
         } else {
             if (this._willStop()) {

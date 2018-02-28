@@ -112,14 +112,14 @@ export const OREN = Convo.condition((arkona) => arkona.gameState["mezalka_dead"]
                                         .answer("I think I will destroy it", "R_DESTROY_BOOK")
                                     )
                                 .answer("Should the book be destroyed?",
-                                    new Convo("Books on magic cannot be destroyed. Thou should keep it, maybe in thy travels thou finds one capable of its desposal.", "R_DESTROY_BOOK")
+                                    new Convo("Books on magic cannot be destroyed. Thou should keep it, maybe in thy travels thou finds one capable of its disposal.", "R_DESTROY_BOOK")
                                         .answer("Could you repeat the phrase I need to remember?", "R_PHRASE")
                                         .answer("What will happen after I utter the phrase?", "R_AFTER_PHRASE")
                                 )
                         )
                         .answer("What will that accomplish?",
                             new Convo("When the ritual starts I will be near Mezalka. When thou sayeth the phrase, it will disrupt the " +
-                                "ritual and temporarily weaker the chief. That is the time I will kill him.", "R_AFTER_PHRASE",
+                                "ritual and temporarily weaken the chief. That is the time I will kill him.", "R_AFTER_PHRASE",
                                 (arkona) => arkona.gameState["start_ritual"] = true)
                                 .answer("Is there not a way without bloodshed?",
                                     new Convo("Nay, this is the only way. Mezalka is deeply corrupted from decades of Raighd energy - he must be killed.")

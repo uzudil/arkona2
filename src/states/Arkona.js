@@ -52,7 +52,6 @@ export default class extends Phaser.State {
         this.movie = null
         this.movieSceneIndex = 0
         this.movieContext = {}
-        this.checkpoint = Date.now()
 
         // controls
         this.cursors = this.game.input.keyboard.createCursorKeys()
@@ -644,30 +643,42 @@ export default class extends Phaser.State {
         return null
     }
 
-    setCheckpoint() {
-        this.checkpoint = Date.now()
-    }
-
-    addMonster(monster, worldX, worldY, worldZ, onDeath) {
-        let monsterInfo = { monster: monster, pos: [ [worldX, worldY, worldZ] ], onDeath: onDeath }
+    // monsterInfo has the same format as 'monsters' in World.js
+    addMonster(monsterInfo) {
+        let [worldX, worldY, worldZ] = monsterInfo.pos[0]
         let section = this.sectionAt(worldX, worldY)
         return section.addNpc({
             x: worldX,
             y: worldY,
             z: worldZ,
-            creature: monster.creature,
+            creature: monsterInfo.monster.creature,
             options: {
                 movement: Config.MOVE_ATTACK,
-                monster: monster,
+                monster: monsterInfo.monster,
                 monsterInfo: monsterInfo
             }
         })
+    }
+
+    closeDoorX(x, y, z) {
+        this.closeDoor(x, y, z, "x")
+    }
+
+    closeDoorY(x, y, z) {
+        this.closeDoor(x, y, z, "y")
     }
 
     closeDoor(x, y, z, closeDir) {
         let sprite = this.blocks.getObjectAtAnchor(x, y, z)
         if(sprite && Config.DOORS.indexOf(sprite.name) >= 0 && sprite.name.indexOf(closeDir) < 0) {
             this.useDoor(sprite)
+        }
+    }
+
+    forEachNonMonsterNpc(callback) {
+        if(this.player.alive.health > 0) callback(this.player)
+        for(let key in this.sections) {
+            this.sections[key].npcs.filter(npc => npc.getMonster() == null && npc.alive.health > 0).forEach(npc => callback(npc))
         }
     }
 }

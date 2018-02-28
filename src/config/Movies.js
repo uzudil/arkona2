@@ -1,5 +1,14 @@
 import {MONSTERS} from "./Monsters"
 
+function timeElapsed(since, delta) {
+    return since != null && Date.now() - since > delta
+}
+
+function waitMillis(arkona, delta) {
+    if(!delta) delta = 500
+    return timeElapsed(arkona.movieContext["checkpoint"], delta)
+}
+
 export const MOVIES = {
     "ritual": [
         {
@@ -10,8 +19,9 @@ export const MOVIES = {
         },
         {
             scene: (arkona) => {
-                // make sure this door faces the 'x' direction (ie. it's closed)
-                arkona.closeDoor(882, 2042, 0, "x")
+                // make sure this door is closed
+                arkona.closeDoorX(882, 2042, 0)
+
                 // move some npcs
                 arkona.player.findPathTo(904, 2060, 0)
                 arkona.getNpcByName("Grandmaster Zaren").findPathTo(905, 2051, 0)
@@ -51,33 +61,35 @@ export const MOVIES = {
         },
         {
             scene: (arkona) => {
-                // eslint-disable-next-line no-unused-vars
-                let npc = arkona.addMonster(MONSTERS.demon, 908, 2058, 0, (arkona, npc) => {
-                    arkona.levelUp()
-                    arkona.gameState["ritual_demon_lives"] = false
-                    arkona.gameState["mezalka_dead"] = true
-                    // todo: shouldn't have to do this...
-                    arkona._processDelayedDeaths()
+                let npc = arkona.addMonster({
+                    monster: MONSTERS.demon,
+                    pos: [ [908, 2058, 0] ],
+                    // eslint-disable-next-line no-unused-vars
+                    afterDeath: (arkona, npc) => {
+                        arkona.levelUp()
+                        arkona.gameState["ritual_demon_lives"] = false
+                        arkona.gameState["mezalka_dead"] = true
+                    }
                 })
                 arkona.fx.run("fire", npc.animatedSprite.sprite)
                 arkona.movieContext["npc"] = npc
-                arkona.setCheckpoint()
+                arkona.movieContext["checkpoint"] = Date.now()
             },
-            endCondition: (arkona) => Date.now() - arkona.checkpoint > 500
+            endCondition: (arkona) => waitMillis(arkona)
         },
         {
             scene: (arkona) => {
                 arkona.fx.run("fire", arkona.movieContext["npc"].animatedSprite.sprite)
-                arkona.setCheckpoint()
+                arkona.movieContext["checkpoint"] = Date.now()
             },
-            endCondition: (arkona) => Date.now() - arkona.checkpoint > 500
+            endCondition: (arkona) => waitMillis(arkona)
         },
         {
             scene: (arkona) => {
                 arkona.fx.run("fire", arkona.movieContext["npc"].animatedSprite.sprite)
-                arkona.setCheckpoint()
+                arkona.movieContext["checkpoint"] = Date.now()
             },
-            endCondition: (arkona) => Date.now() - arkona.checkpoint > 500
+            endCondition: (arkona) => waitMillis(arkona)
         },
         {
             scene: (arkona) => {

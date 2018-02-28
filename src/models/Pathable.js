@@ -12,6 +12,8 @@ export default class {
         this.targetMoved = false
         this.lastPathCheck = 0
         this.targetAnimatedSprite = null
+        this.attemptCount = 0
+        this.attemptDelay = 0
     }
 
     /**
@@ -71,6 +73,8 @@ export default class {
     _setPath(path) {
         this.path = path
         this.pathIndex = 0
+        this.attemptCount = 0
+        this.attemptDelay = 0
     }
 
     _clearPath() {
@@ -79,6 +83,9 @@ export default class {
 
     _followPath() {
         let now = Date.now()
+
+        // keep waiting?
+        if(now < this.attemptDelay) return true
 
         // follow moving target
         if(this.targetAnimatedSprite) {
@@ -120,6 +127,18 @@ export default class {
             if (this.pathIndex >= this.path.length) {
                 this._clearPath()
             }
+        }
+
+        // if can't get there now, wait some time and try again a few times
+        if(success) {
+            this.attemptCount = this.attemptDelay = 0
+        }
+
+        if(!success && this.attemptCount < 3) {
+            this.attemptCount++
+            this.attemptDelay = now + ((Math.random() * 500 + 500)|0)
+            console.warn(this.getName() + " attempt: " + this.attemptCount + " will wait " + (this.attemptDelay - now) + " millis")
+            success = true
         }
 
         return success
