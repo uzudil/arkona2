@@ -344,7 +344,7 @@ class Layer {
             let blocker = info.imageInfos
                 .find((ii) => ii.image != sprite
                 && ii.image != ignoreSprite
-                && (ignoreCreatures == null || ii.image.npc == null)
+                && (ignoreCreatures == null || (ii.image.npc == null && ii.image.userControlled == null))
                 && ii.image.visible)
             // if(blocker) console.log(sprite.name + " blocked by " + blocker.name)
             if(!blocker) return true

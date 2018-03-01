@@ -29,11 +29,11 @@ export default class extends Pathable {
 
     update(moving) {
         // follow the path
-        if(this.path != null) {
+        if(this.isFollowingPath()) {
             if(!this._followPath()) {
                 // couldn't move
                 console.warn("Abandoning path")
-                this._clearPath()
+                this._makePathAttemptOrFinish()
             }
         } else {
             if(this.isAttacking()) {

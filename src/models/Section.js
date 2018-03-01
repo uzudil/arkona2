@@ -65,7 +65,7 @@ export default class {
         // remove npcs (this also removes them from their generator)
         this.npcs.forEach(npc => this.removeNpc(npc))
     }
-/*
+
     addNpc(npcInfo, savedNpcs) {
         let [x, y, z] = [npcInfo.x, npcInfo.y, npcInfo["z"] || 0]
         let id = "" + x + "," + y + "," + z
@@ -93,16 +93,16 @@ export default class {
 
         return npc
     }
-*/
-    addNpc(npcInfo) {
-        let [x, y, z] = [npcInfo.x, npcInfo.y, npcInfo["z"] || 0]
 
-        let npc = new Npc(this.arkona, x, y, z, npcInfo["options"], npcInfo.creature)
-
-        this.addNpcRef(npc)
-
-        return npc
-    }
+    // addNpc(npcInfo) {
+    //     let [x, y, z] = [npcInfo.x, npcInfo.y, npcInfo["z"] || 0]
+    //
+    //     let npc = new Npc(this.arkona, x, y, z, npcInfo["options"], npcInfo.creature)
+    //
+    //     this.addNpcRef(npc)
+    //
+    //     return npc
+    // }
 
     addMonster(monsterInfo, savedNpcs) {
         for(let pos of monsterInfo.pos) {

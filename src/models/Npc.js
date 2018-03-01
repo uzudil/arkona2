@@ -106,21 +106,23 @@ export default class extends Pathable {
                     this.animatedSprite.setAnimation("attack", this.dir)
                 }
             } else if (dist <= Config.FAR_DIST) {
-                if (this.path == null) {
-                    let now = Date.now()
-                    if(now - this.lastTargetFind > 1500) {
-                        this.lastTargetFind = now
-                        this.findPathToSprite(this.target.animatedSprite)
-                        // console.log(this.getName() + " path to " + this.getTargetName() + ":", this.path)
-                    }
-                } else {
+                if (this.isFollowingPath()) {
                     if (!this._followPath()) {
                         // couldn't move
                         console.warn(this.getName() + " Abandoning path")
                         this._clearPathAndTarget()
                     }
+                } else {
+                    let now = Date.now()
+                    if(now - this.lastTargetFind > 1500) {
+                        this.lastTargetFind = now
+                        this.findPathToSprite(this.target)
+                        // console.log(this.getName() + " path to " + this.getTargetName() + ":", this.path)
+                    }
                 }
             }
+        } else {
+            this._clearPathAndTarget()
         }
 
         if(!this.target) {
@@ -134,7 +136,13 @@ export default class extends Pathable {
 
     _clearPathAndTarget() {
         this.target = null
-        this._clearPath()
+        if(this.options["movement"] == Config.MOVE_ATTACK) {
+            // don't retry path
+            this.reset()
+        } else {
+            // retry path
+            this._makePathAttemptOrFinish()
+        }
     }
 
     _findAttackTarget() {
@@ -155,13 +163,13 @@ export default class extends Pathable {
     }
 
     moveFriendly() {
-        if(this.path != null) {
+        if(this.isFollowingPath()) {
             if (!this._followPath()) {
                 // couldn't move
                 console.warn("Abandoning path")
                 this._clearPathAndTarget()
             }
-        } else {
+        } else if(!this.arkona.npcPaused) {
             if (this._willStop()) {
                 this._stop()
             } else if (this._isStopped()) {
@@ -219,7 +227,6 @@ export default class extends Pathable {
     _speed() {
         return SPEEDS[this.info.speed || "normal"]
     }
-
 
     _takeStep() {
         let [nx, ny, nz] = this.arkona.moveInDir(this.x, this.y, this.z, this.dir, this._speed())

@@ -116,17 +116,15 @@ export default class extends Phaser.State {
         if(!this.paused && !this.updateUI()) {
 
             // assemble the actions
-            if(!this.npcPaused) {
-                let npcs = []
-                let generators = []
-                for (let key in this.sections) {
-                    let section = this.sections[key]
-                    if (section.npcs) section.npcs.filter(npc => npc.isVisible()).forEach(npc => npcs.push(npc))
-                    if (section.generators) section.generators.forEach(g => generators.push(g))
-                }
-                if (npcs.length > 0) this.actionQueue.add(Queue.MOVE_NPC, npcs)
-                if (generators.length > 0) this.actionQueue.add(Queue.GENERATORS, generators)
+            let npcs = []
+            let generators = []
+            for (let key in this.sections) {
+                let section = this.sections[key]
+                if (section.npcs) section.npcs.filter(npc => npc.isVisible()).forEach(npc => npcs.push(npc))
+                if (section.generators) section.generators.forEach(g => generators.push(g))
             }
+            if (npcs.length > 0) this.actionQueue.add(Queue.MOVE_NPC, npcs)
+            if (generators.length > 0) this.actionQueue.add(Queue.GENERATORS, generators)
 
             this.positionMovementCursor()
 
@@ -147,7 +145,7 @@ export default class extends Phaser.State {
                 section.onLoad()
             }
 
-            this.player.update(moving || this.player.path != null)
+            this.player.update(moving || this.player.isFollowingPath())
         } else {
             this.showMovementCursor(false)
         }

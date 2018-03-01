@@ -1,18 +1,20 @@
 import * as Config from "./../config/Config"
+import { dist3d } from "../utils"
 
 export default class {
 
     constructor(arkona) {
         this.arkona = arkona
+        this.reset()
+    }
 
+    reset() {
         this.pathIndex = 0
         this.path = null
-        this.lastPathFindTime = 0
         this.to = [0,0,0]
-        this.targetMoved = false
-        this.lastPathCheck = 0
-        this.targetAnimatedSprite = null
+        this.targetCreature = null
         this.attemptCount = 0
+        this.pathAttemptCount = 0
         this.attemptDelay = 0
     }
 
@@ -24,7 +26,8 @@ export default class {
      * @param toZ
      */
     findPathTo(toX, toY, toZ) {
-        this.targetAnimatedSprite = null
+        this.pathAttemptCount = 0
+        this.targetCreature = null
         this._findPathTo(toX, toY, toZ)
     }
 
@@ -44,20 +47,22 @@ export default class {
      *
      * @param animatedSprite
      */
-    findPathToSprite(animatedSprite) {
-        this.targetAnimatedSprite = animatedSprite
+    findPathToSprite(target) {
+        this.pathAttemptCount = 0
+        this.targetCreature = target
         this._findPathToTargetSprite()
     }
 
     _findPathToTargetSprite() {
         this.lastTargetPos = [
-            this.targetAnimatedSprite.sprite.gamePos[0],
-            this.targetAnimatedSprite.sprite.gamePos[1],
-            this.targetAnimatedSprite.sprite.gamePos[2]]
-        this._findPathTo(...this.targetAnimatedSprite.sprite.gamePos)
+            this.targetCreature.animatedSprite.sprite.gamePos[0],
+            this.targetCreature.animatedSprite.sprite.gamePos[1],
+            this.targetCreature.animatedSprite.sprite.gamePos[2]]
+        this._findPathTo(...this.lastTargetPos)
     }
 
     _findPath() {
+        console.warn(this.getName() + " looking for path to " + this.to[0] + "," + this.to[1])
         let currPos = this.animatedSprite.sprite.gamePos
         let p = this.arkona.blocks.getPath(
             this.animatedSprite.sprite,
@@ -67,6 +72,9 @@ export default class {
         )
         if(p) {
             this._setPath(p)
+        } else {
+            console.warn(this.getName() + " could not find path to " + this.to[0] + "," + this.to[1])
+            this.reset()
         }
     }
 
@@ -75,10 +83,15 @@ export default class {
         this.pathIndex = 0
         this.attemptCount = 0
         this.attemptDelay = 0
+        this.targetMovedCheck = 0
     }
 
     _clearPath() {
         this._setPath(null)
+    }
+
+    isFollowingPath() {
+        return this.path != null || this._hasTargetCreature() || this.to[0] > 0
     }
 
     _followPath() {
@@ -88,15 +101,22 @@ export default class {
         if(now < this.attemptDelay) return true
 
         // follow moving target
-        if(this.targetAnimatedSprite) {
-            let targetPos = this.arkona.player.animatedSprite.sprite.gamePos
+        if(this._hasTargetCreature() && now - this.targetMovedCheck > 1500) {
+            this.targetMovedCheck = now
+            let targetPos = this.target.animatedSprite.sprite.gamePos
             let targetMoved = !(this.lastTargetPos[0] == targetPos[0] && this.lastTargetPos[1] == targetPos[1] && this.lastTargetPos[2] == targetPos[2])
-            if(targetMoved && now - this.lastPathCheck > 3000) {
-                this.lastPathCheck = now
+            if(targetMoved) {
+                this.attemptDelay = now + ((Math.random() * 2000 + 500)|0)
+                console.log(this.getName() + " looking for path to creature " + this.targetCreature.getName())
                 this._findPathToTargetSprite()
                 return true
             }
+        } else if(this.path == null && this.to[0] > 0) {
+            console.log(this.getName() + " looking for path to position" + this.to[0] + "," + this.to[1])
+            this._findPath()
         }
+
+        if(!this.path) return false
 
         let [px, py, pz] = this.path[this.pathIndex]
         let currPos = this.animatedSprite.sprite.gamePos
@@ -125,7 +145,8 @@ export default class {
             // console.log("waypoint advance to " + px + "," + py + " success=" + success)
             this.pathIndex++
             if (this.pathIndex >= this.path.length) {
-                this._clearPath()
+                // if we're there stop (or try another path attempt)
+                if(this._makePathAttemptOrFinish(now)) return true
             }
         }
 
@@ -141,7 +162,43 @@ export default class {
             success = true
         }
 
+        // if couldn't retry, make another path attempt
+        if(!success) {
+            if(this._makePathAttemptOrFinish(now)) return true
+        }
+
         return success
+    }
+
+    _makePathAttemptOrFinish(now) {
+        if(!now) now = Date.now()
+        this._clearPath()
+
+        // try again if we didn't reach the target
+        let [nowX, nowY, nowZ] = this.animatedSprite.sprite.gamePos
+        let reachedTo = this._isAtTargetPos()
+        if(!this._hasTargetCreature() && !reachedTo && this.pathAttemptCount < 3) {
+            this.pathAttemptCount++
+            this.attemptDelay = now + ((Math.random() * 500 + 500)|0)
+            console.warn(this.getName() + " path attempt: " + this.pathAttemptCount + " will wait " + (this.attemptDelay - now) + " millis")
+            return true
+        } else if(!this._hasTargetCreature()) {
+            console.log(this.getName() + " is at " + nowX +"," + nowY + "," + nowZ + " vs " + this.to[0] + "," + this.to[1])
+            if(reachedTo) {
+                this.reset()
+                console.log(this.getName() + " reached target position")
+            }
+        }
+    }
+
+    _hasTargetCreature() {
+        return this.targetCreature && this.targetCreature.alive && this.targetCreature.alive.health >= 0
+    }
+
+    _isAtTargetPos() {
+        let [nowX, nowY, nowZ] = this.animatedSprite.sprite.gamePos
+        let dist = dist3d(this.to[0], this.to[1], this.to[2], nowX, nowY, nowZ)
+        return dist <= 1
     }
 
     _stepTo(nx, ny, nz, dir) {

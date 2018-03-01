@@ -23,24 +23,27 @@ export const MOVIES = {
                 arkona.closeDoorX(882, 2042, 0)
 
                 // move some npcs
+                arkona.npcPaused = true
                 arkona.player.findPathTo(904, 2060, 0)
-                arkona.getNpcByName("Grandmaster Zaren").findPathTo(905, 2051, 0)
+                arkona.getNpcByName("Grandmaster Zaren").findPathTo(905, 2053, 0)
                 arkona.getNpcByName("Acolyte Hanem").findPathTo(911, 2053, 0)
                 arkona.getNpcByName("Acolyte Mohk").findPathTo(913, 2060, 0)
             },
             endCondition: (arkona) =>
-                arkona.player.path == null &&
-                arkona.getNpcByName("Grandmaster Zaren").path == null &&
-                arkona.getNpcByName("Acolyte Hanem").path == null &&
-                arkona.getNpcByName("Acolyte Mohk").path == null
+                !(
+                    arkona.player.isFollowingPath() ||
+                    arkona.getNpcByName("Grandmaster Zaren").isFollowingPath() ||
+                    arkona.getNpcByName("Acolyte Hanem").isFollowingPath() ||
+                    arkona.getNpcByName("Acolyte Mohk").isFollowingPath()
+                )
         },
         {
             scene: (arkona) => {
+                arkona.allCreaturesStop()
                 arkona.narrate("All hail Mgguarthan, spirit of the Raighd!" +
                     "Lord Mgguarthan, join us!" +
                     "Lord Mgguarthan, come to us!" +
                     "We bask in your... ")
-                arkona.npcPaused = true
             },
             endCondition: (arkona) => !arkona.messages.group.visible
         },
