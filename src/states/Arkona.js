@@ -36,7 +36,9 @@ export default class extends Phaser.State {
     create() {
         this.game.stage.backgroundColor = "#000000"
 
-        this.gameState = {}
+
+        this.gameState = {}    // game state is saved across sessions
+        this.sessionState = {} // session state is volatile storage - not saved across sessions
         this.overlayShowing = false
         this.actionQueue = new Queue.Queue(this)
         this.mouseClickAction = new MouseClickAction()

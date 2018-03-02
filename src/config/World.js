@@ -503,12 +503,13 @@ export const WORLD = {
             { creature: "man_yellow", x: 209, y: 1575, z: 2, options: { movement: MOVE_ANCHOR, name: "Chief Mezalka", convo: VARHOLM.KING } },
         ],
         onLoad: function(arkona, section) {
-            if(arkona.gameState["mezalka_dead"]) {
+            if(arkona.gameState["mezalka_dead"] && !arkona.sessionState["mezalka_corpse"]) {
                 section.removeNpcByName("Chief Mezalka")
                 arkona.blocks.set("corpse", 215, 1580, 0)
                 arkona.blocks.set("blood.small", 218, 1578, 0)
                 arkona.blocks.set("blood.small", 220, 1582, 0)
                 arkona.blocks.set("blood.small", 217, 1576, 0)
+                arkona.sessionState["mezalka_corpse"] = true
             }
         },
     },
