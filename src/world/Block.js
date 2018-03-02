@@ -4,6 +4,7 @@ import ImpreciseSort from "./ImpreciseSort"
 import DAGSort from "./DAGSort"
 import $ from "jquery"
 import {dist3d, mapName} from "../utils"
+import {getLogger} from "../config/Logger"
 
 const aStar = window.require("a-star")
 
@@ -356,7 +357,7 @@ class Layer {
                 && ii.image != ignoreSprite
                 && (ignoreCreatures == null || (ii.image.npc == null && ii.image.userControlled == null))
                 && ii.image.visible)
-            // if(blocker) console.log(sprite.name + " blocked by " + blocker.name)
+            // if(blocker) getLogger("BLOCK").log(sprite.name + " blocked by " + blocker.name)
             if(!blocker) return true
             if(blockers != null) blockers.push(blocker.image)
             return false
@@ -502,7 +503,7 @@ class Layer {
             }
         }
         for(let c of toDelete) c.destroy()
-        console.warn("DELETED " + toDelete.length + " images " +
+        getLogger("BLOCK").warn("DELETED " + toDelete.length + " images " +
             "WORLD from=" + worldSize + " to=" + Object.keys(this.world).length + " " +
             "INFO from=" + infoSize + " to=" + Object.keys(this.infos).length);
     }
@@ -1157,7 +1158,7 @@ export default class {
             url: "http://localhost:9090/cgi-bin/upload.py",
             data: "name=" + name + "&file=" + data,
             //success: ()=>{alert("Success!");},
-            //error: (error)=>{console.log("Error:", error); alert("error: " + error);},
+            //error: (error)=>{getLogger("BLOCK").log("Error:", error); alert("error: " + error);},
             dataType: "text/json"
         });
     }
@@ -1184,7 +1185,7 @@ export default class {
                 if (!this.editorMode) {
                     while (this.cacheOrder.length >= Config.MAX_MAP_CACHE_SIZE) {
                         let oldestName = this.cacheOrder.splice(0, 1)
-                        console.warn("Freeing map: " + oldestName)
+                        getLogger("BLOCK").warn("Freeing map: " + oldestName)
                         this.game.mapUnloaded(...this.cache[oldestName])
                         let pos = this.cache[oldestName]
                         delete this.cache[oldestName]
@@ -1198,7 +1199,7 @@ export default class {
                 this.cacheOrder.push(name)
                 this.cache[name] = [x, y]
 
-                console.warn("MAP LOAD: name=" + name + " cacheOrder=", this.cacheOrder)
+                getLogger("BLOCK").warn("MAP LOAD: name=" + name + " cacheOrder=", this.cacheOrder)
 
                 this._load(name, x, y, () => {
                     if (onLoad) onLoad()
@@ -1209,7 +1210,7 @@ export default class {
                 this.cacheOrder.splice(n, 1)
                 this.cacheOrder.push(name)
 
-                console.warn("MAP TOUCH: name=" + name + " cacheOrder=", this.cacheOrder)
+                getLogger("BLOCK").warn("MAP TOUCH: name=" + name + " cacheOrder=", this.cacheOrder)
 
                 if (onLoad) onLoad()
             }
@@ -1220,7 +1221,7 @@ export default class {
         for(let key in this.objectLayer.world) {
             for(let imageInfo of this.objectLayer.world[key].imageInfos) {
                 if(imageInfo.image.mapX == null || imageInfo.image.mapY == null) {
-                    console.warn("No mapXY set on image: " + imageInfo.name + " key=" + key + " map=" + imageInfo.image.mapX + "," + imageInfo.image.mapY)
+                    getLogger("BLOCK").warn("No mapXY set on image: " + imageInfo.name + " key=" + key + " map=" + imageInfo.image.mapX + "," + imageInfo.image.mapY)
                 } else {
                     let name = mapName(imageInfo.image.mapX, imageInfo.image.mapY)
                     if (this.cache[name] == null) {
@@ -1270,7 +1271,7 @@ export default class {
                 if (onLoad) onLoad()
             },
             error: (error) => {
-                console.warn("Error loading " + name + ":", error)
+                getLogger("BLOCK").warn("Error loading " + name + ":", error)
                 if (onError) onError(error)
                 else {
                     this.SEA_MAP.layers.forEach(layerInfo => this.layersByName[layerInfo.name].load(this.SEA_MAP.version, layerInfo, this, x, y))

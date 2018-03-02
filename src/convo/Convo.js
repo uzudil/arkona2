@@ -1,3 +1,5 @@
+import {getLogger} from "../config/Logger"
+
 const CONVOS = {}
 
 class Answer {
@@ -87,7 +89,7 @@ export default class {
 
 	validate() {
 		if(!this.isComplete()) {
-			console.error("Incomplete convo: ", this)
+			getLogger("CONVO").error("Incomplete convo: ", this)
 			throw new Error("Convo: \"" + this.question + "\" is incomplete.")
 		}
 		if(this.cond) {

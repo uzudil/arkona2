@@ -5,6 +5,7 @@ import AnimatedSprite from "../world/Animation"
 import Alive from "./Alive"
 import Pathable from "./Pathable"
 import { distSprites } from "../world/Block"
+import {getLogger} from "../config/Logger"
 
 const SPEEDS = {
     "slow": 0.01,
@@ -59,7 +60,7 @@ export default class extends Pathable {
 
     onDeath(fromDelay) {
         if(!fromDelay) {
-            console.warn(this.getName() + " dies.")
+            getLogger("NPC").warn(this.getName() + " dies.")
             if(this.getMonster()) {
                 this.arkona.player.incKillCount(this.getMonster()["monsterLevel"] || 1)
             }
@@ -112,7 +113,7 @@ export default class extends Pathable {
                 if (this.isFollowingPath()) {
                     if (!this._followPath()) {
                         // couldn't move
-                        console.warn(this.getName() + " Abandoning path")
+                        getLogger("NPC").warn(this.getName() + " Abandoning path")
                         this._clearPathAndTarget()
                     }
                 } else {
@@ -120,7 +121,7 @@ export default class extends Pathable {
                     if(now - this.lastTargetFind > 1500) {
                         this.lastTargetFind = now
                         this.findPathToSprite(this.target)
-                        // console.log(this.getName() + " path to " + this.getTargetName() + ":", this.path)
+                        // getLogger("NPC").log(this.getName() + " path to " + this.getTargetName() + ":", this.path)
                     }
                 }
             }
@@ -160,7 +161,7 @@ export default class extends Pathable {
                 }
             }
         })
-        // console.log(this.getName() + " targeting " + this.getTargetName())
+        // getLogger("NPC").log(this.getName() + " targeting " + this.getTargetName())
         let dir = this.target ? Config.getDirToLocation(this.x, this.y, ...this.target.animatedSprite.sprite.gamePos) : null
         return [this.target, dir, minDist]
     }
@@ -169,7 +170,7 @@ export default class extends Pathable {
         if(this.isFollowingPath()) {
             if (!this._followPath()) {
                 // couldn't move
-                console.warn("Abandoning path")
+                getLogger("NPC").warn("Abandoning path")
                 this._clearPathAndTarget()
             }
         } else if(!this.arkona.npcPaused) {

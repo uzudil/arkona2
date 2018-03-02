@@ -5,6 +5,7 @@ import {getRandom} from "../utils"
 import * as Config from "../config/Config"
 import Palette from "../editor/Palette"
 import $ from "jquery"
+import {getLogger} from "../config/Logger"
 
 // electron has to be included like this: https://github.com/electron/electron/issues/7300
 const electron = window.require("electron")
@@ -142,7 +143,7 @@ export default class extends Phaser.State {
 
         if((x >= 0 && x != this.x && x < Config.MAX_MAP_X + 4) || (y >= 0 && y != this.y && y < Config.MAX_MAP_Y + 4)) {
             if(this.blocks.isUpdated()) {
-                console.warn("Saving map: " + this.x + "," + this.y)
+                getLogger("EDITOR").warn("Saving map: " + this.x + "," + this.y)
                 this.blocks.fixEdges()
                 this.blocks.save(this.x, this.y)
             }
@@ -150,11 +151,11 @@ export default class extends Phaser.State {
             this.blocks.checkWorld()
             this.x = x
             this.y = y
-            console.warn("Loading map: " + x + "," + y)
-            this.blocks.loadXY(x, y, () => console.warn("Success"),
+            getLogger("EDITOR").warn("Loading map: " + x + "," + y)
+            this.blocks.loadXY(x, y, () => getLogger("EDITOR").warn("Success"),
                 // eslint-disable-next-line no-unused-vars
                 (_) => {
-                    console.warn("Error: making new file")
+                    getLogger("EDITOR").warn("Error: making new file")
                     this.blocks.newMap(x, y, Config.MAP_SIZE, Config.MAP_SIZE, x < Config.MAX_MAP_X && y < Config.MAX_MAP_Y ? "water" : "dungeon")
                 })
         }
@@ -249,7 +250,7 @@ export default class extends Phaser.State {
             let sw = this._isOffMapOrFloor(x - Config.GROUND_TILE_W, y + Config.GROUND_TILE_W, dungeonFloorName)
             let se = this._isOffMapOrFloor(x + Config.GROUND_TILE_W, y + Config.GROUND_TILE_W, dungeonFloorName)
 
-            // console.warn("pos=" + x + "," + y + " n=" + n + " s=" + s + " e=" + e + " w=" + w + " nw=" + nw + " ne=" + ne + " sw=" + sw + " se=" + se)
+            // getLogger("EDITOR").warn("pos=" + x + "," + y + " n=" + n + " s=" + s + " e=" + e + " w=" + w + " nw=" + nw + " ne=" + ne + " sw=" + sw + " se=" + se)
 
             if (w && e && n && s && nw && ne && sw && se) {
                 // nada

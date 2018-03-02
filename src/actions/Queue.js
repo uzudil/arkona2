@@ -3,6 +3,7 @@ import MovePlayer from "./MovePlayer"
 import MoveNpc from "./MoveNpc"
 import GeneratorAction from "./GeneratorAction"
 import MouseClickAction from "./MouseClickAction"
+import {getLogger} from "../config/Logger"
 
 const ACTIONS = [
 	new UseObject(),
@@ -54,6 +55,6 @@ export class Queue {
 
 	log(action, message) {
 		if(DONT_LOG.find(s => ACTIONS[s] == action)) return
-		console.warn(message + ": type=" + action.getType() + " at " + action.getPos())
+		getLogger("ACTION").warn(message + ": type=" + action.getType() + " at " + action.getPos())
 	}
 }

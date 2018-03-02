@@ -276,7 +276,6 @@ export default class {
             case "disruptorShield": effect = new CircleEffect(0x00ff44, options.amount, this.arkona, sprite); break
             default: throw "Can't create effect of type: " + type
         }
-        console.log("Running effect: " + type)
         this.queue.push(effect)
     }
 

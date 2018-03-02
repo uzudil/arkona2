@@ -4,6 +4,7 @@ import Generator from "./Generator"
 import Vehicle from "./Vehicle"
 import {WORLD} from "../config/World"
 import {mapName} from "../utils"
+import {getLogger} from "../config/Logger"
 
 /**
  * The model of a runtime map section: npcs, monsters, generators, etc.
@@ -72,7 +73,7 @@ export default class {
 
         // is the creature killed or in another section?
         if(savedNpcs && !savedNpcs[id]) {
-            console.log("Not displaying npc at " + id)
+            getLogger("SECTION").log("Not displaying npc at " + id)
             return null
         }
 

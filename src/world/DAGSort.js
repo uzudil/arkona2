@@ -1,4 +1,5 @@
 import {BLOCKS} from "../config/Blocks"
+import {getLogger} from "../config/Logger"
 
 /*
  A (more) correct way of sorting isometric shapes, as described here:
@@ -26,11 +27,11 @@ export default class {
                 currentSprite.isoIndex = isoCount++
             })
         }
-        // console.log("DAG: create=" + (t2 - t) + " visit=" + (Date.now() - t2) + " sprites=" + sprites.length)
+        // getLogger("DAGSORT").log("DAG: create=" + (t2 - t) + " visit=" + (Date.now() - t2) + " sprites=" + sprites.length)
     }
 
     _visitSpritesBehind(behind, sprite, seen, fx) {
-        //console.log("VISIT: " + sprite.key)
+        //getLogger("DAGSORT").log("VISIT: " + sprite.key)
         if(behind[sprite.key] && behind[sprite.key].length > 0) {
             for (let spriteBehind of behind[sprite.key]) {
                 if (seen[spriteBehind.key] == null) {
@@ -38,14 +39,14 @@ export default class {
                         this._visitSpritesBehind(behind, spriteBehind, seen, fx)
                     } catch(exc) {
                         // sometimes we get a max stacksize error here
-                        console.error(exc)
+                        getLogger("DAGSORT").error(exc)
                     }
                 }
             }
         }
         if(seen[sprite.key] == null) {
             seen[sprite.key] = true
-            //console.log("ASSIGN: " + sprite.key)
+            //getLogger("DAGSORT").log("ASSIGN: " + sprite.key)
             fx(sprite)
         }
     }

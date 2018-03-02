@@ -5,6 +5,7 @@ import Alive from "./Alive"
 import * as Utils from "../utils"
 import $ from "jquery"
 import Pathable from "./Pathable"
+import {getLogger} from "../config/Logger"
 
 export default class extends Pathable {
     constructor(arkona) {
@@ -32,7 +33,7 @@ export default class extends Pathable {
         if(this.isFollowingPath()) {
             if(!this._followPath()) {
                 // couldn't move
-                console.warn("Abandoning path")
+                getLogger("PLAYER").warn("Abandoning path")
                 this._makePathAttemptOrFinish()
             }
         } else {
@@ -143,7 +144,7 @@ export default class extends Pathable {
     }
 
     attack(npc) {
-        console.warn("Attacking: ", npc.getName())
+        getLogger("PLAYER").warn("Attacking: ", npc.getName())
         let dir = Config.getDirToLocation(
             this.animatedSprite.sprite.gamePos[0],
             this.animatedSprite.sprite.gamePos[1],
@@ -180,7 +181,7 @@ export default class extends Pathable {
                         this.arkona.blocks.moveShipTo(this.ship, nx, oy, true) ||
                         this.arkona.blocks.moveShipTo(this.ship, ox, ny, true)) {
                         if(!Config.isOverland(this.ship.gamePos[0], this.ship.gamePos[1])) {
-                            console.warn("calling wrap around")
+                            getLogger("PLAYER").warn("calling wrap around")
                             this.arkona.wrapAroundWorld(this.ship, dir, () => {
                                 this._shipMoved(dir)
                             })
@@ -256,7 +257,7 @@ export default class extends Pathable {
     }
 
     enterShip(sprite) {
-        console.warn("Entering ship")
+        getLogger("PLAYER").warn("Entering ship")
         this.ship = sprite
         this.animatedSprite.sprite.visible = false
         this.ship.vehicle.animatedSprite.centerOn()
@@ -268,7 +269,7 @@ export default class extends Pathable {
     }
 
     exitShip() {
-        console.warn("Exiting ship")
+        getLogger("PLAYER").warn("Exiting ship")
         if(this.arkona.blocks.moveNextToSprite(this.ship, this.animatedSprite.sprite)) {
             this._moved(Config.DIR_E)
             this.ship = null

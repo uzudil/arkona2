@@ -16,6 +16,7 @@ import { dist3d } from "../utils"
 import Section from "../models/Section"
 import Fx from "../world/Fx"
 import * as Movies from "../config/Movies"
+import {getLogger} from "../config/Logger"
 
 const fs = window.require("fs-extra")
 const path = window.require("path")
@@ -324,7 +325,7 @@ export default class extends Phaser.State {
         if(x >= Config.TOTAL_MAP_X) x -= Config.TOTAL_MAP_X
         if(y >= Config.TOTAL_MAP_Y) y -= Config.TOTAL_MAP_Y
         if(x != ox || y != oy) {
-            console.warn("teleport around: from " + ox + "," + oy + " to " + x + "," + y)
+            getLogger("ARKONA").warn("teleport around: from " + ox + "," + oy + " to " + x + "," + y)
             this.teleport(x, y, z, dir, onLoad)
         }
     }
@@ -338,7 +339,7 @@ export default class extends Phaser.State {
         let pos = "" + dx + "." + dy
         if(pos != this.lastPos) {
             this.lastPos = pos
-            console.warn("New pos=" + pos)
+            getLogger("ARKONA").warn("New pos=" + pos)
             let maps = []
             if (dx == 0 && dy == 0) maps.push([mx - 1, my - 1])
             if (dx == 0 && dy == 1) maps.push([mx - 1, my + 1])
@@ -534,7 +535,7 @@ export default class extends Phaser.State {
         // smooth movement, fallback to a delta of 1 if can't maintain fps
         let dx = Math.max(-1, Math.min(1, Config.MOVE_DELTA[dir][0] * d))
         let dy = Math.max(-1, Math.min(1, Config.MOVE_DELTA[dir][1] * d))
-        // console.warn("*** " + this.game.time.elapsedMS + " ms, d=" + dx. toFixed(2) + ", " + dy.toFixed(2))
+        // getLogger("ARKONA").warn("*** " + this.game.time.elapsedMS + " ms, d=" + dx. toFixed(2) + ", " + dy.toFixed(2))
         return [x + dx, y + dy, z]
     }
 
@@ -618,13 +619,13 @@ export default class extends Phaser.State {
         this.movie = Movies.MOVIES[name]
         this.movieSceneIndex = 0
         this.movie[this.movieSceneIndex].scene(this)
-        console.log("Starting movie " + name + " index=" + this.movieSceneIndex + "/" + this.movie.length)
+        getLogger("ARKONA").log("Starting movie " + name + " index=" + this.movieSceneIndex + "/" + this.movie.length)
     }
 
     updateMovie() {
         if(this.movie && this.movie[this.movieSceneIndex].endCondition(this)) {
             this.movieSceneIndex++
-            console.log("Next scene=" + this.movieSceneIndex + "/" + this.movie.length)
+            getLogger("ARKONA").log("Next scene=" + this.movieSceneIndex + "/" + this.movie.length)
             if(this.movieSceneIndex >= this.movie.length) {
                 this.movie = null
             } else {

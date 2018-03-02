@@ -1,5 +1,6 @@
 import * as Config from "./../config/Config"
 import { dist3d } from "../utils"
+import {getLogger} from "../config/Logger"
 
 export default class {
 
@@ -47,7 +48,7 @@ export default class {
             this.z = this.animatedSprite.sprite.gamePos[2]
             this._findPath()
         } else {
-            console.warn(this.getName() + " could not find destination at to " + toX + "," + toY)
+            getLogger("PATH").warn(this.getName() + " could not find destination at to " + toX + "," + toY)
             this.reset()
         }
     }
@@ -73,7 +74,7 @@ export default class {
     }
 
     _findPath() {
-        console.warn(this.getName() + " looking for path to " + this.to[0] + "," + this.to[1])
+        getLogger("PATH").warn(this.getName() + " looking for path to " + this.to[0] + "," + this.to[1])
         let currPos = this.animatedSprite.sprite.gamePos
         let p = this.arkona.blocks.getPath(
             this.animatedSprite.sprite,
@@ -86,7 +87,7 @@ export default class {
         if(p) {
             this._setPath(p)
         } else {
-            console.warn(this.getName() + " could not find path to " + this.to[0] + "," + this.to[1])
+            getLogger("PATH").warn(this.getName() + " could not find path to " + this.to[0] + "," + this.to[1])
             this.reset()
         }
     }
@@ -120,12 +121,12 @@ export default class {
             let targetMoved = !(this.lastTargetPos[0] == targetPos[0] && this.lastTargetPos[1] == targetPos[1] && this.lastTargetPos[2] == targetPos[2])
             if(targetMoved) {
                 this.attemptDelay = now + ((Math.random() * 2000 + 500)|0)
-                console.log(this.getName() + " looking for path to creature " + this.targetCreature.getName())
+                getLogger("PATH").log(this.getName() + " looking for path to creature " + this.targetCreature.getName())
                 this._findPathToTargetSprite()
                 return true
             }
         } else if(this.path == null && this.to[0] > 0) {
-            console.log(this.getName() + " looking for path to position" + this.to[0] + "," + this.to[1])
+            getLogger("PATH").log(this.getName() + " looking for path to position" + this.to[0] + "," + this.to[1])
             this._findPath()
         }
 
@@ -146,7 +147,7 @@ export default class {
 
         // try to step there
         let success = this._stepTo(nx, ny, nz, dir)
-        // console.log("currpos=" + Math.round(currPos[0]) + "," + Math.round(currPos[1]) + " vs " + px + "," + py + " pastWaypoint=" + pastWaypoint)
+        // getLogger("PATH").log("currpos=" + Math.round(currPos[0]) + "," + Math.round(currPos[1]) + " vs " + px + "," + py + " pastWaypoint=" + pastWaypoint)
 
         if(pastWaypoint) {
             if(!success) {
@@ -155,7 +156,7 @@ export default class {
             }
 
             // advance to the next waypoint
-            // console.log("waypoint advance to " + px + "," + py + " success=" + success)
+            // getLogger("PATH").log("waypoint advance to " + px + "," + py + " success=" + success)
             this.pathIndex++
             if (this.pathIndex >= this.path.length) {
                 // if we're there stop (or try another path attempt)
@@ -172,13 +173,13 @@ export default class {
             if(Math.random() > 0.75) {
                 // sometimes try a new path w/o ignoring creatures
                 // this is here to solve a deadlock of two npc-s waiting for each other
-                console.warn(this.getName() + " will attempt path find without ignoring creatures.")
+                getLogger("PATH").warn(this.getName() + " will attempt path find without ignoring creatures.")
                 this.ignoreCreatures = false
                 if(this._makePathAttemptOrFinish(now)) return true
             } else {
                 this.attemptCount++
                 this.attemptDelay = now + ((Math.random() * 500 + 500) | 0)
-                console.warn(this.getName() + " attempt: " + this.attemptCount + " will wait " + (this.attemptDelay - now) + " millis")
+                getLogger("PATH").warn(this.getName() + " attempt: " + this.attemptCount + " will wait " + (this.attemptDelay - now) + " millis")
                 success = true
             }
         }
@@ -201,13 +202,13 @@ export default class {
         if(!this._hasTargetCreature() && !reachedTo && this.pathAttemptCount < 3) {
             this.pathAttemptCount++
             this.attemptDelay = now + ((Math.random() * 500 + 500)|0)
-            console.warn(this.getName() + " path attempt: " + this.pathAttemptCount + " will wait " + (this.attemptDelay - now) + " millis")
+            getLogger("PATH").warn(this.getName() + " path attempt: " + this.pathAttemptCount + " will wait " + (this.attemptDelay - now) + " millis")
             return true
         } else if(!this._hasTargetCreature()) {
-            console.log(this.getName() + " is at " + nowX +"," + nowY + "," + nowZ + " vs " + this.to[0] + "," + this.to[1])
+            getLogger("PATH").log(this.getName() + " is at " + nowX +"," + nowY + "," + nowZ + " vs " + this.to[0] + "," + this.to[1])
             if(reachedTo) {
                 this.reset()
-                console.log(this.getName() + " reached target position")
+                getLogger("PATH").log(this.getName() + " reached target position")
             }
         }
     }
