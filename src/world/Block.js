@@ -89,6 +89,16 @@ function isFlatByName(name) {
     return BLOCKS[name].size[2] == 0
 }
 
+// distance between centers of sprites' bases
+export function distSprites(spriteA, spriteB) {
+    let blockA = BLOCKS[spriteA.name]
+    let [ax,ay,az] = spriteA.gamePos
+    let blockB = BLOCKS[spriteB.name]
+    let [bx,by,bz] = spriteB.gamePos
+    return dist3d(ax - blockA.size[0]/2, ay - blockA.size[1]/2, az,
+        bx - blockB.size[0]/2, by - blockB.size[1]/2, bz)
+}
+
 class ImageInfo {
     constructor(name, image) {
         this.name = name
@@ -1297,11 +1307,35 @@ export default class {
         return null
     }
 
+    findClosestAccessiblePos(sprite, ignoreSprite, worldX, worldY, worldZ, ignoreCreatures, resultPos) {
+        if(this.isAccessiblePos(sprite, ignoreSprite, worldX, worldY, worldZ, ignoreCreatures)) {
+            resultPos[0] = worldX
+            resultPos[1] = worldY
+            resultPos[2] = worldZ
+            return true
+        } else {
+            let minD = -1
+            let block = BLOCKS[sprite.name]
+            for(let xx = worldX - block.size[0]; xx < worldX + block.size[0]; xx++) {
+                for (let yy = worldY - block.size[1]; yy < worldY + block.size[1]; yy++) {
+                    let d = dist3d(xx, yy, worldZ, worldX, worldY, worldZ)
+                    if(this.isAccessiblePos(sprite, ignoreSprite, xx, yy, worldZ, ignoreCreatures) && (minD == -1 || d < minD)) {
+                        resultPos[0] = xx
+                        resultPos[1] = yy
+                        resultPos[2] = worldZ
+                        minD = d
+                    }
+                }
+            }
+            return minD > -1
+        }
+    }
+
     isAccessiblePos(sprite, ignoreSprite, worldX, worldY, worldZ, ignoreCreatures) {
         return this.objectLayer.canMoveTo(sprite, worldX, worldY, worldZ, false, null, ignoreSprite, ignoreCreatures)
     }
 
-    getPath(sprite, fromX, fromY, fromZ, toX, toY, toZ, ignoreSprite) {
+    getPath(sprite, fromX, fromY, fromZ, toX, toY, toZ, ignoreSprite, ignoreCreatures) {
         let result = aStar({
             start: [fromX, fromY, fromZ],
             isEnd: (node) => node[0] == toX && node[1] == toY && node[2] == toZ,
@@ -1314,7 +1348,7 @@ export default class {
                             if(node[2] + dz < 0) continue
                             let newNode = [node[0] + dx, node[1] + dy, node[2] + dz]
                             // ignore creatures on the path... they'll move out of the way
-                            if(this.isAccessiblePos(sprite, ignoreSprite, ...newNode, true)) n.push(newNode)
+                            if(this.isAccessiblePos(sprite, ignoreSprite, ...newNode, ignoreCreatures)) n.push(newNode)
                         }
                     }
                 }

@@ -4,6 +4,7 @@ import * as Creatures from "../config/Creatures"
 import AnimatedSprite from "../world/Animation"
 import Alive from "./Alive"
 import Pathable from "./Pathable"
+import { distSprites } from "../world/Block"
 
 const SPEEDS = {
     "slow": 0.01,
@@ -95,10 +96,12 @@ export default class extends Pathable {
     }
 
     moveAttack() {
+        if(this.arkona.npcPaused) return
+
         if(!this.target) this._findAttackTarget()
 
         if(this.target && this.target.alive) {
-            let dist = dist3d(this.x, this.y, this.z, ...this.target.animatedSprite.sprite.gamePos)
+            let dist = distSprites(this.animatedSprite.sprite, this.target.animatedSprite.sprite)
             if(this.target.alive.health <= 0 || dist > Config.FAR_DIST) {
                 this._clearPathAndTarget()
             } else if (dist <= Config.NEAR_DIST) {

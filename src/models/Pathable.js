@@ -16,6 +16,7 @@ export default class {
         this.attemptCount = 0
         this.pathAttemptCount = 0
         this.attemptDelay = 0
+        this.ignoreCreatures = true
     }
 
     /**
@@ -32,13 +33,23 @@ export default class {
     }
 
     _findPathTo(toX, toY, toZ) {
-        this.to[0] = toX
-        this.to[1] = toY
-        this.to[2] = toZ
-        this.x = this.animatedSprite.sprite.gamePos[0]
-        this.y = this.animatedSprite.sprite.gamePos[1]
-        this.z = this.animatedSprite.sprite.gamePos[2]
-        this._findPath()
+        // fill in this.to with a position that is accessible (ie. not partly in the wall or something)
+        // this.to will be a position where the sprite can move to and includes the point at toX,toY,toZ.
+        let found = this.arkona.blocks.findClosestAccessiblePos(
+            this.animatedSprite.sprite,
+            this._getIgnoreSprite(),
+            toX, toY, toZ,
+            this.ignoreCreatures,
+            this.to)
+        if(found) {
+            this.x = this.animatedSprite.sprite.gamePos[0]
+            this.y = this.animatedSprite.sprite.gamePos[1]
+            this.z = this.animatedSprite.sprite.gamePos[2]
+            this._findPath()
+        } else {
+            console.warn(this.getName() + " could not find destination at to " + toX + "," + toY)
+            this.reset()
+        }
     }
 
     /**
@@ -68,8 +79,10 @@ export default class {
             this.animatedSprite.sprite,
             currPos[0], currPos[1], currPos[2],
             this.to[0], this.to[1], this.to[2],
-            this.arkona.player.animatedSprite.sprite
+            this._getIgnoreSprite(),
+            this.ignoreCreatures
         )
+        this.ignoreCreatures = true // reset this after getPath()
         if(p) {
             this._setPath(p)
         } else {
@@ -156,10 +169,18 @@ export default class {
         }
 
         if(!success && this.attemptCount < 3) {
-            this.attemptCount++
-            this.attemptDelay = now + ((Math.random() * 500 + 500)|0)
-            console.warn(this.getName() + " attempt: " + this.attemptCount + " will wait " + (this.attemptDelay - now) + " millis")
-            success = true
+            if(Math.random() > 0.75) {
+                // sometimes try a new path w/o ignoring creatures
+                // this is here to solve a deadlock of two npc-s waiting for each other
+                console.warn(this.getName() + " will attempt path find without ignoring creatures.")
+                this.ignoreCreatures = false
+                if(this._makePathAttemptOrFinish(now)) return true
+            } else {
+                this.attemptCount++
+                this.attemptDelay = now + ((Math.random() * 500 + 500) | 0)
+                console.warn(this.getName() + " attempt: " + this.attemptCount + " will wait " + (this.attemptDelay - now) + " millis")
+                success = true
+            }
         }
 
         // if couldn't retry, make another path attempt
@@ -215,5 +236,9 @@ export default class {
             this.animatedSprite.setAnimation("stand", this.dir)
             return false
         }
+    }
+
+    _getIgnoreSprite() {
+        return this.arkona.player.animatedSprite.sprite // doesn't really matter what this is set to
     }
 }

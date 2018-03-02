@@ -94,6 +94,9 @@ export default class {
         return npc
     }
 
+    // There's a bug where saved sections sometimes don't include an npc. Use this method instead of the one
+    // above it until it's fixed.
+    //
     // addNpc(npcInfo) {
     //     let [x, y, z] = [npcInfo.x, npcInfo.y, npcInfo["z"] || 0]
     //
