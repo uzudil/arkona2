@@ -1,4 +1,5 @@
 import {MONSTERS} from "./Monsters"
+import * as ConvoUtils from "../convo/ConvoUtils"
 
 function timeElapsed(since, delta) {
     return since != null && Date.now() - since > delta
@@ -72,6 +73,7 @@ export const MOVIES = {
                         arkona.levelUp()
                         arkona.gameState["ritual_demon_lives"] = false
                         arkona.gameState["mezalka_dead"] = true
+                        ConvoUtils.incrementChampion(arkona, "varholm")
                     }
                 })
                 arkona.fx.run("fire", npc.animatedSprite.sprite)

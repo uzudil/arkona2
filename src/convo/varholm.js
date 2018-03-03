@@ -1,4 +1,5 @@
 import Convo from "./Convo"
+import * as ConvoUtils from "./ConvoUtils"
 
 export const ACOLYTE = Convo.condition((arkona) => arkona.gameState["mezalka_dead"],
     new Convo("The Raighd will remember thy treachery, intruder!")
@@ -77,8 +78,11 @@ export const OREN = Convo.condition((arkona) => arkona.gameState["mezalka_dead"]
         "I was able to destroy his human shell, thanks to thee.", "", (arkona) => arkona.levelUp())
         .answer("It was the right thing to do.",
             new Convo("Thou hath done a great deed. The citizens of Varholm will remember thy bravery forever.")
-                .answer("It was nothing")
-                .answer("Thanks Oren, I'm leaving now")
+                .answer("It was nothing",
+                    new Convo("Before thy leave, be sure to talk to Wilda again. She is our temporary mayor now and might have some news for thee.", "R_WILDA_AGAIN")
+                        .answer("I will find her. Goodbye Oren!")
+                )
+                .answer("Thanks Oren, I'm leaving now", "R_WILDA_AGAIN")
         ),
     new Convo("Thou hath the look of a visitor from a foreign land. How can I aid thee in thy travels?")
         .answer("You don't know the half of it... I'm from another planet",
@@ -188,7 +192,7 @@ export const HERMIT = new Convo("The heavens burn with liquid contempt for thee!
                             .answer("What happens in the cave?",
                                 new Convo("In the subterranean darkness, the Acolytes of the Raighd labor to break the hold of encircling cities. " +
                                     "They hope to summon and free the Raighd's powers here in Varholm.")
-                                    .answer("What is the Raighd?")
+                                    .answer("What is the Raighd?", "R_COMMON_RAIGHD")
                                     .answer("This is terrible! It must be stopped!",
                                         new Convo("And there is more. Ever wonder how our 'good' Chief Mezalka is loved by all? How he seemingly lives on and on? " +
                                             "Not only complicit is he, but a direct beneficiary of these evil powers.")
@@ -222,9 +226,12 @@ export const HERMIT = new Convo("The heavens burn with liquid contempt for thee!
 
 export const WOODCUTTER = Convo.condition(arkona => arkona.gameState["mezalka_dead"] == true,
     new Convo("I heard thou hath disrupted the ritual so Oren was able to destroy Chief Mezalka. Varholm owes thee much gratitude for thy valiant deed!")
-        .answer("It was a piece of cake")
-        .answer("Yeah I'm pretty awesome")
-        .answer("I'm off to my next adventure")
+        .answer("It was the right thing to do...",
+            new Convo("As the temporary mayor of Varholm, it is my duty to recognize thy bravery. Thou should travel to the other cities of the Circuit next.")
+                .answer("The circuit? What is that?", "R_GENERAL_CIRCUIT")
+                .answer("What other cities are there?", "R_GENERAL_CITIES")
+                .answer("Have I proved myself a Champion of the Circle?", ConvoUtils.AM_I_CHAMPION)
+        )
     ,
     new Convo("Logs? Branches? Firewood? I got them all. If thou need felling, I'm all yours for the labor.")
     .answer("What is it you do here?",

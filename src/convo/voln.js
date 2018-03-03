@@ -2,25 +2,14 @@ import Convo from "./Convo"
 import * as ConvoUtils from "./ConvoUtils"
 
 // eslint-disable-next-line no-unused-vars
-export const COMMON = new Convo("Our town of Voln has stood here for near a millennia!", "VOLN_COMMON")
-    .answer("Tell me what lies to the north.",
-        new Convo("Hast thou not heard of the Raighd to the north? Our town is all that stops its chaos from running wild over all of Arkona!")
-            .answer("What is this Raighd?",
-                new Convo("Dost thou know nothing? The Raighd is the bane of our time! It's a vast stretch of untamed land, infested with evil " +
-                    "that lies to the north of here.", "VOLN_COMMON_RAIGHD")
-                    .answer("Can one visit this place?",
-                        new Convo("Not sure why thou would want to. Certain doom is all that thou shalt find! If thou insists, talk to Mayor Gratt.")
-                            .answer("Who is mayor Gratt?", "VOLN_COMMON_GRATT")
-                            .answer("Anything else notable about this town?", "VOLN_COMMON")
-                    )
-            )
-    )
+export const COMMON = new Convo("Our town of Voln has stood here for near a millennia! It is the oldest settlement in all of Arkona.", "VOLN_COMMON")
+    .answer("Tell me of the world of Arkona", ConvoUtils.GENERAL_ARKONA)
     .answer("Any notable persons in town?",
-        new Convo("Aye, Mayor Gratt lives in the tall house. The Horned Wyvern pub is helmed by Kat and is always busy. And we also have a Hermit.")
+        new Convo("Aye, Mayor Gratt lives in the tall house. The Horned Wyvern pub is helmed by Kat and is always busy. And we also have a Hermit.", "R_VOLN_PEOPLE")
             .answer("What does the mayor do?",
                 new Convo("Mayor Gratt manages our town. He decides who is allowed into the Raighd. " +
                     "If thou art looking for work, thou should ask if he needs anything done. He lives in the tall house.", "VOLN_COMMON_GRATT")
-                    .answer("What is the Raighd?", "VOLN_COMMON_RAIGHD")
+                    .answer("What is the Raighd?", "R_COMMON_RAIGHD")
                     .answer("I will look him up, thanks.")
                     .answer("Anything else notable about this town?", "VOLN_COMMON")
             )
@@ -37,7 +26,7 @@ export const COMMON = new Convo("Our town of Voln has stood here for near a mill
                         new Convo("The Black Guard is a notorious organization of assassin mercenaries. Some say they're somehow connected with the Raighd.", "",
                             (arkona) => arkona.gameState["HERMIT_ASSASSIN"] = true
                         )
-                            .answer("What is the Raighd?", "VOLN_COMMON_RAIGHD")
+                            .answer("What is the Raighd?", "R_COMMON_RAIGHD")
                             .answer("Interesting... Anything else in town I should know about?", "VOLN_COMMON")
                     )
                     .answer("What a load of nonsense. I'll be going now.")
@@ -46,14 +35,6 @@ export const COMMON = new Convo("Our town of Voln has stood here for near a mill
     )
 
 export const RHEE = new Convo("What can a simple farmer do for thee, stranger?")
-    .answer("Do you ever venture inside the Raighd?",
-        new Convo("Even if I wanted to, I wouldn't know how. Thou hath seen the magical barrier, no? It prevents entry to all.", "VOLN_FARMER_RAIGHD")
-            .answer("I thought the locals had a way in...",
-                new Convo("Nay, only Mayor Gratt knows how to enter. But why would thee travel there? Nothing but death awaits thee in the Raighd.")
-                    .answer("I know, thanks.")
-                    .answer("What do you grow in these fields?", "VOLN_FARMER")
-            )
-    )
     .answer("What kind of plants do you grow here?",
         new Convo("Thou aren't truly interested in farming. But just for humoring me, I'll tell thee that I grow anything this village needs. " +
             "That is unless the goblins attack us...", "VOLN_FARMER")
@@ -73,42 +54,40 @@ export const RHEE = new Convo("What can a simple farmer do for thee, stranger?")
                             .answer("Maybe I'll pay a visit to the goblin fort")
                     )
             )
-            .answer("Does being so close to the Riaghd make it more difficult to grow things?",
-                new Convo("Nay, the Raighd is held back by the magical barriers. It does has no effect on this side of the walls.")
-                    .answer("Do you ever go inside the Raighd?", "VOLN_FARMER_RAIGHD")
-                    .answer("Goodbye.")
-            )
     )
     .answer("Tell me about your town", "VOLN_COMMON")
 
-export const TRAVOR = new Convo("Halt there stranger, do not attempt to enter the Raighd! Thou should know what " +
-    "happened the last time someone passed throught the magical blockade.")
-    .answer("I'll do as I see fit.")
-    .answer("Very well, tell me what happened the last time.",
-        new Convo("In the year 628 the crazed mystic Fellorthal passed through here and entered the Raighd. After an " +
-            "initial few calm weeks it became apparent that his passing came at a high price!")
-            .answer("What was this... price?",
-                new Convo("A dark host of the Raighd's minions broke through our defenses and decimated all in their path. Were it not " +
-                    "for the unified armies of the circuit towns, none would live now to tell this tale.")
-                    .answer("Tell me more about this dark host...",
-                        new Convo("The Raighd sent out flying demons, shambling undead horrors, incorporeal aberrations that tested the very foundations of our sanity... " +
-                            "Finally there came a column of Living Flame, scortching all in its path...")
-                            .answer("How did the village armies fight against these beasts?",
-                                new Convo("It took every ounce of magical energy to beat back the ravening servants of chaos and erect the magical barrier, " +
-                                    "thou sees here. Since that day, no one entered and the Raighd stayed quiet on the other side.")
-                                    .answer("Impressive story, but I still need to get in.",
-                                        new Convo("I see there is no dissuading thee... Thou should talk to Mayor Gratt, only he can grant thee entrance to thy certain doom.")
-                                            .answer("Where do I find Mayor Gratt?", "VOLN_COMMON_GRATT")
-                                            .answer("Ok I'll look him up, thanks.")
+export const TRAVOR = new Convo("Halt there stranger and listen to my tale of caution! I will tell thee a story of the Raighd!")
+    .answer("The Raighd? What is that?", "R_COMMON_RAIGHD")
+    .answer("Fine, tell me your story",
+        new Convo("Do not attempt to enter the Raighd! Thou should know what happened the last time someone passed through the magical blockade.")
+            .answer("I'll do as I see fit.")
+            .answer("Very well, tell me what happened the last time.",
+                new Convo("In the year 628 the crazed mystic Fellorthal passed through here and entered the Raighd. After an " +
+                    "initial few calm weeks it became apparent that his passing came at a high price!")
+                    .answer("What was this... price?",
+                        new Convo("A dark host of the Raighd's minions broke through our defenses and decimated all in their path. Were it not " +
+                            "for the unified armies of the circuit towns, none would live now to tell this tale.")
+                            .answer("Tell me more about this dark host...",
+                                new Convo("The Raighd sent out flying demons, shambling undead horrors, incorporeal aberrations that tested the very foundations of our sanity... " +
+                                    "Finally there came a column of Living Flame, scorching all in its path...")
+                                    .answer("How did the village armies fight against these beasts?",
+                                        new Convo("It took every ounce of magical energy to beat back the ravening servants of chaos and erect the magical barrier, " +
+                                            "thou sees here. Since that day, no one entered and the Raighd stayed quiet on the other side.")
+                                            .answer("Impressive story, but I still need to get in.",
+                                                new Convo("I see there is no dissuading thee... Thou should talk to Mayor Gratt, only he can grant thee entrance to thy certain doom.")
+                                                    .answer("Where do I find Mayor Gratt?", "VOLN_COMMON_GRATT")
+                                                    .answer("Ok I'll look him up, thanks.")
+                                            )
+                                            .answer("I have no wish to unleash hell - I'll be leaving now.")
                                     )
-                                    .answer("I have no wish to unleash hell - I'll be leaving now.")
                             )
+                            .answer("Uh-huh... I've had enough of this. Goodbye.")
                     )
-                    .answer("Uh-huh... I've had enough of this. Goodbye.")
+                    .answer("Just because it happened once, it won't happen again. Stand aside!")
             )
-            .answer("Just because it happened once, it won't happen again. Stand aside!")
     )
-    .answer("Tell me about your town", "VOLN_COMMON")
+    .answer("Tell me about your town instead", "VOLN_COMMON")
 
 export const HISO = new Convo("'I will bring it right back', she said, but it's been years!")
     .answer("Tell me about your town", "VOLN_COMMON")
@@ -261,7 +240,7 @@ export const MAYOR = Convo.condition((arkona) => arkona.gameState["VOLN_SUCCESS"
                 new Convo("Our town of Voln has stood here since the magical barriers were erected to keep the Raighd from taking over all of Arkona.")
                     .answer("The Raighd... what is that?",
                         new Convo("Has no one told thee about the vast, primeval tangle of pure Evil just over the magical boundaries? " +
-                            "The Raighd is an untamed land of malevolent energy right here on our doorstep.")
+                            "The Raighd is an untamed land of malevolent energy ready to destroy humanity!")
                             .answer("What would happen if the barrier disappeared?",
                                 new Convo("The barrier was put in place after the last time the forces of the Raighed poured into Arkona, " +
                                     "killing all in sight. Never again do we want to witness that host of horrors pillaging our land.")
