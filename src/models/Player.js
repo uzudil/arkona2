@@ -215,6 +215,19 @@ export default class extends Pathable {
             let [px, py] = this.ship.gamePos
             // move the player along
             this.arkona.blocks.forceMoveTo(this.animatedSprite.sprite, px, py, 0)
+
+            let currentSection = this.ship.section
+            let newSection = this.arkona.sectionAt(px, py)
+
+            // hand ship over to next section if necessary
+            // getLogger("VEHICLE").log("vehicle=" + this.ship.vehicle.id + " current=" + this.ship.section.getMapName() + " vs " + newSection.getMapName() +
+            //     " same? " + (currentSection == newSection))
+
+            if(currentSection != newSection) {
+                currentSection.removeVehicleRef(this.ship.vehicle)
+                newSection.addVehicleRef(this.ship.vehicle)
+            }
+
             // load maps
             this.arkona.checkMapBoundary(px, py)
         }

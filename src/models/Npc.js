@@ -18,14 +18,14 @@ export default class extends Pathable {
     constructor(arkona, x, y, z, options, creatureName) {
         super(arkona)
 
-        this.id = "" + x + "," + y + "," + z
+        this.options = options || {}
+        this.id = this.options["id"] || ("" + x + "," + y + "," + z)
         this.x = x
         this.y = y
         this.z = z
         this.anchorX = x
         this.anchorY = y
         this.anchorZ = z
-        this.options = options || {}
         this.dir = options["dir"] || Config.DIR_N
         this.stopClock = null
         this.moveClock = Date.now() + Config.MOVE_TIME

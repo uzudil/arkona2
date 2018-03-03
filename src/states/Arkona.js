@@ -356,9 +356,9 @@ export default class extends Phaser.State {
             maps.forEach(pos => {
                 this.blocks.loadXY(pos[0], pos[1], () => {
                     c[pos] = true
+                    this.mapLoaded(pos[0], pos[1])
                     if (Object.keys(c).length == maps.length) {
                         this.blocks.sort()
-                        this.mapLoaded(mx, my)
                         if(onLoad) onLoad()
                     }
                 })
@@ -430,7 +430,11 @@ export default class extends Phaser.State {
 
         if(fs.existsSync(dir)) {
             let data = fs.readFileSync(dir)
-            onLoad(JSON.parse(data))
+            try {
+                onLoad(JSON.parse(data))
+            } catch(e) {
+                getLogger("IO").error("Error loading data: ", e)
+            }
         } else {
             onLoad(null)
         }

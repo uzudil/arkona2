@@ -10,6 +10,7 @@ import EditorState from "./states/Editor"
 import ArkonaState from "./states/Arkona"
 import IntroState from "./states/Intro"
 import MapperState from "./states/Mapper"
+import {getLogger, toggleAll} from "./config/Logger"
 
 import * as Config from "./config/Config"
 
@@ -19,6 +20,10 @@ const electron = window.require("electron")
 class Game extends Phaser.Game {
 
     constructor() {
+        // only enable some loggers
+        toggleAll(false)
+        getLogger("IO").enabled = true
+
         let o = loadSettings()
 
         // set the electron window size

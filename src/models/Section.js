@@ -23,18 +23,22 @@ export default class {
         this.load()
     }
 
+    getMapName() {
+        return mapName(this.mapX, this.mapY)
+    }
+
     load() {
-        this.arkona.loadSection(mapName(this.mapX, this.mapY) + ".json", (data) => {
+        this.arkona.loadSection(this.getMapName() + ".json", (data) => {
             this.info = WORLD["" + this.mapX + "," + this.mapY] || {};
             (this.info["npcs"] || []).forEach(npcInfo => this.addNpc(npcInfo, data ? data.npcs : null));
             (this.info["monsters"] || []).forEach(monsterInfo => this.addMonster(monsterInfo, data ? data.npcs : null));
             (this.info["generators"] || []).forEach(generatorInfo => this.addGenerator(generatorInfo));
-            (this.info["vehicles"] || []).forEach(info => this.addVehicle(info, data ? data.vehicles : null));
+            this.addVehicles(this.info["vehicles"] || [], data ? data.vehicles : null)
         })
     }
 
     save(tempSave) {
-        this.arkona.saveSection(mapName(this.mapX, this.mapY) + ".json", tempSave, {
+        this.arkona.saveSection(this.getMapName() + ".json", tempSave, {
             version: 1,
             npcs: this.npcs.filter(npc => npc["generator"] == null).reduce((acc, npc) => {
                 acc[npc.id] = {
@@ -49,7 +53,9 @@ export default class {
                 acc[vehicle.id] = {
                     x: vehicle.animatedSprite.sprite.gamePos[0],
                     y: vehicle.animatedSprite.sprite.gamePos[1],
-                    z: vehicle.animatedSprite.sprite.gamePos[2]
+                    z: vehicle.animatedSprite.sprite.gamePos[2],
+                    name: vehicle.name,
+                    dir: vehicle.dir
                 }
                 return acc
             }, {}),
@@ -77,13 +83,15 @@ export default class {
             return null
         }
 
+        let options = npcInfo["options"] || {}
         if(savedNpcs) {
             x = savedNpcs[id].x
             y = savedNpcs[id].y
             z = savedNpcs[id].z
+            options["id"] = id
         }
 
-        let npc = new Npc(this.arkona, x, y, z, npcInfo["options"], npcInfo.creature)
+        let npc = new Npc(this.arkona, x, y, z, options, npcInfo.creature)
 
         // update stats
         if(savedNpcs) {
@@ -94,19 +102,6 @@ export default class {
 
         return npc
     }
-
-    // There's a bug where saved sections sometimes don't include an npc. Use this method instead of the one
-    // above it until it's fixed.
-    //
-    // addNpc(npcInfo) {
-    //     let [x, y, z] = [npcInfo.x, npcInfo.y, npcInfo["z"] || 0]
-    //
-    //     let npc = new Npc(this.arkona, x, y, z, npcInfo["options"], npcInfo.creature)
-    //
-    //     this.addNpcRef(npc)
-    //
-    //     return npc
-    // }
 
     addMonster(monsterInfo, savedNpcs) {
         for(let pos of monsterInfo.pos) {
@@ -135,25 +130,38 @@ export default class {
         return null
     }
 
-    addVehicle(info, savedVehicles) {
-        let x = info.x
-        let y = info.y
-        let z = info.z || 0
-        let id = "" + x + "," + y + "," + z
+    addVehicles(infos, savedVehicles) {
+        // add vehicles defined for this section
+        for(let info of infos) {
+            let x = info.x
+            let y = info.y
+            let z = info.z || 0
+            let id = "" + x + "," + y + "," + z
 
-        // killed or moved to another section
-        if(savedVehicles && !savedVehicles[id]) {
-            return
+            // killed or moved to another section
+            if(savedVehicles && !savedVehicles[id]) {
+                continue
+            }
+
+            if(savedVehicles) {
+                info.x = savedVehicles[id].x
+                info.y = savedVehicles[id].y
+                info.z = savedVehicles[id].z
+                info.dir = savedVehicles[id].dir
+                info.id = id
+                delete savedVehicles[id]
+            }
+
+            this.addVehicleRef(new Vehicle(this.arkona, info, this))
         }
 
+        // now add vehicles from other sections
         if(savedVehicles) {
-            info.x = savedVehicles[id].x
-            info.y = savedVehicles[id].y
-            info.z = savedVehicles[id].z
+            for (let id in savedVehicles) {
+                savedVehicles[id].id = id
+                this.addVehicleRef(new Vehicle(this.arkona, savedVehicles[id], this))
+            }
         }
-
-        let vehicle = new Vehicle(this.arkona, info)
-        this.vehicles.push(vehicle)
     }
 
     removeNpcByName(name) {
@@ -195,6 +203,16 @@ export default class {
 
     addNpcRef(npc) {
         this.npcs.push(npc)
+    }
+
+    removeVehicleRef(vehicle) {
+        let idx = this.vehicles.indexOf(vehicle)
+        this.vehicles.splice(idx, 1)
+    }
+
+    addVehicleRef(vehicle) {
+        this.vehicles.push(vehicle)
+        vehicle.animatedSprite.sprite.section = this
     }
 
     getNpcByName(name) {
