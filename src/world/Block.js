@@ -698,6 +698,13 @@ export default class {
         return this.isInBounds(x, y) ? this.floorLayer.getFloorAt(x, y) : null
     }
 
+    getFloorTo(worldX, worldY, dir) {
+        return this.getFloor(
+            worldX + (dir == "e" ? Config.GROUND_TILE_W : (dir == "w" ? -Config.GROUND_TILE_W : 0)),
+            worldY + (dir == "s" ? Config.GROUND_TILE_H : (dir == "n" ? -Config.GROUND_TILE_H : 0))
+        )
+    }
+
     checkRoof(worldX, worldY, worldZ, shapeName) {
         let roofHeight = worldZ < 6 ? 6 : (worldZ < 13 ? 13 : 19)
         let block = BLOCKS[shapeName]
@@ -1020,11 +1027,15 @@ export default class {
         let ground = this.getFloor(gx, gy)
         for(let dir in EDGE_OFFSET) {
             if(edges[dir]) {
+                let groundTo = this.getFloorTo(gx, gy, dir)
+                if(ground && ground.indexOf("road")>=0) console.log("pos=" + gx + "," + gy + " dir=" + dir + " groundTo=" + groundTo)
                 let name
                 if(ground && ground.indexOf("lava") >= 0) {
                     name = "scree.edge.bank"
                 } else if(ground && ground.indexOf("water") >= 0) {
                     name = "grass.edge.bank"
+                } else if(groundTo && groundTo.indexOf("sand") >= 0) {
+                    name = "sand.edge"
                 } else {
                     let index = 1 + ((Math.random() * 2) | 0)
                     name = "grass.edge" + index

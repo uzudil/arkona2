@@ -33,7 +33,7 @@ export const BLOCKS = {
 	"water": { size: [4, 4, 0], pos: [416, 128], dim: [64, 64], options: { blendLevel: 1, sequence: ["water2", "water", "water3", "water"] } },
 	"water2": { size: [4, 4, 0], pos: [0, 272], dim: [64, 64], options: { blendLevel: 1, hideInEditor: true } },
 	"water3": { size: [4, 4, 0], pos: [96, 272], dim: [64, 64], options: { blendLevel: 1, hideInEditor: true } },
-	"road": { size: [4, 4, 0], pos: [368, 208], dim: [64, 64], options: { blendLevel: 1 } },
+	"road": { size: [4, 4, 0], pos: [368, 208], dim: [64, 64], options: { blendLevel: 2 } },
 	"scree": { size: [4, 4, 0], pos: [448, 0], dim: [64, 64], options: { blendLevel: 1, sprites: 2 } },
 	"lava": { size: [4, 4, 0], pos: [416, 192], dim: [64, 64], options: { blendLevel: 2, sprites: 2, sequence: ["lava2", "lava", "lava3", "lava"] }  },
 	"lava2": { size: [4, 4, 0], pos: [336, 384], dim: [64, 64], options: { blendLevel: 2, sprites: 2, hideInEditor: true  } },
@@ -65,6 +65,11 @@ export const BLOCKS = {
 	"scree.edge.bank.n": { size: [2, 2, 0], pos: [288, 192], dim: [32, 42], options: { sprites: 2 } },
 	"scree.edge.bank.s": { size: [2, 2, 0], pos: [256, 240], dim: [32, 32], options: { sprites: 2 } },
 	"scree.edge.bank.e": { size: [2, 2, 0], pos: [288, 240], dim: [32, 32], options: { sprites: 2 } },
+    "sand.edge.w": { size: [2, 2, 0], pos: [192, 576], dim: [32, 32] },
+    "sand.edge.n": { size: [2, 2, 0], pos: [224, 576], dim: [32, 32] },
+    "sand.edge.e": { size: [2, 2, 0], pos: [224, 608], dim: [32, 32] },
+    "sand.edge.s": { size: [2, 2, 0], pos: [192, 608], dim: [32, 32] },
+
 
 	// stamps
 	"mud.puddle": { size: [2, 2, 0], pos: [64, 128], dim: [32, 32], options: { stamp: true } },
