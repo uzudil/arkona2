@@ -186,15 +186,7 @@ export const WORLD = {
     },
     "2,12": {
         npcs: [
-            {
-                creature: "woman_brown",
-                x: 239, y: 1166,
-                options: {
-                    movement: MOVE_ANCHOR,
-                    name: "Sharya",
-                    convo: FARM_CONVO.SHARYA
-                },
-            },
+            { creature: "woman_brown", x: 239, y: 1166, options: { movement: MOVE_ANCHOR, name: "Sharya", convo: FARM_CONVO.SHARYA } },
             { creature: "cow", x: 258, y: 1159, options: { convo: FARM_CONVO.COW } }
         ]
     },
@@ -268,7 +260,7 @@ export const WORLD = {
         ],
         // eslint-disable-next-line no-unused-vars
         onLoad: function(arkona, section) {
-            if(!arkona.gameState["median_visited"]) {
+            if(!arkona.gameState["median_visited"] && arkona.player.ship == null) {
                 arkona.gameState["median_visited"] = true
                 arkona.narrate("In the distance you see crumbling stone huts surrounded by a few fruit trees and a small vegetable garden. " +
                     "A robed figure in black paces back and forth in the court yard, his face lined with worry.")
@@ -391,6 +383,22 @@ export const WORLD = {
     "6,3": {
         generators: [
             { x: 534, y: 344, z: 0, type: MONSTERS.scorpion_large, count: 2 }
+        ],
+    },
+    "6,4": {
+        connect: [
+            {
+                x: 589, y: 410, z: 0,
+                action: (arkona) => arkona.transitionTo(620, 2225, 0, "s")
+            }
+        ],
+    },
+    "6,23": {
+        connect: [
+            {
+                x: 620, y: 2221, z: 0,
+                action: (arkona) => arkona.transitionTo(592, 408, 0, "e")
+            }
         ],
     },
     "0,2": {

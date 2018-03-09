@@ -1,4 +1,4 @@
-// don't chane the names
+// don't change the names
 export const BLOCKS = {
 	"trunk": { size: [2, 2, 4], pos: [32, 0], dim: [31, 48] },
 	"trunk.palm": { size: [1, 1, 8], pos: [512, 128], dim: [16, 80], options: { sprites: 5 } },
@@ -223,4 +223,20 @@ export const BLOCKS = {
 	"dungeon.gate": { size: [4, 1, 6], pos: [288, 0], dim: [40, 88], options: { sprites: 3 } },
 	"dungeon.block": { size: [4, 4, 6], pos: [336, 0], dim: [64, 112], options: { sprites: 3 } },
 	"dungeon.block.big": { size: [8, 8, 6], pos: [416, 0], dim: [128, 176], options: { sprites: 3 } },
+
+	"dungeon2.s.4": { size: [4, 1, 6], pos: [0, 448], dim: [40, 88], options: { sprites: 3 } },
+	"dungeon2.e.4": { size: [1, 4, 6], pos: [48, 448], dim: [40, 88], options: { sprites: 3 } },
+	"dungeon2.n.4": { size: [4, 1, 6], pos: [96, 448], dim: [40, 88], options: { sprites: 3 } },
+	"dungeon2.w.4": { size: [1, 4, 6], pos: [144, 448], dim: [40, 88], options: { sprites: 3 } },
+	"dungeon2.col.nw": { size: [1, 1, 6], pos: [192, 448], dim: [16, 64], options: { sprites: 3 } },
+	"dungeon2.s.3": { size: [3, 1, 6], pos: [0, 544], dim: [32, 80], options: { sprites: 3 } },
+	"dungeon2.e.3": { size: [1, 3, 6], pos: [48, 544], dim: [32, 80], options: { sprites: 3 } },
+	"dungeon2.n.3": { size: [3, 1, 6], pos: [96, 544], dim: [32, 80], options: { sprites: 3 } },
+	"dungeon2.w.3": { size: [1, 3, 6], pos: [144, 544], dim: [32, 80], options: { sprites: 3 } },
+	"dungeon2.col.se": { size: [1, 1, 6], pos: [192, 544], dim: [16, 64], options: { sprites: 3 } },
+	"dungeon2.floor": { size: [4, 4, 0], pos: [214, 448], dim: [64, 64], options: { sprites: 3, blendLevel: 0 } },
+	"dungeon2.gate": { size: [4, 1, 6], pos: [288, 448], dim: [40, 88], options: { sprites: 3 } },
+	"dungeon2.block": { size: [4, 4, 6], pos: [336, 448], dim: [64, 112], options: { sprites: 3 } },
+	"dungeon2.block.big": { size: [8, 8, 6], pos: [416, 448], dim: [128, 176], options: { sprites: 3 } },
+
 }

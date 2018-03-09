@@ -700,8 +700,8 @@ export default class {
 
     getFloorTo(worldX, worldY, dir) {
         return this.getFloor(
-            worldX + (dir == "e" ? Config.GROUND_TILE_W : (dir == "w" ? -Config.GROUND_TILE_W : 0)),
-            worldY + (dir == "s" ? Config.GROUND_TILE_H : (dir == "n" ? -Config.GROUND_TILE_H : 0))
+            worldX + Config.GROUND_TILE_W * Config.MOVE_DELTA[dir][0],
+            worldY + Config.GROUND_TILE_H * Config.MOVE_DELTA[dir][1]
         )
     }
 
@@ -1174,7 +1174,7 @@ export default class {
         });
     }
 
-    loadXY(x, y, onLoad, onError) {
+    loadXY(x, y, onLoad, onError, isOutside) {
         let name = mapName(x, y)
         if(this.editorMode) {
             if(x < 0 || y < 0 || x >= Config.MAX_MAP_X + 4 || y >= Config.MAX_MAP_Y + 4) {
@@ -1183,10 +1183,12 @@ export default class {
             }
             this._load(name, x, y, () => {
                 if(onLoad) onLoad()
-            }, onError)
+            }, onError, isOutside)
         } else {
             if(x < 0 || y < 0 || x >= Config.MAX_MAP_X + 4 || y >= Config.MAX_MAP_Y + 4) {
-                this.SEA_MAP.layers.forEach(layerInfo => this.layersByName[layerInfo.name].load(this.SEA_MAP.version, layerInfo, this, x, y))
+                if(isOutside) {
+                    this.SEA_MAP.layers.forEach(layerInfo => this.layersByName[layerInfo.name].load(this.SEA_MAP.version, layerInfo, this, x, y))
+                }
                 if(onLoad) onLoad()
                 return
             }
@@ -1214,7 +1216,7 @@ export default class {
 
                 this._load(name, x, y, () => {
                     if (onLoad) onLoad()
-                }, onError)
+                }, onError, isOutside)
             } else {
                 // move to back of cache
                 let n = this.cacheOrder.indexOf(name)
@@ -1243,7 +1245,7 @@ export default class {
         }
     }
 
-    _load(name, x, y, onLoad, onError) {
+    _load(name, x, y, onLoad, onError, isOutside) {
         $.ajax({
             url: "assets/maps/" + name + ".json",
             dataType: "json",
@@ -1285,7 +1287,9 @@ export default class {
                 getLogger("BLOCK").warn("Error loading " + name + ":", error)
                 if (onError) onError(error)
                 else {
-                    this.SEA_MAP.layers.forEach(layerInfo => this.layersByName[layerInfo.name].load(this.SEA_MAP.version, layerInfo, this, x, y))
+                    if(isOutside) {
+                        this.SEA_MAP.layers.forEach(layerInfo => this.layersByName[layerInfo.name].load(this.SEA_MAP.version, layerInfo, this, x, y))
+                    }
                     if (onLoad) onLoad()
                 }
             }

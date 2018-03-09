@@ -88,6 +88,7 @@ export default class extends Phaser.State {
         this.ground0 = this.game.input.keyboard.addKey(Phaser.Keyboard.ZERO)
         this.groundA = this.game.input.keyboard.addKey(Phaser.Keyboard.A)
         this.groundB = this.game.input.keyboard.addKey(Phaser.Keyboard.B)
+        this.groundC = this.game.input.keyboard.addKey(Phaser.Keyboard.C)
         this.tree = this.game.input.keyboard.addKey(Phaser.Keyboard.T)
         this.tree2 = this.game.input.keyboard.addKey(Phaser.Keyboard.Y)
         this.mountain = this.game.input.keyboard.addKey(Phaser.Keyboard.M)
@@ -165,6 +166,8 @@ export default class extends Phaser.State {
         // find the starting point
         if (this.dungeon.justDown) {
 
+            let dungeonType = this.dungeon.ctrlKey ? "2" : ""
+
             // delete everything except the floor
             this.blocks.stampLayer.reset()
             this.blocks.edgeLayer.reset()
@@ -178,7 +181,7 @@ export default class extends Phaser.State {
             }
 
             // draw walls
-            this._drawDungeonWalls()
+            this._drawDungeonWalls(dungeonType)
 
             // draw earth outside the walls
             for (let xx = 0; xx < Config.MAP_SIZE; xx += Config.GROUND_TILE_W) {
@@ -191,7 +194,7 @@ export default class extends Phaser.State {
                         this.blocks.clear("dungeon.floor.black", xx + Config.GROUND_TILE_W, yy, 0)
                         this.blocks.clear("dungeon.floor.black", xx, yy + Config.GROUND_TILE_H, 0)
                         this.blocks.clear("dungeon.floor.black", xx + Config.GROUND_TILE_W, yy + Config.GROUND_TILE_H, 0)
-                        this.blocks.set("dungeon.block.big", xx + Config.GROUND_TILE_W, yy + Config.GROUND_TILE_H, 0)
+                        this.blocks.set("dungeon" + dungeonType + ".block.big", xx + Config.GROUND_TILE_W, yy + Config.GROUND_TILE_H, 0)
                     }
                 }
             }
@@ -199,7 +202,7 @@ export default class extends Phaser.State {
                 for (let yy = 0; yy < Config.MAP_SIZE; yy += Config.GROUND_TILE_H) {
                     if(this.blocks.getFloor(xx, yy) == "dungeon.floor.black") {
                         this.blocks.clear("dungeon.floor.black", xx, yy, 0)
-                        this.blocks.set("dungeon.block", xx, yy, 0)
+                        this.blocks.set("dungeon" + dungeonType + ".block", xx, yy, 0)
                     }
                 }
             }
@@ -207,11 +210,11 @@ export default class extends Phaser.State {
         }
     }
 
-    _drawDungeonWalls() {
+    _drawDungeonWalls(dungeonType) {
         for (let xx = 0; xx < Config.MAP_SIZE; xx += Config.GROUND_TILE_W) {
             for (let yy = 0; yy < Config.MAP_SIZE; yy += Config.GROUND_TILE_H) {
-                if (this.blocks.getFloor(xx, yy) == "dungeon.floor") {
-                    this._drawDungeonAt(xx, yy, {})
+                if (this.blocks.getFloor(xx, yy) == "dungeon" + dungeonType + ".floor") {
+                    this._drawDungeonAt(xx, yy, {}, dungeonType)
                     return
                 }
             }
@@ -230,14 +233,14 @@ export default class extends Phaser.State {
         return this._isOffMap(x, y) || this._isFloor(x, y, floorName)
     }
 
-    _drawDungeonAt(x, y, seen) {
+    _drawDungeonAt(x, y, seen, dungeonType) {
         if(!seen[x + "." + y]) {
             seen[x + "." + y] = true
 
-            let dungeonFloorName = "dungeon.floor"
+            let dungeonFloorName = "dungeon" + dungeonType + ".floor"
             for (let xx = x - Config.GROUND_TILE_W; xx < x; xx++) {
                 for (let yy = y - Config.GROUND_TILE_H; yy < y; yy++) {
-                    this.blocks.clear("dungeon.col.nw", xx + 1, yy + 1, 0)
+                    this.blocks.clear("dungeon" + dungeonType + ".col.nw", xx + 1, yy + 1, 0)
                 }
             }
 
@@ -255,37 +258,37 @@ export default class extends Phaser.State {
             if (w && e && n && s && nw && ne && sw && se) {
                 // nada
             } else if (w && e && n && s && !nw && ne && sw && se) {
-                this.blocks.set("dungeon.col.nw", x - Config.GROUND_TILE_W + 1, y - Config.GROUND_TILE_H + 1, 0)
+                this.blocks.set("dungeon" + dungeonType + ".col.nw", x - Config.GROUND_TILE_W + 1, y - Config.GROUND_TILE_H + 1, 0)
             } else if (w && e && n && s && nw && !ne && sw && se) {
-                this.blocks.set("dungeon.col.nw", x, y - Config.GROUND_TILE_H + 1, 0)
+                this.blocks.set("dungeon" + dungeonType + ".col.nw", x, y - Config.GROUND_TILE_H + 1, 0)
             } else if (w && e && n && s && nw && ne && sw && !se) {
-                this.blocks.set("dungeon.col.nw", x, y, 0)
+                this.blocks.set("dungeon" + dungeonType + ".col.nw", x, y, 0)
             } else if (w && e && n && s && nw && ne && !sw && se) {
-                this.blocks.set("dungeon.col.nw", x - Config.GROUND_TILE_W + 1, y, 0)
+                this.blocks.set("dungeon" + dungeonType + ".col.nw", x - Config.GROUND_TILE_W + 1, y, 0)
             } else if (!w && n && s) {
-                this.blocks.set("dungeon.w.4", x - Config.GROUND_TILE_W + 1, y, 0)
+                this.blocks.set("dungeon" + dungeonType + ".w.4", x - Config.GROUND_TILE_W + 1, y, 0)
             } else if (!e && n && s) {
-                this.blocks.set("dungeon.e.4", x, y, 0)
+                this.blocks.set("dungeon" + dungeonType + ".e.4", x, y, 0)
             } else if (w && e && !n) {
-                this.blocks.set("dungeon.n.4", x, y - Config.GROUND_TILE_H + 1, 0)
+                this.blocks.set("dungeon" + dungeonType + ".n.4", x, y - Config.GROUND_TILE_H + 1, 0)
             } else if (w && e && !s) {
-                this.blocks.set("dungeon.s.4", x, y, 0)
+                this.blocks.set("dungeon" + dungeonType + ".s.4", x, y, 0)
             } else if (e && s) {
-                this.blocks.set("dungeon.col.se", x - Config.GROUND_TILE_W + 1, y - Config.GROUND_TILE_H + 1, 0)
-                this.blocks.set("dungeon.n.3", x, y - Config.GROUND_TILE_H + 1, 0)
-                this.blocks.set("dungeon.w.3", x - Config.GROUND_TILE_W + 1, y, 0)
+                this.blocks.set("dungeon" + dungeonType + ".col.se", x - Config.GROUND_TILE_W + 1, y - Config.GROUND_TILE_H + 1, 0)
+                this.blocks.set("dungeon" + dungeonType + ".n.3", x, y - Config.GROUND_TILE_H + 1, 0)
+                this.blocks.set("dungeon" + dungeonType + ".w.3", x - Config.GROUND_TILE_W + 1, y, 0)
             } else if (e && n) {
-                this.blocks.set("dungeon.col.se", x - Config.GROUND_TILE_W + 1, y, 0)
-                this.blocks.set("dungeon.s.3", x, y, 0)
-                this.blocks.set("dungeon.w.3", x - Config.GROUND_TILE_W + 1, y - 1, 0)
+                this.blocks.set("dungeon" + dungeonType + ".col.se", x - Config.GROUND_TILE_W + 1, y, 0)
+                this.blocks.set("dungeon" + dungeonType + ".s.3", x, y, 0)
+                this.blocks.set("dungeon" + dungeonType + ".w.3", x - Config.GROUND_TILE_W + 1, y - 1, 0)
             } else if (w && n) {
-                this.blocks.set("dungeon.col.se", x, y, 0)
-                this.blocks.set("dungeon.s.3", x - 1, y, 0)
-                this.blocks.set("dungeon.e.3", x, y - 1, 0)
+                this.blocks.set("dungeon" + dungeonType + ".col.se", x, y, 0)
+                this.blocks.set("dungeon" + dungeonType + ".s.3", x - 1, y, 0)
+                this.blocks.set("dungeon" + dungeonType + ".e.3", x, y - 1, 0)
             } else if (w && s) {
-                this.blocks.set("dungeon.col.se", x, y - Config.GROUND_TILE_H + 1, 0)
-                this.blocks.set("dungeon.n.3", x - 1, y - Config.GROUND_TILE_H + 1, 0)
-                this.blocks.set("dungeon.e.3", x, y, 0)
+                this.blocks.set("dungeon" + dungeonType + ".col.se", x, y - Config.GROUND_TILE_H + 1, 0)
+                this.blocks.set("dungeon" + dungeonType + ".n.3", x - 1, y - Config.GROUND_TILE_H + 1, 0)
+                this.blocks.set("dungeon" + dungeonType + ".e.3", x, y, 0)
             }
 
             // only recurse if direction is still on map
@@ -298,14 +301,14 @@ export default class extends Phaser.State {
             sw = this._isFloor(x - Config.GROUND_TILE_W, y + Config.GROUND_TILE_W, dungeonFloorName)
             se = this._isFloor(x + Config.GROUND_TILE_W, y + Config.GROUND_TILE_W, dungeonFloorName)
 
-            if (w) this._drawDungeonAt(x - Config.GROUND_TILE_W, y, seen)
-            if (e) this._drawDungeonAt(x + Config.GROUND_TILE_W, y, seen)
-            if (n) this._drawDungeonAt(x, y - Config.GROUND_TILE_W, seen)
-            if (s) this._drawDungeonAt(x, y + Config.GROUND_TILE_W, seen)
-            if (nw) this._drawDungeonAt(x - Config.GROUND_TILE_W, y - Config.GROUND_TILE_W, seen)
-            if (ne) this._drawDungeonAt(x + Config.GROUND_TILE_W, y - Config.GROUND_TILE_W, seen)
-            if (sw) this._drawDungeonAt(x - Config.GROUND_TILE_W, y + Config.GROUND_TILE_W, seen)
-            if (se) this._drawDungeonAt(x + Config.GROUND_TILE_W, y + Config.GROUND_TILE_W, seen)
+            if (w) this._drawDungeonAt(x - Config.GROUND_TILE_W, y, seen, dungeonType)
+            if (e) this._drawDungeonAt(x + Config.GROUND_TILE_W, y, seen, dungeonType)
+            if (n) this._drawDungeonAt(x, y - Config.GROUND_TILE_W, seen, dungeonType)
+            if (s) this._drawDungeonAt(x, y + Config.GROUND_TILE_W, seen, dungeonType)
+            if (nw) this._drawDungeonAt(x - Config.GROUND_TILE_W, y - Config.GROUND_TILE_W, seen, dungeonType)
+            if (ne) this._drawDungeonAt(x + Config.GROUND_TILE_W, y - Config.GROUND_TILE_W, seen, dungeonType)
+            if (sw) this._drawDungeonAt(x - Config.GROUND_TILE_W, y + Config.GROUND_TILE_W, seen, dungeonType)
+            if (se) this._drawDungeonAt(x + Config.GROUND_TILE_W, y + Config.GROUND_TILE_W, seen, dungeonType)
         }
     }
 
@@ -425,6 +428,8 @@ export default class extends Phaser.State {
             ground = "lava"
         } else if (this.ground0.isDown) {
             ground = "dungeon.floor"
+        } else if (this.groundC.isDown) {
+            ground = "dungeon2.floor"
         } else if (this.groundA.isDown) {
             ground = "dungeon.floor.black"
         } else if (this.groundB.isDown) {

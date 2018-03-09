@@ -339,7 +339,6 @@ export default class extends Phaser.State {
         let pos = "" + dx + "." + dy
         if(pos != this.lastPos) {
             this.lastPos = pos
-            getLogger("ARKONA").warn("New pos=" + pos)
             let maps = []
             if (dx == 0 && dy == 0) maps.push([mx - 1, my - 1])
             if (dx == 0 && dy == 1) maps.push([mx - 1, my + 1])
@@ -361,7 +360,7 @@ export default class extends Phaser.State {
                         this.blocks.sort()
                         if(onLoad) onLoad()
                     }
-                })
+                }, null, this.isOutside())
             })
         } else {
             if(onLoad) onLoad()
@@ -379,9 +378,6 @@ export default class extends Phaser.State {
         return fs.existsSync(path.join(dir, "state.json"))
     }
 
-    /**
-     * Save the game. This currently only saves player state not level state.
-     */
     saveGame() {
         let dir = path.join(os.homedir(), ".arkona")
         fs.ensureDirSync(dir)
@@ -507,7 +503,15 @@ export default class extends Phaser.State {
                     if(onLoad) onLoad()
                 })
             })
-        })
+        }, null, this.isOutside())
+    }
+
+    isOutside() {
+        return this.player && this.player.animatedSprite
+            ? !Section.isLamplight(
+                (this.player.animatedSprite.sprite.gamePos[0] / Config.MAP_SIZE)|0,
+                (this.player.animatedSprite.sprite.gamePos[1] / Config.MAP_SIZE)|0)
+            : true
     }
 
     narrate(message, color) {
