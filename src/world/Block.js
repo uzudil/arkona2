@@ -1028,7 +1028,6 @@ export default class {
         for(let dir in EDGE_OFFSET) {
             if(edges[dir]) {
                 let groundTo = this.getFloorTo(gx, gy, dir)
-                if(ground && ground.indexOf("road")>=0) console.log("pos=" + gx + "," + gy + " dir=" + dir + " groundTo=" + groundTo)
                 let name
                 if(ground && ground.indexOf("lava") >= 0) {
                     name = "scree.edge.bank"

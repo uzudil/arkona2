@@ -22,7 +22,7 @@ class Game extends Phaser.Game {
     constructor() {
         // only enable some loggers
         toggleAll(false)
-        getLogger("IO").enabled = true
+        getLogger("SECTION").enabled = true
 
         let o = loadSettings()
 

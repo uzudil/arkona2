@@ -7,6 +7,7 @@ import * as DRAGONS_CONVO from "../convo/dragons"
 import * as VOLN_CONVO from "../convo/voln"
 import * as MISC_CONVO from "../convo/misc"
 import * as VARHOLM from "../convo/varholm"
+import * as HAAGA from "../convo/haaga"
 import {MONSTERS} from "./Monsters"
 
 export const WORLD = {
@@ -380,27 +381,6 @@ export const WORLD = {
             { x: 702, y: 417, z: 0, type: MONSTERS.scorpion, count: 5 }
         ],
     },
-    "6,3": {
-        generators: [
-            { x: 534, y: 344, z: 0, type: MONSTERS.scorpion_large, count: 2 }
-        ],
-    },
-    "6,4": {
-        connect: [
-            {
-                x: 589, y: 410, z: 0,
-                action: (arkona) => arkona.transitionTo(620, 2225, 0, "s")
-            }
-        ],
-    },
-    "6,23": {
-        connect: [
-            {
-                x: 620, y: 2221, z: 0,
-                action: (arkona) => arkona.transitionTo(592, 408, 0, "e")
-            }
-        ],
-    },
     "0,2": {
         generators: [
             { x: 42, y: 274, z: 0, type: MONSTERS.skeleton, count: 3 }
@@ -591,5 +571,70 @@ export const WORLD = {
                 type: "use_object", x: 882, y: 2042, z: 0, allow: (arkona) => arkona.gameState["ritual_gate_open"] == true && !arkona.gameState["ritual_demon_lives"]
             }
         ],
-    }
+    },
+
+
+    // Haaga, desert town
+    "9,0": {
+        npcs: [
+            { creature: "man_yellow", x: 907, y: 75, options: { movement: MOVE_ANCHOR, name: "Mayor Reva", convo: HAAGA.MAYOR } }
+        ],
+        actions: [
+            {
+                type: "use_object", x: 934, y: 61, z: 0,
+                // eslint-disable-next-line no-unused-vars
+                allow: (arkona) => true,
+                action: (arkona) => arkona.showOverlay("sign", "Haaga")
+            }
+        ]
+    },
+    "9,1": {
+        npcs: [
+            { creature: "man_blue", x: 882, y: 123, options: { movement: MOVE_ANCHOR, name: "Commoner", convo: HAAGA.COMMON } },
+            { creature: "woman_brown", x: 894, y: 141, options: { movement: MOVE_ANCHOR, name: "Bartender", convo: HAAGA.COMMON } },
+            { creature: "woman", x: 890, y: 147, options: { movement: MOVE_ANCHOR, name: "Patron", convo: HAAGA.COMMON } },
+            { creature: "woman", x: 930, y: 142, options: { movement: MOVE_ANCHOR, name: "Seer", convo: HAAGA.COMMON } },
+            { creature: "man_yellow", x: 936, y: 111, options: { movement: MOVE_ANCHOR, name: "Commoner", convo: HAAGA.COMMON } },
+            { creature: "man_blue", x: 916, y: 126, options: { movement: MOVE_ANCHOR, name: "Trader", convo: HAAGA.COMMON } },
+            { creature: "woman_brown", x: 930, y: 162, options: { movement: MOVE_ANCHOR, name: "Commoner", convo: HAAGA.COMMON } },
+            { creature: "man_blue", x: 888, y: 164, options: { movement: MOVE_ANCHOR, name: "Commoner", convo: HAAGA.COMMON } },
+            { creature: "cow", x: 920, y: 78, options: { convo: FARM_CONVO.COW } },
+        ],
+        actions: [
+            {
+                type: "use_object", x: 874, y: 136, z: 0,
+                // eslint-disable-next-line no-unused-vars
+                allow: (arkona) => true,
+                action: (arkona) => arkona.showOverlay("sign", "Haaga")
+            }
+        ]
+    },
+
+    "6,3": {
+        generators: [
+            { x: 534, y: 344, z: 0, type: MONSTERS.scorpion_large, count: 2 }
+        ],
+        actions: [
+            {
+                type: "use_object", x: 616, y: 369, z: 0, allow: (arkona) => arkona.gameState["desert_shrine_key"] == true
+            }
+        ],
+    },
+    "6,4": {
+        connect: [
+            {
+                x: 589, y: 410, z: 0,
+                action: (arkona) => arkona.transitionTo(620, 2225, 0, "s")
+            }
+        ],
+    },
+    "6,23": {
+        connect: [
+            {
+                x: 620, y: 2221, z: 0,
+                action: (arkona) => arkona.transitionTo(592, 408, 0, "e")
+            }
+        ],
+    },
+
 }
