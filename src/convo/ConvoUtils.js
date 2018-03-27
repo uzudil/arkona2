@@ -27,7 +27,7 @@ export const AM_I_CHAMPION = Convo.condition((arkona) => _isChampion(arkona),
     )
 
 export const GENERAL_ARKONA = new Convo("The land of Arkona is a world on the brink of destruction. " +
-    "Cities like Voln guard against the expansion of the Raighd.")
+    "Cities like Voln guard against the expansion of the Raighd.", "R_COMMON_ARKONA")
     .answer("What is the Raighd?",
         new Convo("Hast thou not heard of the demonic forests of the Raighd? Our town is one of five that " +
             "stops its chaos from running wild over all of Arkona!", "R_COMMON_RAIGHD")
@@ -36,6 +36,7 @@ export const GENERAL_ARKONA = new Convo("The land of Arkona is a world on the br
                     "Demons walk freely in its jungles of corruption.")
                     .answer("Can one visit this place?", "R_VISIT_RAIGHD")
             )
+            .answer("Tell me more about Arkona", "R_COMMON_ARKONA")
     )
     .answer("How many cities are in Arkona?",
         new Convo("Wouldst thou hear of cities in the east or the west?", "R_GENERAL_CITIES")

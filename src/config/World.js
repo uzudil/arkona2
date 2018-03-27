@@ -593,7 +593,7 @@ export const WORLD = {
             { creature: "man_blue", x: 882, y: 123, options: { movement: MOVE_ANCHOR, name: "Commoner", convo: HAAGA.COMMON } },
             { creature: "woman_brown", x: 894, y: 141, options: { movement: MOVE_ANCHOR, name: "Bartender", convo: HAAGA.COMMON } },
             { creature: "woman", x: 890, y: 147, options: { movement: MOVE_ANCHOR, name: "Patron", convo: HAAGA.COMMON } },
-            { creature: "woman", x: 930, y: 142, options: { movement: MOVE_ANCHOR, name: "Seer", convo: HAAGA.COMMON } },
+            { creature: "woman", x: 930, y: 142, options: { movement: MOVE_ANCHOR, name: "Seer", convo: HAAGA.SEER } },
             { creature: "man_yellow", x: 936, y: 111, options: { movement: MOVE_ANCHOR, name: "Commoner", convo: HAAGA.COMMON } },
             { creature: "man_blue", x: 916, y: 126, options: { movement: MOVE_ANCHOR, name: "Trader", convo: HAAGA.COMMON } },
             { creature: "woman_brown", x: 930, y: 162, options: { movement: MOVE_ANCHOR, name: "Commoner", convo: HAAGA.COMMON } },
