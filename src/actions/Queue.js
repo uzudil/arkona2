@@ -1,9 +1,9 @@
-import UseObject from "./UseObject"
-import MovePlayer from "./MovePlayer"
-import MoveNpc from "./MoveNpc"
-import GeneratorAction from "./GeneratorAction"
-import MouseClickAction from "./MouseClickAction"
-import {getLogger} from "../config/Logger"
+import UseObject from "./UseObject.js"
+import MovePlayer from "./MovePlayer.js"
+import MoveNpc from "./MoveNpc.js"
+import GeneratorAction from "./GeneratorAction.js"
+import MouseClickAction from "./MouseClickAction.js"
+import {getLogger} from "../config/Logger.js"
 
 const ACTIONS = [
 	new UseObject(),

@@ -1,21 +1,17 @@
-import "pixi"
-import "p2"
-import Phaser from "phaser"
-import { loadSettings, flatten } from "./utils"
+import { loadSettings, flatten } from "./utils.js"
 
-import {WORLD} from "./config/World"
-import BootState from "./states/Boot"
-import SplashState from "./states/Splash"
-import EditorState from "./states/Editor"
-import ArkonaState from "./states/Arkona"
-import IntroState from "./states/Intro"
-import MapperState from "./states/Mapper"
-import {getLogger, toggleAll} from "./config/Logger"
+import {WORLD} from "./config/World.js"
+import BootState from "./states/Boot.js"
+import SplashState from "./states/Splash.js"
+import EditorState from "./states/Editor.js"
+import ArkonaState from "./states/Arkona.js"
+import IntroState from "./states/Intro.js"
+import MapperState from "./states/Mapper.js"
+import {getLogger, toggleAll} from "./config/Logger.js"
 
-import * as Config from "./config/Config"
+import * as Config from "./config/Config.js"
 
-// electron has to be included like this: https://github.com/electron/electron/issues/7300
-const electron = window.require("electron")
+const electron = require("electron")
 
 class Game extends Phaser.Game {
 

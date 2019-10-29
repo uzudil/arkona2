@@ -1,5 +1,5 @@
-import * as Config from "../config/Config"
-import {getLogger} from "../config/Logger"
+import * as Config from "../config/Config.js"
+import {getLogger} from "../config/Logger.js"
 
 export default class {
 	constructor(arkona, info) {

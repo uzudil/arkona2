@@ -1,4 +1,4 @@
-import Convo from "./Convo"
+import Convo from "./Convo.js"
 
 export function incrementChampion(arkona, town) {
     if(arkona.gameState["CIRCUIT_SCORE"] == null) {

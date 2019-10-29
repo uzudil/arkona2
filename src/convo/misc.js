@@ -1,4 +1,4 @@
-import Convo from "./Convo"
+import Convo from "./Convo.js"
 
 export const ARINDOL = new Convo("The wielder of Azan approaches as foretold by the Illumis. Make thyself at home, stranger!")
     .answer("Who are you? Do you live alone on this island?",

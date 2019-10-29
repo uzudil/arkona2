@@ -1,6 +1,7 @@
-import $ from "jquery"
-import { toCss } from "../config/Config"
-import { BLOCKS } from "../config/Blocks"
+// import $ from "jquery"
+const $ = require("jquery")
+import { toCss } from "../config/Config.js"
+import { BLOCKS } from "../config/Blocks.js"
 
 export default class {
 	constructor(editor) {

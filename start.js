@@ -18,7 +18,10 @@ function createWindow () {
         height: 768,
         icon: path.join(__dirname, "assets/icons/icon.png"),
         resizable: false,
-        title: "Arkona II"
+        title: "Arkona II",
+        webPreferences: {
+            nodeIntegration: true
+        }
     })
 
     // and load the index.html of the app.

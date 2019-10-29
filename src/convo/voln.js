@@ -1,5 +1,5 @@
-import Convo from "./Convo"
-import * as ConvoUtils from "./ConvoUtils"
+import Convo from "./Convo.js"
+import * as ConvoUtils from "./ConvoUtils.js"
 
 // eslint-disable-next-line no-unused-vars
 export const COMMON = new Convo("Our town of Voln has stood here for near a millennia! It is the oldest settlement in all of Arkona.", "VOLN_COMMON")

@@ -1,4 +1,4 @@
-import {dirsFrom} from "./Config"
+import {dirsFrom} from "./Config.js"
 
 export const VEHICLES = {
     ship: {

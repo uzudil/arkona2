@@ -1,4 +1,4 @@
-import Convo from "./Convo"
+import Convo from "./Convo.js"
 
 export const COMMON = new Convo("Thou art brave to intrude here. Leave now whilst thou still can!")
     .answer("Good idea, I'll be leaving now.")

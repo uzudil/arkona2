@@ -1,4 +1,4 @@
-import {BLOCKS} from "./Blocks"
+import {BLOCKS} from "./Blocks.js"
 
 export var WIDTH = 1024
 export var HEIGHT = 768

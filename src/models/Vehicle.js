@@ -1,6 +1,6 @@
-import * as Config from "./../config/Config"
-import * as Vehicles from "../config/Vehicles"
-import AnimatedSprite from "../world/Animation"
+import * as Config from "./../config/Config.js"
+import * as Vehicles from "../config/Vehicles.js"
+import AnimatedSprite from "../world/Animation.js"
 
 export default class {
     constructor(arkona, info, section) {

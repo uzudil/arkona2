@@ -1,5 +1,5 @@
-import {BLOCKS} from "../config/Blocks"
-import {getLogger} from "../config/Logger"
+import {BLOCKS} from "../config/Blocks.js"
+import {getLogger} from "../config/Logger.js"
 
 /*
  A (more) correct way of sorting isometric shapes, as described here:

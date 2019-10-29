@@ -1,8 +1,6 @@
-import Phaser from "phaser"
-// import * as Config from "../config/Config"
-import Transition from "../ui/Transition"
-import Block from "../world/Block"
-import $ from "jquery"
+import Transition from "../ui/Transition.js"
+import Block from "../world/Block.js"
+const $ = require("jquery")
 
 const MINX=0
 const MINY=0

@@ -1,5 +1,5 @@
-import * as Config from "../config/Config"
-import {BLOCKS} from "../config/Blocks"
+import * as Config from "../config/Config.js"
+import {BLOCKS} from "../config/Blocks.js"
 
 const LONG_TTL = 1500
 const SHORT_TTL = 250

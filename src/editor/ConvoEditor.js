@@ -1,5 +1,6 @@
-import $ from "jquery"
-import {WORLD} from "../config/World"
+// import $ from "jquery"
+const $ = require("jquery")
+import {WORLD} from "../config/World.js"
 
 export default class {
     constructor() {

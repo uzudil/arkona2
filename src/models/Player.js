@@ -1,11 +1,12 @@
-import * as Config from "../config/Config"
-import * as Creatures from "../config/Creatures"
-import AnimatedSprite from "../world/Animation"
-import Alive from "./Alive"
-import * as Utils from "../utils"
-import $ from "jquery"
-import Pathable from "./Pathable"
-import {getLogger} from "../config/Logger"
+import * as Config from "../config/Config.js"
+import * as Creatures from "../config/Creatures.js"
+import AnimatedSprite from "../world/Animation.js"
+import Alive from "./Alive.js"
+import * as Utils from "../utils.js"
+// import $ from "jquery"
+const $ = require("jquery")
+import Pathable from "./Pathable.js"
+import {getLogger} from "../config/Logger.js"
 
 export default class extends Pathable {
     constructor(arkona) {

@@ -1,5 +1,6 @@
-import $ from "jquery"
-import {restart} from "../utils"
+// import $ from "jquery"
+const $ = require("jquery")
+import {restart} from "../utils.js"
 
 export default class {
 	constructor(arkona) {

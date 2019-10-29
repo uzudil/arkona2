@@ -1,26 +1,26 @@
-import Phaser from "phaser"
-import $ from "jquery"
-import Block from "../world/Block"
-import * as Config from "../config/Config"
-import Player from "../models/Player"
-import Messages from "../ui/Messages"
-import ConvoUI from "../ui/ConvoUI"
-import Transition from "../ui/Transition"
-import InGameMenu from "../ui/InGameMenu"
-import Lamp from "../ui/Lamp"
-import * as Queue from "../actions/Queue"
-import MouseClickAction from "../actions/MouseClickAction"
-import Stats from "stats.js"
-import Device from "../ui/Device"
-import { dist3d } from "../utils"
-import Section from "../models/Section"
-import Fx from "../world/Fx"
-import * as Movies from "../config/Movies"
-import {getLogger} from "../config/Logger"
+const $ = require("jquery")
+import Block from "../world/Block.js"
+import * as Config from "../config/Config.js"
+import Player from "../models/Player.js"
+import Messages from "../ui/Messages.js"
+import ConvoUI from "../ui/ConvoUI.js"
+import Transition from "../ui/Transition.js"
+import InGameMenu from "../ui/InGameMenu.js"
+import Lamp from "../ui/Lamp.js"
+import * as Queue from "../actions/Queue.js"
+import MouseClickAction from "../actions/MouseClickAction.js"
+// import Stats from "stats.js"
+const Stats = require("stats.js")
+import Device from "../ui/Device.js"
+import { dist3d } from "../utils.js"
+import Section from "../models/Section.js"
+import Fx from "../world/Fx.js"
+import * as Movies from "../config/Movies.js"
+import {getLogger} from "../config/Logger.js"
 
-const fs = window.require("fs-extra")
-const path = window.require("path")
-const os = window.require("os")
+const fs = require("fs-extra")
+const path = require("path")
+const os = require("os")
 
 export default class extends Phaser.State {
     constructor() {

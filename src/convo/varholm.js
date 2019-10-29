@@ -1,5 +1,5 @@
-import Convo from "./Convo"
-import * as ConvoUtils from "./ConvoUtils"
+import Convo from "./Convo.js"
+import * as ConvoUtils from "./ConvoUtils.js"
 
 export const ACOLYTE = Convo.condition((arkona) => arkona.gameState["mezalka_dead"],
     new Convo("The Raighd will remember thy treachery, intruder!")

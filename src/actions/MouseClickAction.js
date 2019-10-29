@@ -1,4 +1,4 @@
-import UseObject from "./UseObject"
+import UseObject from "./UseObject.js"
 
 export default class {
 

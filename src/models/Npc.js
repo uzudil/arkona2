@@ -1,11 +1,11 @@
-import * as Config from "./../config/Config"
-import { dist3d } from "../utils"
-import * as Creatures from "../config/Creatures"
-import AnimatedSprite from "../world/Animation"
-import Alive from "./Alive"
-import Pathable from "./Pathable"
-import { distSprites } from "../world/Block"
-import {getLogger} from "../config/Logger"
+import * as Config from "./../config/Config.js"
+import { dist3d } from "../utils.js"
+import * as Creatures from "../config/Creatures.js"
+import AnimatedSprite from "../world/Animation.js"
+import Alive from "./Alive.js"
+import Pathable from "./Pathable.js"
+import { distSprites } from "../world/Block.js"
+import {getLogger} from "../config/Logger.js"
 
 const SPEEDS = {
     "slow": 0.01,

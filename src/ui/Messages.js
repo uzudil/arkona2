@@ -1,4 +1,4 @@
-import * as Config from "../config/Config"
+import * as Config from "../config/Config.js"
 
 export default class {
 	constructor(arkona) {

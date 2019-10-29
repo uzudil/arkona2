@@ -1,5 +1,4 @@
-import * as Config from "../config/Config"
-//import Phaser from "phaser"
+import * as Config from "../config/Config.js"
 
 const WIDTH = 74
 const HEIGHT = 8

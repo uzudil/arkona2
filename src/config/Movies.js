@@ -1,5 +1,5 @@
-import {MONSTERS} from "./Monsters"
-import * as ConvoUtils from "../convo/ConvoUtils"
+import {MONSTERS} from "./Monsters.js"
+import * as ConvoUtils from "../convo/ConvoUtils.js"
 
 function timeElapsed(since, delta) {
     return since != null && Date.now() - since > delta

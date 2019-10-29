@@ -1,11 +1,11 @@
-import Phaser from "phaser"
-import Block, { isFlat } from "../world/Block"
-import {BLOCKS} from "../config/Blocks"
-import {getRandom} from "../utils"
-import * as Config from "../config/Config"
-import Palette from "../editor/Palette"
-import $ from "jquery"
-import {getLogger} from "../config/Logger"
+import Block, { isFlat } from "../world/Block.js"
+import {BLOCKS} from "../config/Blocks.js"
+import {getRandom} from "../utils.js"
+import * as Config from "../config/Config.js"
+import Palette from "../editor/Palette.js"
+// import $ from "jquery"
+const $ = require("jquery")
+import {getLogger} from "../config/Logger.js"
 
 // electron has to be included like this: https://github.com/electron/electron/issues/7300
 const electron = window.require("electron")

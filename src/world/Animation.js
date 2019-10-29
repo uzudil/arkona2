@@ -1,5 +1,5 @@
-import {range} from "../utils"
-import * as Config from "../config/Config"
+import {range} from "../utils.js"
+import * as Config from "../config/Config.js"
 
 export default class {
 	constructor(game, name, blocks, x, y, z, animationInfos, blockName) {

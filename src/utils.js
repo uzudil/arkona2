@@ -25,10 +25,14 @@ export const inRect = (x, y, rx, ry, rw, rh) => {
 	return x >= rx && x < rx + rw && y >= ry && y < ry + rh
 }
 
-const fs = window.require("fs")
-const path = window.require("path")
-const os = window.require("os")
-const electron = window.require("electron")
+const fs = require("fs")
+const path = require("path")
+const os = require("os")
+const electron = require("electron")
+
+// const fs = require('electron').remote.require('fs')
+// const path = require('electron').remote.require('path')
+// const os = require('electron').remote.require('os')
 
 function settingsFile() {
     let dir = path.join(os.homedir(), ".arkona")

@@ -1,6 +1,5 @@
-import Phaser from "phaser"
-import * as Config from "../config/Config"
-import Transition from "../ui/Transition"
+import * as Config from "../config/Config.js"
+import Transition from "../ui/Transition.js"
 
 const STAR_COUNT = 200
 const TEXT = [

@@ -1,10 +1,11 @@
-import * as Config from "../config/Config"
-import {BLOCKS} from "../config/Blocks"
-import ImpreciseSort from "./ImpreciseSort"
-import DAGSort from "./DAGSort"
-import $ from "jquery"
-import {dist3d, mapName} from "../utils"
-import {getLogger} from "../config/Logger"
+import * as Config from "../config/Config.js"
+import {BLOCKS} from "../config/Blocks.js"
+import ImpreciseSort from "./ImpreciseSort.js"
+import DAGSort from "./DAGSort.js"
+// import $ from "jquery"
+const $ = require("jquery")
+import {dist3d, mapName} from "../utils.js"
+import {getLogger} from "../config/Logger.js"
 
 const aStar = window.require("a-star")
 

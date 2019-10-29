@@ -1,4 +1,4 @@
-import {MOVE_ATTACK} from "./Config"
+import {MOVE_ATTACK} from "./Config.js"
 
 export const MONSTERS = {
 	goblin: {

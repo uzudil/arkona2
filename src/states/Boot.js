@@ -1,6 +1,5 @@
-import Phaser from "phaser"
-import WebFont from "webfontloader"
-import {FONT_FAMILY, ARKONA_FONT_FAMILY} from "../config/Config"
+const WebFont = require("webfontloader")
+import {FONT_FAMILY, ARKONA_FONT_FAMILY} from "../config/Config.js"
 
 export default class extends Phaser.State {
     init() {

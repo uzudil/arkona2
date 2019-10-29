@@ -1,4 +1,4 @@
-import Convo from "./Convo"
+import Convo from "./Convo.js"
 // import * as ConvoUtils from "./ConvoUtils"
 
 export const COMMON = new Convo("Thou art welcome to Haaga, the jewel of the north deserts of Arkona!")

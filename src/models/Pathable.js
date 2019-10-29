@@ -1,6 +1,6 @@
-import * as Config from "./../config/Config"
-import { dist3d } from "../utils"
-import {getLogger} from "../config/Logger"
+import * as Config from "./../config/Config.js"
+import { dist3d } from "../utils.js"
+import {getLogger} from "../config/Logger.js"
 
 export default class {
 

@@ -1,12 +1,11 @@
-import Phaser from "phaser"
-import { centerGameObjects, loadSettings, saveSettings, restart, exit } from "../utils"
-import * as Config from "../config/Config"
-import * as Creatures from "../config/Creatures"
-import * as Vehicles from "../config/Vehicles"
-import $ from "jquery"
-import Transition from "../ui/Transition"
-import Arkona from "./Arkona"
-import ConvoEditor from "../editor/ConvoEditor"
+import { centerGameObjects, loadSettings, saveSettings, restart, exit } from "../utils.js"
+import * as Config from "../config/Config.js"
+import * as Creatures from "../config/Creatures.js"
+import * as Vehicles from "../config/Vehicles.js"
+const $ = require("jquery")
+import Transition from "../ui/Transition.js"
+import Arkona from "./Arkona.js"
+import ConvoEditor from "../editor/ConvoEditor.js"
 
 const MENU_OPTIONS = Config.DEBUG_MODE ?
     ["New Game", "Load Game", "Options", "Exit", "Game Editor", "Convo Editor", "Mapper"] :

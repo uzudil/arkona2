@@ -1,4 +1,4 @@
-import * as Config from "../config/Config"
+import * as Config from "../config/Config.js"
 
 const TALK_MODE = "talk"
 const USE_MODE = "use"

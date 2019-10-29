@@ -1,10 +1,10 @@
-import Npc from "./Npc"
-import * as Config from "./../config/Config"
-import Generator from "./Generator"
-import Vehicle from "./Vehicle"
-import {WORLD} from "../config/World"
-import {mapName} from "../utils"
-import {getLogger} from "../config/Logger"
+import Npc from "./Npc.js"
+import * as Config from "./../config/Config.js"
+import Generator from "./Generator.js"
+import Vehicle from "./Vehicle.js"
+import {WORLD} from "../config/World.js"
+import {mapName} from "../utils.js"
+import {getLogger} from "../config/Logger.js"
 
 /**
  * The model of a runtime map section: npcs, monsters, generators, etc.

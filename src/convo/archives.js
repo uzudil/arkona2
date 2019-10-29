@@ -1,4 +1,4 @@
-import Convo from "./Convo"
+import Convo from "./Convo.js"
 
 export const FRAN = new Convo("'Tis a shame what happened to brother Pazu. Still, I'm glad thou hath solved the case. " +
 	"Now I can return to my research.")

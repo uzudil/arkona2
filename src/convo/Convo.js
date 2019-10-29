@@ -1,4 +1,4 @@
-import {getLogger} from "../config/Logger"
+import {getLogger} from "../config/Logger.js"
 
 const CONVOS = {}
 

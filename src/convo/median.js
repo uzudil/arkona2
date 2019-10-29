@@ -1,4 +1,4 @@
-import Convo from "./Convo"
+import Convo from "./Convo.js"
 
 export const ARADUN = Convo.condition((arkona) => arkona.gameState["archives_open"],
 	new Convo("Thank you for thy work exposing brother Pazu's murderer. The monks have returned to their studies " +
