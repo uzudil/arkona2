@@ -22,7 +22,7 @@
     "electron-connect": "~0.6.1",
     "electron-connect-webpack-plugin": "^0.1.1",
     "electron-builder": "^17.3.1",
-    "eslint": "^3.15.0",
+    "eslint": "^4.19.1",
     "eslint-loader": "^1.6.1",
     "expose-loader": "^0.7.1",
     "standard": "^8.6.0",
